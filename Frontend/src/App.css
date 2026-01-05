@@ -1,0 +1,14 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Horizontal scroll hatane ke liye */
+}
+
+body {
+    -webkit-text-size-adjust: 100%; /* iOS text zoom issue fix */
+}
