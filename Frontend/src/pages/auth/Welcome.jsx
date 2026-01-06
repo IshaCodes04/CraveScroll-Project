@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { ChefHat, Globe, Heart, Share2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Welcome = () => {
+  const navigate = useNavigate();
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -63,8 +65,8 @@ const Welcome = () => {
     return () => clearInterval(interval);
   }, [quotes.length]);
 
-  const handleGetStarted = () => {
-    console.log("Navigate to app");
+   const handleGetStarted = () => {
+    navigate("/register");
   };
 
   return (
