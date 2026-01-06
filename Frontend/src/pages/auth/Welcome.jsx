@@ -1,23 +1,54 @@
-import { useState, useEffect } from 'react';
-import { ChefHat, Globe, Heart, Share2 } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { ChefHat, Globe, Heart, Share2 } from "lucide-react";
 
 const Welcome = () => {
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
   const quotes = [
-    { text: "People who love to eat are always the best people.", author: "Julia Child" },
-    { text: "Food is symbolic of love when words are inadequate.", author: "Alan D. Wolfelt" },
-    { text: "One cannot think well, love well, sleep well, if one has not dined well.", author: "Virginia Woolf" },
-    { text: "Cooking is like love. It should be entered into with abandon or not at all.", author: "Harriet Van Horne" },
-    { text: "Food brings people together on many different levels.", author: "Yotam Ottolenghi" }
+    {
+      text: "People who love to eat are always the best people.",
+      author: "Julia Child",
+    },
+    {
+      text: "Food is symbolic of love when words are inadequate.",
+      author: "Alan D. Wolfelt",
+    },
+    {
+      text: "One cannot think well, love well, sleep well, if one has not dined well.",
+      author: "Virginia Woolf",
+    },
+    {
+      text: "Cooking is like love. It should be entered into with abandon or not at all.",
+      author: "Harriet Van Horne",
+    },
+    {
+      text: "Food brings people together on many different levels.",
+      author: "Yotam Ottolenghi",
+    },
   ];
 
   const features = [
-    { icon: ChefHat, title: "Endless Scroll", description: "Discover unlimited recipes" },
-    { icon: Heart, title: "Save Favorites", description: "Keep your loved dishes" },
-    { icon: Globe, title: "Global Cuisine", description: "Explore world flavors" },
-    { icon: Share2, title: "Share Recipes", description: "Connect with foodies" }
+    {
+      icon: ChefHat,
+      title: "Endless Scroll",
+      description: "Discover unlimited recipes",
+    },
+    {
+      icon: Heart,
+      title: "Save Favorites",
+      description: "Keep your loved dishes",
+    },
+    {
+      icon: Globe,
+      title: "Global Cuisine",
+      description: "Explore world flavors",
+    },
+    {
+      icon: Share2,
+      title: "Share Recipes",
+      description: "Connect with foodies",
+    },
   ];
 
   useEffect(() => {
@@ -33,7 +64,7 @@ const Welcome = () => {
   }, [quotes.length]);
 
   const handleGetStarted = () => {
-    console.log('Navigate to app');
+    console.log("Navigate to app");
   };
 
   return (
@@ -44,9 +75,11 @@ const Welcome = () => {
         loop
         muted
         playsInline
-        poster="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1920"
       >
-        <source src="https://cdn.pixabay.com/vimeo/459377524/food-44150.mp4?width=1920&hash=e0e5c1e8f4a5e8b8c5d5f5f5f5f5f5f5f5f5f5f5" type="video/mp4" />
+        <source
+          src="/src/assets/6174380-hd_1920_1080_30fps.mp4"
+          type="video/mp4"
+        />
       </video>
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/60 to-black/85" />
@@ -62,14 +95,17 @@ const Welcome = () => {
           CraveScroll
         </h1>
 
-        <p className="text-white/90 text-lg mb-8 font-medium animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+        <p
+          className="text-white/90 text-lg mb-8 font-medium animate-fadeIn"
+          style={{ animationDelay: "0.2s" }}
+        >
           Discover & savor endless culinary delights
         </p>
 
         <div className="mb-10 min-h-[80px] flex items-center justify-center">
           <div
             className={`transition-opacity duration-500 ${
-              isVisible ? 'opacity-100' : 'opacity-0'
+              isVisible ? "opacity-100" : "opacity-0"
             }`}
           >
             <blockquote className="text-white/95 text-base italic mb-2 px-4">
@@ -90,8 +126,13 @@ const Welcome = () => {
                 className="backdrop-blur-xl bg-white/10 rounded-2xl p-5 border border-white/20 shadow-xl hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl animate-fadeIn"
                 style={{ animationDelay: `${0.3 + index * 0.1}s` }}
               >
-                <Icon className="w-8 h-8 text-orange-400 mx-auto mb-3" strokeWidth={2} />
-                <h3 className="text-white font-bold text-sm mb-1">{feature.title}</h3>
+                <Icon
+                  className="w-8 h-8 text-orange-400 mx-auto mb-3"
+                  strokeWidth={2}
+                />
+                <h3 className="text-white font-bold text-sm mb-1">
+                  {feature.title}
+                </h3>
                 <p className="text-white/70 text-xs">{feature.description}</p>
               </div>
             );
@@ -104,8 +145,8 @@ const Welcome = () => {
               key={index}
               className={`rounded-full transition-all duration-300 ${
                 index === currentQuoteIndex
-                  ? 'w-10 h-2.5 bg-orange-500'
-                  : 'w-2.5 h-2.5 bg-white/40'
+                  ? "w-10 h-2.5 bg-orange-500"
+                  : "w-2.5 h-2.5 bg-white/40"
               }`}
             />
           ))}
@@ -114,12 +155,15 @@ const Welcome = () => {
         <button
           onClick={handleGetStarted}
           className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-lg py-4 px-8 rounded-full shadow-2xl hover:shadow-orange-500/50 hover:scale-105 transition-all duration-300 hover:-translate-y-1 active:scale-100 animate-fadeIn"
-          style={{ animationDelay: '0.7s' }}
+          style={{ animationDelay: "0.7s" }}
         >
           Get Started
         </button>
 
-        <p className="text-white/60 text-xs mt-6 animate-fadeIn" style={{ animationDelay: '0.8s' }}>
+        <p
+          className="text-white/60 text-xs mt-6 animate-fadeIn"
+          style={{ animationDelay: "0.8s" }}
+        >
           Join thousands of food lovers worldwide
         </p>
       </div>
