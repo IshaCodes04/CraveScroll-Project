@@ -1,14 +1,21 @@
-* {
-    box-sizing: border-box;
+/* Root should NEVER restrict width in Tailwind apps */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow-x: hidden; /* Horizontal scroll hatane ke liye */
-}
-
+/* Remove default body spacing just in case */
+html,
 body {
-    -webkit-text-size-adjust: 100%; /* iOS text zoom issue fix */
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Optional: smooth rendering */
+* {
+  box-sizing: border-box;
 }
