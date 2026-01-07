@@ -65,7 +65,7 @@ const Welcome = () => {
     return () => clearInterval(interval);
   }, [quotes.length]);
 
-   const handleGetStarted = () => {
+  const handleGetStarted = () => {
     navigate("/register");
   };
 

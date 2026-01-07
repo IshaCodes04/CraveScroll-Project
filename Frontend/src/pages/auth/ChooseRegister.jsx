@@ -1,24 +1,25 @@
 import { User, ChefHat } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const foodBg = "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+const foodBg =
+  "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 const ChooseRegister = () => {
   return (
     <div className="min-h-screen relative flex items-center justify-center overflow-hidden">
       {/* Background Image */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${foodBg})` }}
       />
-      
+
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/60" />
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-md mx-auto px-6 py-12">
         {/* Logo */}
-        <div 
+        <div
           className="flex flex-col items-center mb-8 animate-fadeIn"
           style={{ animationDelay: "0.2s" }}
         >
@@ -28,49 +29,67 @@ const ChooseRegister = () => {
           <h1 className="text-5xl font-extrabold mb-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent">
             CraveScroll
           </h1>
-          <p className="text-white/80 text-center text-sm" style={{ fontFamily: "'Poppins', sans-serif" }}>
+          <p
+            className="text-white/80 text-center text-sm"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
             Join the ultimate food discovery experience
           </p>
         </div>
 
         {/* Main Card with Options */}
-        <div 
+        <div
           className="bg-white/10 backdrop-blur-md rounded-2xl p-6 mb-8 animate-fadeIn border border-white/10"
           style={{ animationDelay: "0.4s" }}
         >
-          <h2 className="text-white text-center text-lg font-semibold mb-6" style={{ fontFamily: "'Poppins', sans-serif" }}>
+          <h2
+            className="text-white text-center text-lg font-semibold mb-6"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
             Create your account
           </h2>
-          
+
           <div className="grid grid-cols-2 gap-4">
-            {/* User Option */}
-            <Link to="/register/user" className="block">
+            {/* User sign up*/}
+            <Link to="/user/register" className="block">
               <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 flex flex-col items-center gap-3 cursor-pointer transition-all duration-300 hover:bg-white/20 hover:scale-105 border border-white/10 h-full">
                 <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
                   <User className="w-6 h-6 text-orange-500" />
                 </div>
                 <div className="text-center">
-                  <h3 className="font-semibold text-white text-sm" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                  <h3
+                    className="font-semibold text-white text-sm"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
                     Sign up as User
                   </h3>
-                  <p className="text-white/60 text-xs mt-1" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    Discover & scroll reels 
+                  <p
+                    className="text-white/60 text-xs mt-1"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    Discover & scroll reels
                   </p>
                 </div>
               </div>
             </Link>
 
             {/* Food Partner Option */}
-            <Link to="/register/partner" className="block">
+            <Link to="/food-partner/register" className="block">
               <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 flex flex-col items-center gap-3 cursor-pointer transition-all duration-300 hover:bg-white/20 hover:scale-105 border border-white/10 h-full">
                 <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
                   <ChefHat className="w-6 h-6 text-orange-500" />
                 </div>
                 <div className="text-center">
-                  <h3 className="font-semibold text-white text-sm" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                  <h3
+                    className="font-semibold text-white text-sm"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
                     Sign up as Food Partner
                   </h3>
-                  <p className="text-white/60 text-xs mt-1" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                  <p
+                    className="text-white/60 text-xs mt-1"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
                     Share your creations
                   </p>
                 </div>
@@ -80,23 +99,24 @@ const ChooseRegister = () => {
         </div>
 
         {/* Login Section */}
-        <div 
+        <div
           className="text-center animate-fadeIn"
-          style={{ animationDelay: "0.6s", fontFamily: "'Poppins', sans-serif" }}
+          style={{
+            animationDelay: "0.6s",
+            fontFamily: "'Poppins', sans-serif",
+          }}
         >
-          <p className="text-white/60 text-sm mb-4">
-            Already have an account?
-          </p>
+          <p className="text-white/60 text-sm mb-4">Already have an account?</p>
           <div className="flex items-center justify-center gap-6">
-            <Link 
-              to="/login/user" 
+            <Link
+              to="/login/user"
               className="text-orange-500 hover:text-orange-400 font-medium text-sm transition-colors"
             >
               User Login
             </Link>
             <span className="text-white/30">•</span>
-            <Link 
-              to="/login/partner" 
+            <Link
+              to="/login/partner"
               className="text-orange-500 hover:text-orange-400 font-medium text-sm transition-colors"
             >
               Partner Login
@@ -105,9 +125,12 @@ const ChooseRegister = () => {
         </div>
 
         {/* Footer */}
-        <p 
+        <p
           className="text-center text-white/40 text-xs mt-8 animate-fadeIn"
-          style={{ animationDelay: "0.8s", fontFamily: "'Poppins', sans-serif" }}
+          style={{
+            animationDelay: "0.8s",
+            fontFamily: "'Poppins', sans-serif",
+          }}
         >
           Join thousands of food lovers worldwide
         </p>
