@@ -1,10 +1,13 @@
-import { User, ChefHat } from "lucide-react";
+import { User, ChefHat, ChevronLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const foodBg =
   "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 const ChooseRegister = () => {
+  const navigate = useNavigate();
+  
   return (
     <div className="min-h-screen relative flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -16,7 +19,16 @@ const ChooseRegister = () => {
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/60" />
 
-      {/* Content */}
+      {/* CoBack Button */}
+        <button
+          onClick={() => navigate("/welcome")}
+          className="absolute top-6 left-6 text-white/60 hover:text-white transition-colors"
+          aria-label="Go back"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+
+        {/* ntent */}
       <div className="relative z-10 w-full max-w-md mx-auto px-6 py-12">
         {/* Logo */}
         <div
