@@ -51,32 +51,32 @@ const ChooseRegister = () => {
 
         {/* Main Card with Options */}
         <div
-          className="bg-white/10 backdrop-blur-md rounded-2xl p-6 mb-8 animate-fadeIn border border-white/10"
+          className="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-8 animate-fadeIn border border-white/10"
           style={{ animationDelay: "0.4s" }}
         >
           <h2
-            className="text-white text-center text-lg font-semibold mb-6"
+            className="text-white text-center text-2xl font-semibold mb-8"
             style={{ fontFamily: "'Poppins', sans-serif" }}
           >
             Create your account
           </h2>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex justify-center mb-8">
             {/* User sign up*/}
-            <Link to="/user/register" className="block">
-              <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 flex flex-col items-center gap-3 cursor-pointer transition-all duration-300 hover:bg-white/20 hover:scale-105 border border-white/10 h-full">
-                <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <User className="w-6 h-6 text-orange-500" />
+            <Link to="/user/register" className="block w-full sm:w-72">
+              <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 flex flex-col items-center gap-3 cursor-pointer transition-all duration-300 hover:bg-white/20 hover:scale-105 border border-white/10 h-full">
+                <div className="w-14 h-14 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <User className="w-7 h-7 text-orange-500" />
                 </div>
                 <div className="text-center">
                   <h3
-                    className="font-semibold text-white text-sm"
+                    className="font-semibold text-white text-base"
                     style={{ fontFamily: "'Poppins', sans-serif" }}
                   >
                     Sign up as User
                   </h3>
                   <p
-                    className="text-white/60 text-xs mt-1"
+                    className="text-white/60 text-sm mt-1"
                     style={{ fontFamily: "'Poppins', sans-serif" }}
                   >
                     Discover & scroll reels
@@ -84,61 +84,29 @@ const ChooseRegister = () => {
                 </div>
               </div>
             </Link>
-
-            {/* Food Partner Option */}
-            <Link to="/food-partner/register" className="block">
-              <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 flex flex-col items-center gap-3 cursor-pointer transition-all duration-300 hover:bg-white/20 hover:scale-105 border border-white/10 h-full">
-                <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <ChefHat className="w-6 h-6 text-orange-500" />
-                </div>
-                <div className="text-center">
-                  <h3
-                    className="font-semibold text-white text-sm"
-                    style={{ fontFamily: "'Poppins', sans-serif" }}
-                  >
-                    Sign up as Food Partner
-                  </h3>
-                  <p
-                    className="text-white/60 text-xs mt-1"
-                    style={{ fontFamily: "'Poppins', sans-serif" }}
-                  >
-                    Share your creations
-                  </p>
-                </div>
-              </div>
-            </Link>
           </div>
-        </div>
 
-        {/* Login Section */}
-        <div
-          className="text-center animate-fadeIn"
-          style={{
-            animationDelay: "0.6s",
-            fontFamily: "'Poppins', sans-serif",
-          }}
-        >
-          <p className="text-white/60 text-sm mb-4">Already have an account?</p>
-          <div className="flex items-center justify-center gap-6">
+          {/* Login Section */}
+          <div
+            className="text-center animate-fadeIn"
+            style={{
+              animationDelay: "0.6s",
+              fontFamily: "'Poppins', sans-serif",
+            }}
+          >
+            <p className="text-white/60 text-sm mb-4">Already have an account?</p>
             <Link
-              to="/login/user"
+              to="/user/login"
               className="text-orange-500 hover:text-orange-400 font-medium text-sm transition-colors"
             >
               User Login
-            </Link>
-            <span className="text-white/30">•</span>
-            <Link
-              to="/login/partner"
-              className="text-orange-500 hover:text-orange-400 font-medium text-sm transition-colors"
-            >
-              Partner Login
             </Link>
           </div>
         </div>
 
         {/* Footer */}
         <p
-          className="text-center text-white/40 text-xs mt-8 animate-fadeIn"
+          className="text-center text-white/40 text-xs mt-6 animate-fadeIn"
           style={{
             animationDelay: "0.8s",
             fontFamily: "'Poppins', sans-serif",
