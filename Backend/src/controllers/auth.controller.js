@@ -1,7 +1,8 @@
 const userModel = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const foodPartnerModel = require("../models/foodpartner.model")
+const foodPartnerModel = require("../models/foodpartner.model");
+const adminModel = require("../models/admin.model");
 
 async function registerUser(req, res) {
 
@@ -186,11 +187,104 @@ function logoutFoodPartner(req, res) {
 
 }
 
+async function registerAdmin(req, res) {
+
+   const { adminName, email, password, secretKey } = req.body
+
+   const isAdminAlreadyExists = await adminModel.findOne({
+      email
+   })
+
+   if (isAdminAlreadyExists) {
+      return res.status(400).json({
+         message: "Admin account already exists"
+      })
+   }
+
+   const hashedPassword = await bcrypt.hash(password, 10)
+
+   const admin = await adminModel.create({
+      adminName,
+      email,
+      password: hashedPassword,
+      secretKey
+   })
+
+
+   const token = jwt.sign({
+      id: admin._id,
+
+   }, process.env.JWT_SECRET)
+
+   res.cookie("token", token)
+
+   res.status(201).json({
+      message: "Admin Registered Successfully",
+      admin: {
+         _id: admin._id,
+         email: admin.email,
+         adminName: admin.adminName
+      }
+   })
+
+}
+
+async function loginAdmin(req, res) {
+
+   const { email, password } = req.body;
+
+   const admin = await adminModel.findOne({
+      email
+   })
+
+   if (!admin) {
+      return res.status(400).json({
+         message: "Invalid email and password"
+      })
+   }
+
+   const isPasswordValid = await bcrypt.compare(password, admin.password);
+
+   if (!isPasswordValid) {
+      return res.status(400).json({
+         message: "Invalid email and password"
+      })
+   }
+
+   const token = jwt.sign({
+      id: admin._id,
+   }, process.env.JWT_SECRET)
+
+
+   res.cookie("token", token)
+
+   res.status(200).json({
+      message: "Admin Logged In Successfully",
+      admin: {
+         _id: admin._id,
+         email: admin.email,
+         adminName: admin.adminName
+      }
+   })
+}
+
+function logoutAdmin(req, res) {
+
+   res.clearCookie("token")
+   res.status(200).json({
+      message: "Admin Logged Out Successfully"
+   })
+
+}
+
 module.exports = {
    registerUser,
    loginUser,
    logoutUser,
    registerFoodPartner,
    loginFoodPartner,
-   logoutFoodPartner
+   logoutFoodPartner,
+   registerAdmin,
+   loginAdmin,
+   logoutAdmin
 }
