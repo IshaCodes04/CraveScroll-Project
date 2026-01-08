@@ -61,18 +61,7 @@ const UserRegister = () => {
           </div>
 
           {/* Logo */}
-          <h1
-            className="text-6xl font-black mb-8"
-            style={{ 
-              fontFamily: "'Poppins', sans-serif",
-              fontWeight: "900",
-              letterSpacing: "0.02em",
-              background: "linear-gradient(135deg, #F97316 0%, #FB923C 50%, #F97316 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text"
-            }}
-          >
+          <h1 className="text-6xl font-extrabold mb-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent">
             CraveScroll
           </h1>
 
@@ -122,51 +111,6 @@ const UserRegister = () => {
             </p>
           </div>
 
-          {/* Stats */}
-          <div className="flex justify-center gap-12 mt-10">
-            <div className="text-center">
-              <p
-                className="text-3xl font-bold text-white"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
-                10K+
-              </p>
-              <p
-                className="text-white/60 text-sm"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
-                Food Lovers
-              </p>
-            </div>
-            <div className="text-center">
-              <p
-                className="text-3xl font-bold text-white"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
-                500+
-              </p>
-              <p
-                className="text-white/60 text-sm"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
-                Recipes
-              </p>
-            </div>
-            <div className="text-center">
-              <p
-                className="text-3xl font-bold text-white"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
-                50+
-              </p>
-              <p
-                className="text-white/60 text-sm"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
-                Chefs
-              </p>
-            </div>
-          </div>
         </div>
       </div>
 
