@@ -37,10 +37,6 @@ const UserLogin = () => {
           className="w-full h-full object-cover"
           poster="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=1920&q=80"
         >
-          <source
-            src="https://videos.pexels.com/video-files/3326245/3326245-uhd_2560_1440_25fps.mp4"
-            type="video/mp4"
-          />
         </video>
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/50" />
