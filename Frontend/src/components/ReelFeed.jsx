@@ -1,144 +1,288 @@
-import React, { useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  ChefHat,
+  Heart,
+  Bookmark,
+  MessageCircle,
+  Play,
+  Share2,
+} from "lucide-react";
 
-// Reusable feed for vertical reels
-// Props:
-// - items: Array of video items { _id, video, description, likeCount, savesCount, commentsCount, comments, foodPartner, user, avatar, author, isFollowing }
-// - onLike: (item) => void | Promise<void>
-// - onSave: (item) => void | Promise<void>
-// - onFollow: (item) => void | Promise<void>   <-- added
-// - emptyMessage: string
-const ReelFeed = ({ items = [], onLike, onSave, onFollow, emptyMessage = 'No videos yet.' }) => {
-  const videoRefs = useRef(new Map())
+const ReelFeed = ({
+  items = [],
+  onLike,
+  onSave,
+  onFollow,
+  emptyMessage = "No videos yet.",
+}) => {
+  const videoRefs = useRef(new Map());
+  const [playingStates, setPlayingStates] = useState({});
+  const [likedItems, setLikedItems] = useState({});
+  const [savedItems, setSavedItems] = useState({});
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const video = entry.target
-          if (!(video instanceof HTMLVideoElement)) return
+          const video = entry.target;
+          if (!(video instanceof HTMLVideoElement)) return;
+          const id = video.dataset.id;
           if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
-            video.play().catch(() => { /* ignore autoplay errors */ })
+            video.play().catch(() => {});
+            setPlayingStates((prev) => ({ ...prev, [id]: true }));
           } else {
-            video.pause()
+            video.pause();
+            setPlayingStates((prev) => ({ ...prev, [id]: false }));
           }
-        })
+        });
       },
       { threshold: [0, 0.25, 0.6, 0.9, 1] }
-    )
+    );
 
-    videoRefs.current.forEach((vid) => observer.observe(vid))
-    return () => observer.disconnect()
-  }, [items])
+    videoRefs.current.forEach((vid) => observer.observe(vid));
+    return () => observer.disconnect();
+  }, [items]);
 
   const setVideoRef = (id) => (el) => {
-    if (!el) { videoRefs.current.delete(id); return }
-    videoRefs.current.set(id, el)
+    if (!el) {
+      videoRefs.current.delete(id);
+      return;
+    }
+    videoRefs.current.set(id, el);
+  };
+
+  const togglePlay = (id) => {
+    const video = videoRefs.current.get(id);
+    if (!video) return;
+    if (video.paused) {
+      video.play().catch(() => {});
+      setPlayingStates((prev) => ({ ...prev, [id]: true }));
+    } else {
+      video.pause();
+      setPlayingStates((prev) => ({ ...prev, [id]: false }));
+    }
+  };
+
+  const handleLike = (item) => {
+    setLikedItems((prev) => ({ ...prev, [item._id]: !prev[item._id] }));
+    onLike?.(item);
+  };
+
+  const handleSave = (item) => {
+    setSavedItems((prev) => ({ ...prev, [item._id]: !prev[item._id] }));
+    onSave?.(item);
+  };
+
+  if (items.length === 0) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-black">
+        <div className="text-center px-8">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/20 flex items-center justify-center">
+            <ChefHat className="w-10 h-10 text-primary" />
+          </div>
+          <p className="text-white/60 text-lg">{emptyMessage}</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="reels-page">
-      <div className="reels-feed" role="list">
-        {items.length === 0 && (
-          <div className="empty-state">
-            <p>{emptyMessage}</p>
-          </div>
-        )}
+    <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide bg-black">
+      {items.map((item) => {
+        const isPlaying = playingStates[item._id];
+        const isLiked = likedItems[item._id];
+        const isSaved = savedItems[item._id];
 
-        {items.map((item) => (
-          <section key={item._id} className="reel" role="listitem">
+        return (
+          <section
+            key={item._id}
+            className="h-screen w-full snap-start snap-always relative"
+          >
+            {/* Video */}
             <video
               ref={setVideoRef(item._id)}
-              className="reel-video"
+              data-id={item._id}
+              className="absolute inset-0 w-full h-full object-cover"
               src={item.video}
               muted
               playsInline
               loop
               preload="metadata"
+              onClick={() => togglePlay(item._id)}
             />
 
-            <div className="reel-overlay">
-              <div className="reel-overlay-gradient" aria-hidden="true" />
-              <div className="reel-actions">
-                <div className="reel-action-group">
-                  <button
-                    onClick={onLike ? () => onLike(item) : undefined}
-                    className="reel-action"
-                    aria-label="Like"
-                  >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-8.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
-                    </svg>
-                  </button>
-                  <div className="reel-action__count">{item.likeCount ?? item.likesCount ?? item.likes ?? 0}</div>
-                </div>
-
-                <div className="reel-action-group">
-                  <button
-                    className="reel-action"
-                    onClick={onSave ? () => onSave(item) : undefined}
-                    aria-label="Bookmark"
-                  >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
-                    </svg>
-                  </button>
-                  <div className="reel-action__count">{item.savesCount ?? item.bookmarks ?? item.saves ?? 0}</div>
-                </div>
-
-                <div className="reel-action-group">
-                  <button className="reel-action" aria-label="Comments">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
-                    </svg>
-                  </button>
-                  <div className="reel-action__count">{item.commentsCount ?? (Array.isArray(item.comments) ? item.comments.length : 0)}</div>
-                </div>
-              </div>
-
-              <div className="reel-content">
-                {/* Profile row above description */}
-                <div className="reel-profile">
-                  <img
-                    className="reel-avatar"
-                    src={item.user?.avatar || item.avatar || 'https://plus.unsplash.com/premium_photo-1681493353999-a3eea8b95e1d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
-                    alt={item.user?.name || item.author || 'Food Partner'}
-                    width="48"
-                    height="48"
-                  />
-                  <div className="reel-profile-meta">
-                    <div className="reel-username">{item.user?.name || item.author || 'Food Partner'}</div>
-                  </div>
-
-                  <button
-                    className={`reel-follow-btn ${item.isFollowing ? 'following' : ''} ${item.isPremium || item.isVerified ? 'premium' : ''}`}
-                    onClick={onFollow ? () => onFollow(item) : undefined}
-                    aria-pressed={!!item.isFollowing}
-                    aria-label={item.isFollowing ? 'Unfollow' : 'Follow'}
-                  >
-                    {(item.isPremium || item.isVerified) && (
-                      <span className="premium-icon" aria-hidden="true" title="Premium">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="12" height="12" aria-hidden="true">
-                          <circle cx="12" cy="12" r="10" stroke="none" fill="rgba(255,255,255,.12)"/>
-                          <path d="M7.5 12.5l2.5 2.5L16.5 9.5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                        </svg>
-                      </span>
-                    )}
-                    <span className="follow-text">{item.isFollowing ? 'Following' : 'Follow'}</span>
-                   </button>
-                </div>
-
-                <p className="reel-description" title={item.description}>{item.description}</p>
-                {item.foodPartner && (
-                  <Link className="reel-btn" to={"/food-partner/" + item.foodPartner} aria-label="Visit store">Visit store</Link>
-                )}
+            {/* Play Overlay */}
+            <div
+              className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${
+                !isPlaying ? "opacity-100" : "opacity-0"
+              }`}
+              onClick={() => togglePlay(item._id)}
+            >
+              <div className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                <Play className="w-10 h-10 text-white ml-1" fill="white" />
               </div>
             </div>
-          </section>
-        ))}
-      </div>
-    </div>
-  )
-}
 
-export default ReelFeed
+            {/* Top Gradient */}
+            <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/70 to-transparent pointer-events-none" />
+
+            {/* Bottom Gradient */}
+            <div className="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none" />
+
+            {/* Header with CraveScroll */}
+            <div className="absolute top-0 left-0 right-0 p-4 z-10">
+              <div className="flex items-center gap-4">
+                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center animate-float shadow-lg shadow-primary/40">
+                  <ChefHat className="w-5 h-5 text-white" />
+                </div>
+                <h1
+                  className="text-4xl text-primary drop-shadow-lg"
+                  style={{ fontFamily: "'Great Vibes', cursive" }}
+                >
+                  CraveScroll
+                </h1>
+              </div>
+            </div>
+
+            {/* Right Side Actions */}
+            <div className="absolute right-3 top-40 flex flex-col items-center gap-5 z-10">
+              {/* Like */}
+              <button
+                onClick={() => handleLike(item)}
+                className="flex flex-col items-center gap-1"
+              >
+                <div
+                  className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    isLiked
+                      ? "bg-red-500 scale-110"
+                      : "bg-white/10 backdrop-blur-md hover:bg-white/20"
+                  }`}
+                >
+                  <Heart
+                    className={`w-6 h-6 transition-all ${
+                      isLiked ? "text-white fill-white" : "text-white"
+                    }`}
+                  />
+                </div>
+                <span className="text-white text-xs font-medium">
+                  {item.likeCount ?? 0}
+                </span>
+              </button>
+
+              {/* Save */}
+              <button
+                onClick={() => handleSave(item)}
+                className="flex flex-col items-center gap-1"
+              >
+                <div
+                  className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    isSaved
+                      ? "bg-primary scale-110"
+                      : "bg-white/10 backdrop-blur-md hover:bg-white/20"
+                  }`}
+                >
+                  <Bookmark
+                    className={`w-6 h-6 transition-all ${
+                      isSaved ? "text-white fill-white" : "text-white"
+                    }`}
+                  />
+                </div>
+                <span className="text-white text-xs font-medium">
+                  {item.savesCount ?? 0}
+                </span>
+              </button>
+
+              {/* Comments */}
+              <button className="flex flex-col items-center gap-1">
+                <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all">
+                  <MessageCircle className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-white text-xs font-medium">
+                  {item.commentsCount ?? 0}
+                </span>
+              </button>
+
+              {/* Share */}
+              <button className="flex flex-col items-center gap-1">
+                <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all">
+                  <Share2 className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-white text-xs font-medium">Share</span>
+              </button>
+            </div>
+
+            {/* Bottom Content */}
+            <div className="absolute left-0 right-0 bottom-24 px-4 z-10">
+              {/* Profile Row */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full p-0.5 bg-gradient-to-br from-primary to-orange-400">
+                  <img
+                    className="w-full h-full rounded-full object-cover border-2 border-black"
+                    src={
+                      item.user?.avatar ||
+                      item.avatar ||
+                      "https://plus.unsplash.com/premium_photo-1681493353999-a3eea8b95e1d?q=80&w=687&auto=format&fit=crop"
+                    }
+                    alt={item.user?.name || item.author || "Food Partner"}
+                  />
+                </div>
+                <span className="text-white font-semibold text-base">
+                  {item.user?.name || item.author || "Food Partner"}
+                </span>
+                <button
+                  onClick={() => onFollow?.(item)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
+                    item.isFollowing
+                      ? "bg-white/20 text-white border border-white/30"
+                      : "bg-primary text-white hover:bg-primary/90"
+                  }`}
+                >
+                  {item.isFollowing ? "Following" : "Follow"}
+                </button>
+              </div>
+
+              <p
+                className="
+  text-white
+  text-[15.5px] sm:text-base
+  font-medium
+  leading-relaxed
+  tracking-wide
+  mb-4
+  line-clamp-2
+  drop-shadow-sm
+"
+              >
+                {item.description}
+              </p>
+
+              {/* Visit Store */}
+              {item.foodPartner && (
+                <div className="w-full flex justify-center">
+                  <Link
+                    to={"/food-partner/" + item.foodPartner}
+                    className="flex items-center justify-center gap-2
+        w-full max-w-md
+        px-6 py-3
+        rounded-lg
+        bg-primary
+        text-white text-base font-semibold
+        shadow-md shadow-black/40
+        hover:bg-primary/90
+        transition-all duration-300"
+                  >
+                    <span className="text-lg">🍽️</span>
+                    Visit store
+                  </Link>
+                </div>
+              )}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  );
+};
+
+export default ReelFeed;
