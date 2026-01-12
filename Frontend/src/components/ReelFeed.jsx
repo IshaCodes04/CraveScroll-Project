@@ -18,8 +18,25 @@ const ReelFeed = ({
 }) => {
   const videoRefs = useRef(new Map());
   const [playingStates, setPlayingStates] = useState({});
+  // Use local state for optimistic updates, but sync with props
   const [likedItems, setLikedItems] = useState({});
   const [savedItems, setSavedItems] = useState({});
+
+  // Sync local state with props when items change
+  useEffect(() => {
+    const likedMap = {};
+    const savedMap = {};
+    items.forEach(item => {
+      if (item.isLiked !== undefined) {
+        likedMap[item._id] = item.isLiked;
+      }
+      if (item.isSaved !== undefined) {
+        savedMap[item._id] = item.isSaved;
+      }
+    });
+    setLikedItems(likedMap);
+    setSavedItems(savedMap);
+  }, [items]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -91,8 +108,9 @@ const ReelFeed = ({
     <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide bg-black">
       {items.map((item) => {
         const isPlaying = playingStates[item._id];
-        const isLiked = likedItems[item._id];
-        const isSaved = savedItems[item._id];
+        // Use prop value if available, otherwise use local state
+        const isLiked = item.isLiked !== undefined ? item.isLiked : likedItems[item._id] || false;
+        const isSaved = item.isSaved !== undefined ? item.isSaved : savedItems[item._id] || false;
 
         return (
           <section
@@ -155,7 +173,7 @@ const ReelFeed = ({
                 <div
                   className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 ${
                     isLiked
-                      ? "bg-red-500 scale-110"
+                      ? "bg-red-500 scale-110 shadow-lg shadow-red-500/50"
                       : "bg-white/10 backdrop-blur-md hover:bg-white/20"
                   }`}
                 >
@@ -166,7 +184,7 @@ const ReelFeed = ({
                   />
                 </div>
                 <span className="text-white text-[11px] font-semibold leading-tight">
-                  {item.likeCount ?? 0}
+                  {Math.max(0, item.likeCount ?? 0)}
                 </span>
               </button>
 
@@ -189,7 +207,7 @@ const ReelFeed = ({
                   />
                 </div>
                 <span className="text-white text-[11px] font-semibold leading-tight">
-                  {item.savesCount ?? 0}
+                  {Math.max(0, item.savesCount ?? 0)}
                 </span>
               </button>
 

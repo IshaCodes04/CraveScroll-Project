@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
 import "../../styles/reels.css";
 import ReelFeed from "../../components/ReelFeed";
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -14,9 +17,14 @@ const Home = () => {
       .then((response) => {
         setVideos(response.data.foodItems || []);
       })
-      .catch(() => {})
+      .catch((error) => {
+        console.error("Error fetching videos:", error);
+        if (error.response?.status === 401) {
+          navigate("/user/login");
+        }
+      })
       .finally(() => setLoading(false));
-  }, []);
+  }, [navigate]);
 
   const likeVideo = async (item) => {
     try {
@@ -27,20 +35,23 @@ const Home = () => {
       );
 
       setVideos((prev) =>
-        prev.map((v) =>
-          v._id === item._id
-            ? {
-                ...v,
-                likeCount: response.data.like
-                  ? Number(v.likeCount || 0) + 1
-                  : Number(v.likeCount || 0) - 1,
-                isLiked: response.data.like,
-              }
-            : v
-        )
+        prev.map((v) => {
+          if (v._id === item._id) {
+            return {
+              ...v,
+              likeCount: Math.max(0, response.data.likeCount ?? v.likeCount ?? 0),
+              isLiked: response.data.like,
+            };
+          }
+          return v;
+        })
       );
     } catch (error) {
       console.error("Error liking video:", error);
+      // If unauthorized, redirect to login
+      if (error.response?.status === 401) {
+        navigate("/user/login");
+      }
     }
   };
 
@@ -53,20 +64,34 @@ const Home = () => {
       );
 
       setVideos((prev) =>
-        prev.map((v) =>
-          v._id === item._id
-            ? {
-                ...v,
-                savesCount: response.data.save
-                  ? Number(v.savesCount || 0) + 1
-                  : Number(v.savesCount || 0) - 1,
-                isSaved: response.data.save,
-              }
-            : v
-        )
+        prev.map((v) => {
+          if (v._id === item._id) {
+            return {
+              ...v,
+              savesCount: Math.max(0, response.data.savesCount ?? v.savesCount ?? 0),
+              isSaved: response.data.save,
+            };
+          }
+          return v;
+        })
       );
     } catch (error) {
       console.error("Error saving video:", error);
+      // If unauthorized, redirect to login
+      if (error.response?.status === 401) {
+        navigate("/user/login");
+      }
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axios.get("http://localhost:3000/api/auth/user/logout", { withCredentials: true });
+      navigate("/user/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Even if logout fails, navigate to login
+      navigate("/user/login");
     }
   };
 
@@ -116,12 +141,24 @@ const Home = () => {
   }
 
   return (
-    <ReelFeed
-      items={videos}
-      onLike={likeVideo}
-      onSave={saveVideo}
-      emptyMessage="No food reels yet. Check back soon!"
-    />
+    <>
+      {/* Logout Button */}
+      <button
+        onClick={handleLogout}
+        className="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 bg-red-500/90 hover:bg-red-600 text-white rounded-full shadow-lg backdrop-blur-sm transition-all duration-300"
+        style={{ zIndex: 9999 }}
+      >
+        <LogOut className="w-4 h-4" />
+        <span className="text-sm font-semibold">Logout</span>
+      </button>
+      
+      <ReelFeed
+        items={videos}
+        onLike={likeVideo}
+        onSave={saveVideo}
+        emptyMessage="No food reels yet. Check back soon!"
+      />
+    </>
   );
 };
 
