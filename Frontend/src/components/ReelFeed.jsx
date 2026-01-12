@@ -146,26 +146,26 @@ const ReelFeed = ({
             </div>
 
             {/* Right Side Actions */}
-            <div className="absolute right-3 top-40 flex flex-col items-center gap-5 z-10">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-center gap-4 z-10">
               {/* Like */}
               <button
                 onClick={() => handleLike(item)}
-                className="flex flex-col items-center gap-1"
+                className="flex flex-col items-center gap-1.5"
               >
                 <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 ${
                     isLiked
                       ? "bg-red-500 scale-110"
                       : "bg-white/10 backdrop-blur-md hover:bg-white/20"
                   }`}
                 >
                   <Heart
-                    className={`w-6 h-6 transition-all ${
+                    className={`w-5 h-5 transition-all ${
                       isLiked ? "text-white fill-white" : "text-white"
                     }`}
                   />
                 </div>
-                <span className="text-white text-xs font-medium">
+                <span className="text-white text-[11px] font-semibold leading-tight">
                   {item.likeCount ?? 0}
                 </span>
               </button>
@@ -173,42 +173,42 @@ const ReelFeed = ({
               {/* Save */}
               <button
                 onClick={() => handleSave(item)}
-                className="flex flex-col items-center gap-1"
+                className="flex flex-col items-center gap-1.5"
               >
                 <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 ${
                     isSaved
                       ? "bg-primary scale-110"
                       : "bg-white/10 backdrop-blur-md hover:bg-white/20"
                   }`}
                 >
                   <Bookmark
-                    className={`w-6 h-6 transition-all ${
+                    className={`w-5 h-5 transition-all ${
                       isSaved ? "text-white fill-white" : "text-white"
                     }`}
                   />
                 </div>
-                <span className="text-white text-xs font-medium">
+                <span className="text-white text-[11px] font-semibold leading-tight">
                   {item.savesCount ?? 0}
                 </span>
               </button>
 
               {/* Comments */}
-              <button className="flex flex-col items-center gap-1">
-                <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all">
-                  <MessageCircle className="w-6 h-6 text-white" />
+              <button className="flex flex-col items-center gap-1.5">
+                <div className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all">
+                  <MessageCircle className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-white text-xs font-medium">
+                <span className="text-white text-[11px] font-semibold leading-tight">
                   {item.commentsCount ?? 0}
                 </span>
               </button>
 
               {/* Share */}
-              <button className="flex flex-col items-center gap-1">
-                <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all">
-                  <Share2 className="w-6 h-6 text-white" />
+              <button className="flex flex-col items-center gap-1.5">
+                <div className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all">
+                  <Share2 className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-white text-xs font-medium">Share</span>
+                <span className="text-white text-[11px] font-semibold leading-tight">Share</span>
               </button>
             </div>
 
@@ -245,7 +245,7 @@ const ReelFeed = ({
               <p
                 className="
   text-white
-  text-[15.5px] sm:text-base
+  text-lg sm:text-xl
   font-medium
   leading-relaxed
   tracking-wide
@@ -263,16 +263,16 @@ const ReelFeed = ({
                   <Link
                     to={"/food-partner/" + item.foodPartner}
                     className="flex items-center justify-center gap-2
-        w-full max-w-md
-        px-6 py-3
+        w-auto
+        px-5 py-2.5
         rounded-lg
         bg-primary
-        text-white text-base font-semibold
+        text-white text-sm font-semibold
         shadow-md shadow-black/40
         hover:bg-primary/90
         transition-all duration-300"
                   >
-                    <span className="text-lg">🍽️</span>
+                    <span className="text-base">🍽️</span>
                     Visit store
                   </Link>
                 </div>
