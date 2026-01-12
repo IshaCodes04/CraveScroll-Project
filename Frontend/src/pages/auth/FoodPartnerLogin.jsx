@@ -33,16 +33,18 @@ const FoodPartnerLogin = () => {
     <div className="min-h-screen w-full flex relative overflow-hidden">
       {/* Video Background */}
       <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-          poster="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=1920&q=80"
-        >
-          <source src="https://videos.pexels.com/video-files/5911101/5911101-uhd_2560_1440_30fps.mp4" type="video/mp4" />
-        </video>
+  <video
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="w-full h-full object-cover"
+    poster="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=1920&q=80"
+    onError={(e) => console.error('Video error:', e)}
+  >
+    <source src="/food-partnerlogin.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/50" />
       </div>
