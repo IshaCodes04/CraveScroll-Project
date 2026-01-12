@@ -2,7 +2,8 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ChefHat } from "lucide-react";
 import axios from "axios";
-import './food-partner-auth.css';
+import "./food-partner-auth.css";
+import foodVideo from "../../assets/food-partnerlogin.mp4";
 
 const FoodPartnerLogin = () => {
   const navigate = useNavigate();
@@ -33,18 +34,16 @@ const FoodPartnerLogin = () => {
     <div className="min-h-screen w-full flex relative overflow-hidden">
       {/* Video Background */}
       <div className="absolute inset-0 z-0">
-  <video
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="w-full h-full object-cover"
-    poster="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=1920&q=80"
-    onError={(e) => console.error('Video error:', e)}
-  >
-    <source src="/food-partnerlogin.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          poster="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=1920&q=80"
+        >
+          <source src={foodVideo} type="video/mp4" />
+        </video>
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/50" />
       </div>
@@ -55,7 +54,9 @@ const FoodPartnerLogin = () => {
           {/* Chef Hat Icon */}
           <div
             className="inline-flex items-center justify-center w-24 h-24 rounded-full mb-8 animate-float shadow-2xl"
-            style={{ background: "linear-gradient(135deg, #F97316 0%, #FB923C 100%)" }}
+            style={{
+              background: "linear-gradient(135deg, #F97316 0%, #FB923C 100%)",
+            }}
           >
             <ChefHat className="w-12 h-12 text-white" />
           </div>
@@ -67,8 +68,12 @@ const FoodPartnerLogin = () => {
 
           {/* Food Creator Features */}
           <div className="bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-xl p-4 mb-8 border border-orange-400/30">
-            <p className="text-white/80 text-sm" style={{ fontFamily: "'Poppins', sans-serif" }}>
-              ✨ <span className="font-semibold">Welcome Back Creator</span> - Your audience is waiting! Continue creating amazing food content
+            <p
+              className="text-white/80 text-sm"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              ✨ <span className="font-semibold">Welcome Back Creator</span> -
+              Your audience is waiting! Continue creating amazing food content
             </p>
           </div>
 
@@ -97,17 +102,35 @@ const FoodPartnerLogin = () => {
 
           {/* Why Join Section */}
           <div className="mt-8 space-y-3 text-left">
-            <p className="text-white/70 text-sm flex items-start gap-2" style={{ fontFamily: "'Poppins', sans-serif" }}>
+            <p
+              className="text-white/70 text-sm flex items-start gap-2"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
               <span className="text-[#F97316] text-lg leading-4">🎬</span>
-              <span><span className="text-white font-semibold">Your Reels</span> - Manage & track performance</span>
+              <span>
+                <span className="text-white font-semibold">Your Reels</span> -
+                Manage & track performance
+              </span>
             </p>
-            <p className="text-white/70 text-sm flex items-start gap-2" style={{ fontFamily: "'Poppins', sans-serif" }}>
+            <p
+              className="text-white/70 text-sm flex items-start gap-2"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
               <span className="text-[#F97316] text-lg leading-4">❤️</span>
-              <span><span className="text-white font-semibold">Engagement</span> - See likes & comments</span>
+              <span>
+                <span className="text-white font-semibold">Engagement</span> -
+                See likes & comments
+              </span>
             </p>
-            <p className="text-white/70 text-sm flex items-start gap-2" style={{ fontFamily: "'Poppins', sans-serif" }}>
+            <p
+              className="text-white/70 text-sm flex items-start gap-2"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
               <span className="text-[#F97316] text-lg leading-4">📊</span>
-              <span><span className="text-white font-semibold">Analytics</span> - Grow your reach</span>
+              <span>
+                <span className="text-white font-semibold">Analytics</span> -
+                Grow your reach
+              </span>
             </p>
           </div>
         </div>
