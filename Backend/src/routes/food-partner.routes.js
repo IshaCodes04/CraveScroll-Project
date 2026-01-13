@@ -10,4 +10,13 @@ router.get("/:id",
     authMiddleware.authUserMiddleware,
     foodPartnerController.getFoodPartnerById)
 
+/* Admin Routes */
+router.get("/admin/pending",
+    authMiddleware.authAdminMiddleware,
+    foodPartnerController.getPendingPartners)
+
+router.put("/admin/approve/:id",
+    authMiddleware.authAdminMiddleware,
+    foodPartnerController.approvePartner)
+
 module.exports = router;

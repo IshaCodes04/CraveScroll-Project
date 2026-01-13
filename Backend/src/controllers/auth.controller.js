@@ -117,23 +117,19 @@ async function registerFoodPartner(req, res) {
    })
 
 
-   const token = jwt.sign({
-      id: foodPartner._id,
+   // const token = jwt.sign({
+   //    id: foodPartner._id,
+   // }, process.env.JWT_SECRET)
 
-   }, process.env.JWT_SECRET)
-
-   res.cookie("token", token)
+   // res.cookie("token", token)
 
    res.status(201).json({
-      message: "Food partner Registered Successfully",
+      message: "Application Submitted Successfully. Please wait for admin approval.",
       foodPartner: {
          _id: foodPartner._id,
          email: foodPartner.email,
          businessName: foodPartner.businessName,
-         contactName: foodPartner.contactName,
-         phone: foodPartner.phone,
-         address: foodPartner.address
-
+         status: foodPartner.status
       }
    })
 
@@ -158,6 +154,12 @@ async function loginFoodPartner(req, res) {
    if (!isPasswordValid) {
       return res.status(400).json({
          message: "Invalid email and password"
+      })
+   }
+
+   if (foodPartner.status !== 'approved') {
+      return res.status(403).json({
+         message: `Your account is currently ${foodPartner.status}. Please wait for admin approval.`
       })
    }
 

@@ -19,12 +19,22 @@ const foodSchema = new mongoose.Schema({
   LikeCount: {
     type: Number,
     default: 0
+  },
+  likeCount: {
+    type: Number,
+    default: 0
+  },
+  savesCount: {
+    type: Number,
+    default: 0
   }
 
 
+}, {
+  timestamps: true // Adds createdAt and updatedAt fields
 })
 
-const foodModel = mongoose.model("food", foodSchema);
+const foodModel = mongoose.models.food || mongoose.model("food", foodSchema);
 
 
 module.exports = foodModel;

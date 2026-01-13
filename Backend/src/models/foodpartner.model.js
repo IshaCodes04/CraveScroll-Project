@@ -31,11 +31,17 @@ const foodPartnerSchema = new mongoose.Schema({
   address: {
     type: String,
     required: true
+  },
+
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: 'pending'
   }
 
 })
 
-const foodPartnerModel = mongoose.model("foodpartner", foodPartnerSchema)
+const foodPartnerModel = mongoose.models.foodpartner || mongoose.model("foodpartner", foodPartnerSchema)
 
 
 
