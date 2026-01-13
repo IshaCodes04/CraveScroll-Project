@@ -9,6 +9,11 @@ const Home = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isUser, setIsUser] = useState(false);
+  const [authInfo, setAuthInfo] = useState({
+    isUser: false,
+    isFoodPartner: false,
+    currentPartnerId: null
+  });
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,7 +23,12 @@ const Home = () => {
       .get("http://localhost:3000/api/food", { withCredentials: true })
       .then((response) => {
         setVideos(response.data.foodItems || []);
-        setIsUser(response.data.isUser || false);
+        setIsUser(response.data.isUser || response.data.isFoodPartner || false);
+        setAuthInfo({
+          isUser: response.data.isUser,
+          isFoodPartner: response.data.isFoodPartner,
+          currentPartnerId: response.data.currentPartnerId
+        });
       })
       .catch((error) => {
         console.error("Error fetching videos:", error);
@@ -167,6 +177,7 @@ const Home = () => {
         onLike={likeVideo}
         onSave={saveVideo}
         emptyMessage="No food reels yet. Check back soon!"
+        authInfo={authInfo}
       />
     </>
   );

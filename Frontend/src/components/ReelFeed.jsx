@@ -15,6 +15,7 @@ const ReelFeed = ({
   onSave,
   onFollow,
   emptyMessage = "No videos yet.",
+  authInfo = { isUser: false, isFoodPartner: false, currentPartnerId: null },
 }) => {
   const videoRefs = useRef(new Map());
   const [playingStates, setPlayingStates] = useState({});
@@ -273,7 +274,11 @@ const ReelFeed = ({
               {item.foodPartner && (
                 <div className="w-full flex justify-center">
                   <Link
-                    to={"/food-partner/" + (item.foodPartner?._id || item.foodPartner)}
+                    to={
+                      authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
+                        ? "/create-food"
+                        : "/food-partner/" + (item.foodPartner?._id || item.foodPartner)
+                    }
                     className="flex items-center justify-center gap-2
         w-auto
         px-5 py-2.5
@@ -284,8 +289,14 @@ const ReelFeed = ({
         hover:bg-primary/90
         transition-all duration-300"
                   >
-                    <span className="text-base">🍽️</span>
-                    Visit store
+                    <span className="text-base">
+                      {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
+                        ? "➕"
+                        : "🍽️"}
+                    </span>
+                    {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
+                      ? "Create Food"
+                      : "Visit Food Partner Profile"}
                   </Link>
                 </div>
               )}
