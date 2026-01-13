@@ -136,9 +136,9 @@ const UserLogin = () => {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 relative z-10">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-12 relative z-10">
         <div
-          className="w-full max-w-md rounded-3xl p-8 animate-fadeIn"
+          className="w-full max-w-md rounded-2xl sm:rounded-3xl p-6 sm:p-8 animate-fadeIn"
           style={{
             background: "rgba(255, 255, 255, 0.1)",
             backdropFilter: "blur(20px)",
@@ -163,15 +163,15 @@ const UserLogin = () => {
           </div>
 
           {/* Header */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-6 sm:mb-8">
             <h2
-              className="text-2xl font-bold text-white mb-2"
+              className="text-xl sm:text-2xl font-bold text-white mb-2"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
               Welcome back
             </h2>
             <p
-              className="text-white/60"
+              className="text-white/60 text-sm sm:text-base"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
               Sign in to continue your food journey.
@@ -179,7 +179,7 @@ const UserLogin = () => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             {/* Email Field */}
             <div>
               <label
@@ -305,6 +305,8 @@ const UserLogin = () => {
               Continue with Google
             </button>
           </div>
+
+
 
           {/* Footer Link */}
           <p

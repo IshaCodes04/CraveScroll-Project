@@ -5,7 +5,7 @@ import axios from 'axios'
 import ReelFeed from '../../components/ReelFeed'
 
 const Saved = () => {
-    const [ videos, setVideos ] = useState([])
+    const [videos, setVideos] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -22,13 +22,17 @@ const Saved = () => {
                         savesCount: Math.max(0, item.food.savesCount ?? 0),
                         commentsCount: item.food.commentsCount,
                         foodPartner: item.food.foodPartner,
+                        user: {
+                            name: item.food.foodPartner?.businessName || item.food.foodPartner?.contactName || "Food Partner",
+                            avatar: item.food.foodPartner?.avatar
+                        },
                         isSaved: true, // All items in saved page are saved
                         isLiked: item.food.isLiked || false, // Use backend-provided status
                     }))
                 setVideos(savedFoods)
             })
             // Better practice to handle errors
-            .catch(error => { 
+            .catch(error => {
                 console.error("Error fetching saved videos:", error);
                 if (error.response?.status === 401) {
                     navigate("/user/login");
@@ -41,14 +45,14 @@ const Saved = () => {
     const removeSaved = async (item) => {
         try {
             const response = await axios.post("http://localhost:3000/api/food/save", { foodId: item._id }, { withCredentials: true })
-            
+
             // Optimistically update the UI by filtering out the removed item
-            setVideos((prev) => prev.filter(v => v._id !== item._id)); 
+            setVideos((prev) => prev.filter(v => v._id !== item._id));
         } catch (error) {
-             console.error("Error removing saved status:", error);
-             if (error.response?.status === 401) {
-                 navigate("/user/login");
-             }
+            console.error("Error removing saved status:", error);
+            if (error.response?.status === 401) {
+                navigate("/user/login");
+            }
         }
     }
 

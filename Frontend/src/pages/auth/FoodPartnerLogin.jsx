@@ -137,9 +137,9 @@ const FoodPartnerLogin = () => {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 relative z-10">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-12 relative z-10">
         <div
-          className="w-full max-w-md rounded-3xl p-8 animate-fadeIn"
+          className="w-full max-w-md rounded-2xl sm:rounded-3xl p-6 sm:p-8 animate-fadeIn"
           style={{
             background: "rgba(255, 255, 255, 0.1)",
             backdropFilter: "blur(20px)",

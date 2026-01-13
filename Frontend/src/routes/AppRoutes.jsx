@@ -19,8 +19,8 @@ const AppRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Navigate to="/welcome" replace />} />
-                <Route path="/welcome" element={<Welcome />} />      {/* explicit /welcome */}
+                <Route path="/" element={<Welcome />} />
+                <Route path="/welcome" element={<Welcome />} />
                 <Route path="/register" element={<ChooseRegister />} />
                 <Route path="/user/register" element={<UserRegister />} />
                 <Route path="/user/login" element={<UserLogin />} />
@@ -31,9 +31,9 @@ const AppRoutes = () => {
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 <Route path="/create-food" element={<CreateFood />} />
                 <Route path="/food-partner/:id" element={<Profile />} />
-                 <Route path="/home" element={<><Home /><BottomNav /></>} />
+                <Route path="/home" element={<><Home /><BottomNav /></>} />
                 <Route path="/saved" element={<><Saved /><BottomNav /></>} />
-                
+
             </Routes>
         </Router>
     )

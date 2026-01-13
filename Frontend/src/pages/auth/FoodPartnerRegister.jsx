@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ChefHat } from "lucide-react";
 import axios from "axios";
 import './food-partner-auth.css';
-
+import foodVideo from "../../assets/food-partnerregister.mp4";
 
 const FoodPartnerRegister = () => {
   const navigate = useNavigate();
@@ -18,21 +18,26 @@ const FoodPartnerRegister = () => {
     const password = e.target.password.value;
     const address = e.target.address.value;
 
-    const response = await axios.post(
-      "http://localhost:3000/api/auth/food-partner/register",
-      {
-        businessName,
-        contactName,
-        phone,
-        email,
-        password,
-        address,
-      },
-      { withCredentials: true }
-    );
-    console.log(response.data);
-
-    navigate("/create-food");
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/food-partner/register",
+        {
+          businessName,
+          contactName,
+          phone,
+          email,
+          password,
+          address,
+        },
+        { withCredentials: true }
+      );
+      console.log(response.data);
+      alert(response.data.message); // Show "Application Submitted..."
+      navigate("/food-partner/login");
+    } catch (error) {
+      console.error("Registration error:", error);
+      // Optional: Add UI feedback for error
+    }
   };
 
   return (
@@ -47,7 +52,7 @@ const FoodPartnerRegister = () => {
           className="w-full h-full object-cover"
           poster="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&q=80"
         >
-          <source src="/food-partnerregister.mp4" type="video/mp4" />
+          <source src={foodVideo} type="video/mp4" />
         </video>
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/50" />
@@ -138,9 +143,9 @@ const FoodPartnerRegister = () => {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 relative z-10">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-12 relative z-10">
         <div
-          className="w-full max-w-md rounded-3xl p-8 animate-fadeIn"
+          className="w-full max-w-md rounded-2xl sm:rounded-3xl p-6 sm:p-8 animate-fadeIn"
           style={{
             background: "rgba(255, 255, 255, 0.1)",
             backdropFilter: "blur(20px)",
@@ -326,7 +331,7 @@ const FoodPartnerRegister = () => {
                 boxShadow: "0 10px 40px -10px rgba(249, 115, 22, 0.5)",
               }}
             >
-              Sign Up
+              Apply to Join
             </button>
           </form>
 

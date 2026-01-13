@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import "../../styles/reels.css";
 import ReelFeed from "../../components/ReelFeed";
@@ -8,14 +8,17 @@ import ReelFeed from "../../components/ReelFeed";
 const Home = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isUser, setIsUser] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
+  const fetchVideos = () => {
     setLoading(true);
     axios
       .get("http://localhost:3000/api/food", { withCredentials: true })
       .then((response) => {
         setVideos(response.data.foodItems || []);
+        setIsUser(response.data.isUser || false);
       })
       .catch((error) => {
         console.error("Error fetching videos:", error);
@@ -24,7 +27,12 @@ const Home = () => {
         }
       })
       .finally(() => setLoading(false));
-  }, [navigate]);
+  };
+
+  useEffect(() => {
+    fetchVideos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname, location.state?.refresh]);
 
   const likeVideo = async (item) => {
     try {
@@ -143,15 +151,17 @@ const Home = () => {
   return (
     <>
       {/* Logout Button */}
-      <button
-        onClick={handleLogout}
-        className="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 bg-red-500/90 hover:bg-red-600 text-white rounded-full shadow-lg backdrop-blur-sm transition-all duration-300"
-        style={{ zIndex: 9999 }}
-      >
-        <LogOut className="w-4 h-4" />
-        <span className="text-sm font-semibold">Logout</span>
-      </button>
-      
+      {isUser && (
+        <button
+          onClick={handleLogout}
+          className="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 bg-red-500/90 hover:bg-red-600 text-white rounded-full shadow-lg backdrop-blur-sm transition-all duration-300"
+          style={{ zIndex: 9999 }}
+        >
+          <LogOut className="w-4 h-4" />
+          <span className="text-sm font-semibold">Logout</span>
+        </button>
+      )}
+
       <ReelFeed
         items={videos}
         onLike={likeVideo}

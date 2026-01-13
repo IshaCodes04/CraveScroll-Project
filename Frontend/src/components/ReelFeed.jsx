@@ -46,7 +46,7 @@ const ReelFeed = ({
           if (!(video instanceof HTMLVideoElement)) return;
           const id = video.dataset.id;
           if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
-            video.play().catch(() => {});
+            video.play().catch(() => { });
             setPlayingStates((prev) => ({ ...prev, [id]: true }));
           } else {
             video.pause();
@@ -73,7 +73,7 @@ const ReelFeed = ({
     const video = videoRefs.current.get(id);
     if (!video) return;
     if (video.paused) {
-      video.play().catch(() => {});
+      video.play().catch(() => { });
       setPlayingStates((prev) => ({ ...prev, [id]: true }));
     } else {
       video.pause();
@@ -132,9 +132,8 @@ const ReelFeed = ({
 
             {/* Play Overlay */}
             <div
-              className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${
-                !isPlaying ? "opacity-100" : "opacity-0"
-              }`}
+              className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${!isPlaying ? "opacity-100" : "opacity-0"
+                }`}
               onClick={() => togglePlay(item._id)}
             >
               <div className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
@@ -171,16 +170,14 @@ const ReelFeed = ({
                 className="flex flex-col items-center gap-1.5"
               >
                 <div
-                  className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 ${
-                    isLiked
-                      ? "bg-red-500 scale-110 shadow-lg shadow-red-500/50"
-                      : "bg-white/10 backdrop-blur-md hover:bg-white/20"
-                  }`}
+                  className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 ${isLiked
+                    ? "bg-red-500 scale-110 shadow-lg shadow-red-500/50"
+                    : "bg-white/10 backdrop-blur-md hover:bg-white/20"
+                    }`}
                 >
                   <Heart
-                    className={`w-5 h-5 transition-all ${
-                      isLiked ? "text-white fill-white" : "text-white"
-                    }`}
+                    className={`w-5 h-5 transition-all ${isLiked ? "text-white fill-white" : "text-white"
+                      }`}
                   />
                 </div>
                 <span className="text-white text-[11px] font-semibold leading-tight">
@@ -194,16 +191,14 @@ const ReelFeed = ({
                 className="flex flex-col items-center gap-1.5"
               >
                 <div
-                  className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 ${
-                    isSaved
-                      ? "bg-primary scale-110"
-                      : "bg-white/10 backdrop-blur-md hover:bg-white/20"
-                  }`}
+                  className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 ${isSaved
+                    ? "bg-primary scale-110"
+                    : "bg-white/10 backdrop-blur-md hover:bg-white/20"
+                    }`}
                 >
                   <Bookmark
-                    className={`w-5 h-5 transition-all ${
-                      isSaved ? "text-white fill-white" : "text-white"
-                    }`}
+                    className={`w-5 h-5 transition-all ${isSaved ? "text-white fill-white" : "text-white"
+                      }`}
                   />
                 </div>
                 <span className="text-white text-[11px] font-semibold leading-tight">
@@ -250,11 +245,10 @@ const ReelFeed = ({
                 </span>
                 <button
                   onClick={() => onFollow?.(item)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
-                    item.isFollowing
-                      ? "bg-white/20 text-white border border-white/30"
-                      : "bg-primary text-white hover:bg-primary/90"
-                  }`}
+                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${item.isFollowing
+                    ? "bg-white/20 text-white border border-white/30"
+                    : "bg-primary text-white hover:bg-primary/90"
+                    }`}
                 >
                   {item.isFollowing ? "Following" : "Follow"}
                 </button>
@@ -279,7 +273,7 @@ const ReelFeed = ({
               {item.foodPartner && (
                 <div className="w-full flex justify-center">
                   <Link
-                    to={"/food-partner/" + item.foodPartner}
+                    to={"/food-partner/" + (item.foodPartner?._id || item.foodPartner)}
                     className="flex items-center justify-center gap-2
         w-auto
         px-5 py-2.5

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ChefHat, Upload, Film, Sparkles, Eye, Heart, Play } from 'lucide-react';
+import foodVideo from "../../assets/createFood.mp4";
 
 const CreateFood = () => {
   const [name, setName] = useState('');
@@ -85,7 +86,7 @@ const CreateFood = () => {
       });
 
       console.log(response.data);
-      navigate("/home");
+      navigate("/home", { state: { refresh: Date.now() } });
     } catch (error) {
       console.error('Upload error:', error);
       setFileError(error.response?.data?.message || 'Failed to upload video. Please try again.');
@@ -118,8 +119,16 @@ const CreateFood = () => {
           zIndex: 0
         }}
         poster="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&q=80"
+        onError={(e) => {
+          console.error('Video failed to load:', e);
+          // Fallback to poster image if video fails
+          e.target.style.display = 'none';
+        }}
+        onLoadedData={() => {
+          console.log('Video loaded successfully');
+        }}
       >
-        <source src="https://videos.pexels.com/video-files/3297379/3297379-uhd_2560_1440_25fps.mp4" type="video/mp4" />
+        <source src={foodVideo} type="video/mp4" />
       </video>
 
       {/* Dark Overlay */}
@@ -134,17 +143,7 @@ const CreateFood = () => {
       }} />
 
       {/* Left Side - Branding (Hidden on mobile, visible on lg) */}
-      <div style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        padding: '48px 48px',
-        paddingTop: '64px',
-        position: 'relative',
-        zIndex: 2,
-        display: window.innerWidth < 1024 ? 'none' : 'flex'
-      }}>
+      <div className="hidden lg:flex flex-1 flex-col justify-start items-center p-12 pt-16 relative z-10">
         <div style={{ textAlign: 'center', maxWidth: '360px' }}>
           {/* Chef Hat Icon - Floating */}
           <div style={{
@@ -260,35 +259,23 @@ const CreateFood = () => {
       </div>
 
       {/* Right Side - Form Card */}
-      <div style={{
-        flex: window.innerWidth < 1024 ? 0 : 1,
-        width: window.innerWidth < 1024 ? '100%' : 'auto',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '16px',
-        position: 'relative',
-        zIndex: 2
-      }}>
+      <div className="flex-1 w-full lg:w-auto flex items-center justify-center p-4 lg:p-16 relative z-10">
         {/* Glassmorphic Card */}
-        <div style={{
-          width: '100%',
-          maxWidth: '480px',
-          padding: '32px',
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          borderRadius: '24px',
-          border: '1px solid rgba(255, 255, 255, 0.15)',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-          maxHeight: '90vh',
-          overflowY: 'auto',
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none'
-        }}>
+        <div className="w-full max-w-md lg:max-w-lg p-6 lg:p-8 rounded-3xl relative z-10"
+          style={{
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}>
           <style>{`::-webkit-scrollbar { display: none; }`}</style>
           {/* Mobile Logo */}
-          <div style={{ display: 'none', textAlign: 'center', marginBottom: '24px' }}>
+          <div className="lg:hidden text-center mb-6">
             <div style={{
               width: '64px',
               height: '64px',
@@ -312,28 +299,17 @@ const CreateFood = () => {
           </div>
 
           {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <h2 style={{
-              fontSize: '24px',
-              fontWeight: '700',
-              color: 'white',
-              margin: '0 0 8px 0',
-              fontFamily: "'Poppins', sans-serif"
-            }}>Create Food Reel</h2>
-            <p style={{
-              color: 'rgba(255,255,255,0.6)',
-              fontSize: '14px',
-              margin: 0,
-              fontFamily: "'Poppins', sans-serif"
-            }}>Upload your culinary masterpiece</p>
+          <div className="text-center mb-6 lg:mb-8">
+            <h2 className="text-xl lg:text-2xl font-bold text-white mb-2" style={{ fontFamily: "'Poppins', sans-serif" }}>
+              Create Food Reel
+            </h2>
+            <p className="text-white/60 text-sm lg:text-base" style={{ fontFamily: "'Poppins', sans-serif" }}>
+              Upload your culinary masterpiece
+            </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={onSubmit} style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '20px'
-          }}>
+          <form onSubmit={onSubmit} className="flex flex-col gap-4 lg:gap-5">
             {/* Video Upload */}
             <div>
               <label style={{
@@ -361,15 +337,11 @@ const CreateFood = () => {
                   onDrop={onDrop}
                   onDragOver={onDragOver}
                   onDragLeave={onDragLeave}
+                  className="border-2 rounded-xl p-6 lg:p-8 text-center cursor-pointer transition-all"
                   style={{
                     border: isDragging ? '2px solid #F97316' : '1px solid rgba(255, 255, 255, 0.2)',
-                    borderRadius: '12px',
-                    padding: '32px 20px',
-                    textAlign: 'center',
-                    cursor: 'pointer',
                     background: isDragging ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.12)',
                     backdropFilter: 'blur(10px)',
-                    transition: 'all 0.2s ease'
                   }}
                 >
                   <div style={{
@@ -530,18 +502,11 @@ const CreateFood = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-white text-sm lg:text-base placeholder-white/40 focus:outline-none transition-all"
                 style={{
-                  width: '100%',
-                  padding: '12px 16px',
                   background: 'rgba(255, 255, 255, 0.1)',
                   border: '1px solid rgba(255, 255, 255, 0.15)',
-                  borderRadius: '11px',
-                  color: 'white',
-                  fontSize: '14px',
-                  outline: 'none',
-                  boxSizing: 'border-box',
                   fontFamily: "'Poppins', sans-serif",
-                  transition: 'all 0.2s ease'
                 }}
                 onFocus={(e) => {
                   e.target.style.borderColor = '#F97316';
@@ -573,20 +538,11 @@ const CreateFood = () => {
                 placeholder="Describe your dish: ingredients, taste, spice level..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-white text-sm lg:text-base placeholder-white/40 focus:outline-none resize-vertical min-h-[80px] transition-all"
                 style={{
-                  width: '100%',
-                  padding: '12px 16px',
                   background: 'rgba(255, 255, 255, 0.1)',
                   border: '1px solid rgba(255, 255, 255, 0.15)',
-                  borderRadius: '11px',
-                  color: 'white',
-                  fontSize: '14px',
-                  outline: 'none',
-                  boxSizing: 'border-box',
                   fontFamily: "'Poppins', sans-serif",
-                  resize: 'vertical',
-                  minHeight: '80px',
-                  transition: 'all 0.2s ease'
                 }}
                 onFocus={(e) => {
                   e.target.style.borderColor = '#F97316';
@@ -605,19 +561,11 @@ const CreateFood = () => {
             <button
               type="submit"
               disabled={isDisabled}
+              className="w-full py-3 lg:py-4 px-4 lg:px-6 rounded-xl text-white text-sm lg:text-base font-semibold mt-2 transition-all"
               style={{
-                width: '100%',
-                padding: '14px 16px',
                 background: isDisabled ? 'rgba(249, 115, 22, 0.4)' : '#F97316',
-                border: 'none',
-                borderRadius: '11px',
-                color: 'white',
-                fontSize: '15px',
-                fontWeight: '600',
                 cursor: isDisabled ? 'not-allowed' : 'pointer',
-                marginTop: '8px',
                 fontFamily: "'Poppins', sans-serif",
-                transition: 'all 0.3s ease',
                 boxShadow: isDisabled ? 'none' : '0 10px 40px -10px rgba(249, 115, 22, 0.5)'
               }}
               onMouseEnter={(e) => {
