@@ -48,7 +48,14 @@ async function authUserMiddleware(req, res, next) {
 
     const user = await userModel.findById(decoded.id);
 
-    req.user = user
+    if (user) {
+      req.user = user;
+    } else {
+      const foodPartner = await foodPartnerModel.findById(decoded.id);
+      if (foodPartner) {
+        req.foodPartner = foodPartner;
+      }
+    }
 
     next()
 
@@ -59,9 +66,6 @@ async function authUserMiddleware(req, res, next) {
 
     })
   }
-
-
-
 }
 
 

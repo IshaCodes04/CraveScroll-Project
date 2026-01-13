@@ -90,7 +90,9 @@ async function getFoodItems(req, res) {
         res.status(200).json({
             message: "Food items fetched successfully",
             foodItems: foodItemsWithStatus,
-            isUser: !!user
+            isUser: !!user,
+            isFoodPartner: !!req.foodPartner,
+            currentPartnerId: req.foodPartner?._id
         });
 
     } catch (error) {
