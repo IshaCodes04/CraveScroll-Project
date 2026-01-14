@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import '../../styles/auth-shared.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { ChefHat, Shield, Lock, Users, BarChart3, AlertCircle, Sparkles, LogIn, Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
-
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,88 +34,167 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="auth-page-wrapper" style={{
-      backgroundImage: 'url("https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      minHeight: '100vh',
-      padding: '20px'
-    }}>
+    <div className="h-screen w-full flex relative overflow-hidden bg-background">
+      {/* Video Background */}
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          poster="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1920&q=80"
+        >
+          <source
+            src="https://videos.pexels.com/video-files/5765249/5765249-uhd_2560_1440_30fps.mp4"
+            type="video/mp4"
+          />
+        </video>
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px]" />
+      </div>
 
+      {/* Left Side - Branding (Original Layout) */}
+      <div className="hidden lg:flex flex-1 relative z-10 flex-col justify-center items-center p-12">
+        <div className="text-center max-w-lg animate-fade-up">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-full mb-8 animate-float bg-primary">
+            <ChefHat className="w-12 h-12 text-white" />
+          </div>
 
-      <div className="auth-card" role="region" aria-labelledby="admin-login-title" style={{
-        marginRight: '5%',
-        position: 'relative',
-        zIndex: 1,
-        backgroundColor: '#ffffff',
-        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
-        border: 'none',
-        maxWidth: '440px',
-        width: '100%'
-      }}>
-        <header>
-          <h1 id="admin-login-title" className="auth-title" style={{ color: '#1a1a1a' }}>Admin login</h1>
-          <p className="auth-subtitle" style={{ color: '#666666' }}>Access your admin dashboard.</p>
-        </header>
-        <form className="auth-form" onSubmit={handleSubmit} noValidate>
+          <h1 className="text-6xl text-primary mb-4" style={{ fontFamily: "'Great Vibes', cursive" }}>
+            CraveScroll
+          </h1>
+
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 mb-6">
+            <Shield className="w-4 h-4 text-primary" />
+            <span className="text-primary font-semibold text-sm uppercase tracking-wider">
+              Admin Portal
+            </span>
+          </div>
+
+          <p className="text-white/90 text-xl mb-8">
+            Manage & monitor the platform with full control
+          </p>
+
+          <div className="p-6 rounded-2xl glass-card text-left space-y-4">
+            <div className="flex items-center gap-3">
+              <Users className="w-5 h-5 text-primary" />
+              <span className="text-white/80">Manage users & food partners</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <BarChart3 className="w-5 h-5 text-primary" />
+              <span className="text-white/80">View analytics & insights</span>
+            </div>
+          </div>
+
+          <div className="flex justify-center gap-12 mt-10">
+            <div className="text-center">
+              <p className="text-3xl font-bold text-white">10K+</p>
+              <p className="text-white/60 text-sm">Users</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-white">500+</p>
+              <p className="text-white/60 text-sm">Partners</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side - Form with Premium Glass Card */}
+      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 relative z-10">
+        <div
+          className="w-full max-w-md rounded-[40px] p-10 animate-scale-in"
+          style={{
+            background: 'rgba(255, 255, 255, 0.08)',
+            backdropFilter: 'blur(35px) saturate(180%)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+          }}
+        >
+          {/* Form Header */}
+          <div className="text-center mb-10">
+            <div className="lg:hidden w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+              <ChefHat className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
+            <p className="text-white/50">Sign in to your admin account</p>
+          </div>
+
+          {/* Error Message */}
           {error && (
-            <div style={{
-              padding: '12px',
-              backgroundColor: '#fee2e2',
-              border: '1px solid #fca5a5',
-              borderRadius: '8px',
-              color: '#dc2626',
-              marginBottom: '16px',
-              fontSize: '14px'
-            }}>
-              {error}
+            <div className="mb-6 p-4 rounded-2xl bg-red-500/20 border border-red-500/30 flex items-center gap-3">
+              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+              <p className="text-red-300 text-sm">{error}</p>
             </div>
           )}
-          <div className="field-group">
-            <label htmlFor="email" style={{ color: '#1a1a1a' }}>Email</label>
-            <input 
-              id="email" 
-              name="email" 
-              type="email" 
-              placeholder="admin@example.com" 
-              autoComplete="email"
-              style={{
-                backgroundColor: '#ffffff',
-                color: '#1a1a1a',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px'
-              }}
-              required
-            />
-          </div>
-          <div className="field-group">
-            <label htmlFor="password" style={{ color: '#1a1a1a' }}>Password</label>
-            <input 
-              id="password" 
-              name="password" 
-              type="password" 
-              placeholder="Password" 
-              autoComplete="current-password"
-              style={{
-                backgroundColor: '#ffffff',
-                color: '#1a1a1a',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px'
-              }}
-              required
-            />
-          </div>
-          <button className="auth-submit" type="submit" disabled={loading}>
-            {loading ? 'Signing In...' : 'Sign In'}
-          </button>
-        </form>
-        <div className="auth-alt-action" style={{ color: '#666666' }}>
-          New admin? <a href="/admin/register" style={{ color: '#ff6b35' }}>Create an account</a>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="admin@cravescroll.com"
+                required
+                className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-all"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  placeholder="••••••••"
+                  required
+                  className="w-full px-6 py-4 pr-14 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-white/30 hover:text-white"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+
+            <div className="text-right">
+              <Link to="/admin/forgot-password" size="sm" className="text-xs text-white/30 hover:text-primary transition-colors">
+                Forgot password?
+              </Link>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-4.5 rounded-2xl text-white font-bold text-lg flex items-center justify-center gap-3 transition-all ${loading ? 'bg-white/10 cursor-not-allowed' : 'btn-primary-glow h-[60px]'
+                }`}
+            >
+              {loading ? (
+                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <>
+                  <LogIn className="w-5 h-5" />
+                  <span>Sign In</span>
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Footer */}
+          <p className="text-center mt-8 text-white/40 text-sm">
+            New admin?{' '}
+            <Link to="/admin/register" className="text-primary hover:underline font-bold">
+              Create Account
+            </Link>
+          </p>
         </div>
       </div>
     </div>
