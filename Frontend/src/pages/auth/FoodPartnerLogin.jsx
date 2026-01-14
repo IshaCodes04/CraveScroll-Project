@@ -28,8 +28,8 @@ const FoodPartnerLogin = () => {
         { withCredentials: true }
       );
 
-      const partner = response.data.partner;
-      if (partner.status === 'pending') {
+      const foodPartner = response.data.foodPartner;
+      if (foodPartner.status === 'pending') {
         setStatusAlert({
           type: 'pending',
           message: "Aapki application abhi pending hai. Admin approval ke baad he aap login kar payenge."
@@ -38,7 +38,7 @@ const FoodPartnerLogin = () => {
         return;
       }
 
-      if (partner.status === 'rejected') {
+      if (foodPartner.status === 'rejected') {
         setStatusAlert({
           type: 'rejected',
           message: "Sorry! Aapki application reject kar di gayi hai. Kirpaya support se contact karein."
