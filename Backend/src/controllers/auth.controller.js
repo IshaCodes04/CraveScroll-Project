@@ -175,7 +175,9 @@ async function loginFoodPartner(req, res) {
       foodPartner: {
          _id: foodPartner._id,
          email: foodPartner.email,
-         name: foodPartner.name
+         businessName: foodPartner.businessName,
+         contactName: foodPartner.contactName,
+         status: foodPartner.status
       }
    })
 }
