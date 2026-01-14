@@ -1,31 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ChefHat } from "lucide-react";
+import { ChefHat, AlertCircle } from "lucide-react";
 import axios from "axios";
 
 const UserRegister = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
     const firstName = e.target.firstName.value;
     const lastName = e.target.lastName.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post(
-      "http://localhost:3000/api/auth/user/register",
-      {
-        fullName: firstName + " " + lastName,
-        email,
-        password,
-      },
-      { withCredentials: true }
-    );
-    console.log(response.data);
-
-    navigate("/home");
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/user/register",
+        {
+          fullName: firstName + " " + lastName,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      console.log(response.data);
+      navigate("/home");
+    } catch (err) {
+      console.error("Registration error:", err);
+      setError(err.response?.data?.message || "Registration failed. Try using a different email.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -153,6 +163,14 @@ const UserRegister = () => {
             </p>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 animate-shake">
+              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+              <p className="text-red-200 text-sm font-medium">{error}</p>
+            </div>
+          )}
+
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             {/* Name Fields */}
@@ -259,7 +277,7 @@ const UserRegister = () => {
             </button>
           </form>
 
-                    {/* Divider */}
+          {/* Divider */}
           <div className="flex items-center my-6">
             <div className="flex-1 border-t border-white/20"></div>
             <span

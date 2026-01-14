@@ -1,28 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ChefHat, Mail, Lock } from "lucide-react";
+import { ChefHat, Mail, Lock, AlertCircle, Loader2 } from "lucide-react";
 import axios from "axios";
 
 const UserLogin = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post(
-      "http://localhost:3000/api/auth/user/login",
-      {
-        email,
-        password,
-      },
-      { withCredentials: true }
-    );
-    console.log(response.data);
-
-    navigate("/home");
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/user/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      console.log(response.data);
+      navigate("/home");
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err.response?.data?.message || "Invalid email or password. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -177,6 +187,14 @@ const UserLogin = () => {
               Sign in to continue your food journey.
             </p>
           </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 animate-shake">
+              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+              <p className="text-red-200 text-sm font-medium">{error}</p>
+            </div>
+          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">

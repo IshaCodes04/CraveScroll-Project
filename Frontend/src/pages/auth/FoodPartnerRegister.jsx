@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ChefHat } from "lucide-react";
+import { ChefHat, AlertCircle } from "lucide-react";
 import axios from "axios";
 import './food-partner-auth.css';
 import foodVideo from "../../assets/food-partnerregister.mp4";
 
 const FoodPartnerRegister = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
     const businessName = e.target.businessName.value;
     const contactName = e.target.contactName.value;
@@ -34,9 +38,11 @@ const FoodPartnerRegister = () => {
       console.log(response.data);
       alert(response.data.message); // Show "Application Submitted..."
       navigate("/food-partner/login");
-    } catch (error) {
-      console.error("Registration error:", error);
-      // Optional: Add UI feedback for error
+    } catch (err) {
+      console.error("Registration error:", err);
+      setError(err.response?.data?.message || "Registration failed. Try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -184,6 +190,14 @@ const FoodPartnerRegister = () => {
               Start your food creator journey today.
             </p>
           </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 animate-shake">
+              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+              <p className="text-red-200 text-sm font-medium">{error}</p>
+            </div>
+          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
