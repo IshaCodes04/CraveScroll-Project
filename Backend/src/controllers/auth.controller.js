@@ -192,93 +192,112 @@ function logoutFoodPartner(req, res) {
 }
 
 async function registerAdmin(req, res) {
+   try {
+      const { adminName, email, secretKey } = req.body;
 
-   const { adminName, email, password, secretKey } = req.body
-
-   const isAdminAlreadyExists = await adminModel.findOne({
-      email
-   })
-
-   if (isAdminAlreadyExists) {
-      return res.status(400).json({
-         message: "Admin account already exists"
-      })
-   }
-
-   const hashedPassword = await bcrypt.hash(password, 10)
-
-   const admin = await adminModel.create({
-      adminName,
-      email,
-      password: hashedPassword,
-      secretKey
-   })
-
-
-   const token = jwt.sign({
-      id: admin._id,
-
-   }, process.env.JWT_SECRET)
-
-   res.cookie("token", token)
-
-   res.status(201).json({
-      message: "Admin Registered Successfully",
-      admin: {
-         _id: admin._id,
-         email: admin.email,
-         adminName: admin.adminName
+      if (!secretKey) {
+         return res.status(400).json({ message: "Secret Key is required" });
       }
-   })
 
+      const isAdminAlreadyExists = await adminModel.findOne({ email });
+
+      if (isAdminAlreadyExists) {
+         return res.status(400).json({
+            message: "Admin account already exists"
+         });
+      }
+
+      const admin = await adminModel.create({
+         adminName,
+         email,
+         secretKey
+      });
+
+      const token = jwt.sign({
+         id: admin._id,
+      }, process.env.JWT_SECRET);
+
+      res.cookie("token", token, {
+         httpOnly: true,
+         secure: process.env.NODE_ENV === "production",
+         sameSite: "lax",
+         maxAge: 24 * 60 * 60 * 1000 // 1 day
+      });
+
+      res.status(201).json({
+         message: "Admin Registered Successfully",
+         admin: {
+            _id: admin._id,
+            email: admin.email,
+            adminName: admin.adminName
+         }
+      });
+   } catch (error) {
+      console.error("Error in registerAdmin:", error);
+      res.status(500).json({ message: "Internal Server Error during registration" });
+   }
 }
 
 async function loginAdmin(req, res) {
+   try {
+      const { email, secretKey } = req.body;
 
-   const { email, password } = req.body;
-
-   const admin = await adminModel.findOne({
-      email
-   })
-
-   if (!admin) {
-      return res.status(400).json({
-         message: "Invalid email and password"
-      })
-   }
-
-   const isPasswordValid = await bcrypt.compare(password, admin.password);
-
-   if (!isPasswordValid) {
-      return res.status(400).json({
-         message: "Invalid email and password"
-      })
-   }
-
-   const token = jwt.sign({
-      id: admin._id,
-   }, process.env.JWT_SECRET)
-
-
-   res.cookie("token", token)
-
-   res.status(200).json({
-      message: "Admin Logged In Successfully",
-      admin: {
-         _id: admin._id,
-         email: admin.email,
-         adminName: admin.adminName
+      if (!email || !secretKey) {
+         return res.status(400).json({
+            message: "Email and Secret Key are required"
+         });
       }
-   })
+
+      const admin = await adminModel.findOne({ email });
+
+      if (!admin) {
+         return res.status(400).json({
+            message: "Invalid email or secret key"
+         });
+      }
+
+      // Check if secretKey matches
+      if (admin.secretKey !== secretKey) {
+         return res.status(400).json({
+            message: "Invalid email or secret key"
+         });
+      }
+
+      const token = jwt.sign({
+         id: admin._id,
+      }, process.env.JWT_SECRET);
+
+      res.cookie("token", token, {
+         httpOnly: true,
+         secure: process.env.NODE_ENV === "production",
+         sameSite: "lax",
+         maxAge: 24 * 60 * 60 * 1000 // 1 day
+      });
+
+      res.status(200).json({
+         message: "Admin Logged In Successfully",
+         admin: {
+            _id: admin._id,
+            email: admin.email,
+            adminName: admin.adminName
+         }
+      });
+   } catch (error) {
+      console.error("Error in loginAdmin:", error);
+      res.status(500).json({ message: "Internal Server Error during login" });
+   }
 }
 
 function logoutAdmin(req, res) {
-
-   res.clearCookie("token")
-   res.status(200).json({
-      message: "Admin Logged Out Successfully"
-   })
-
+   try {
+      res.clearCookie("token");
+      res.status(200).json({
+         message: "Admin Logged Out Successfully"
+      });
+   } catch (error) {
+      console.error("Error in logoutAdmin:", error);
+      res.status(500).json({ message: "Internal Server Error during logout" });
+   }
 }
 
 module.exports = {
