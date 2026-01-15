@@ -90,7 +90,7 @@ const Welcome = () => {
       <div className="absolute top-6 right-6 z-20 animate-fadeIn" style={{ animationDelay: "1s" }}>
         <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-4 text-center shadow-xl hover:bg-white/15 transition-all duration-300">
           <p className="text-white/90 text-sm mb-2 font-medium" style={{ fontFamily: "Poppins, sans-serif" }}>
-            Are you a FoodReels creator?
+            Become a food creator🍔?
           </p>
           <Link
             to="/food-partner/register"

@@ -16,11 +16,11 @@ const AdminLogin = () => {
 
     try {
       const email = e.target.email.value;
-      const password = e.target.password.value;
+      const secretKey = e.target.secretKey.value;
 
       const response = await axios.post("http://localhost:3000/api/auth/admin/login", {
         email,
-        password
+        secretKey
       }, { withCredentials: true });
 
       console.log(response.data);
@@ -128,7 +128,6 @@ const AdminLogin = () => {
             </div>
           )}
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">
@@ -145,13 +144,13 @@ const AdminLogin = () => {
 
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">
-                Password
+                Secret Admin Key
               </label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  placeholder="••••••••"
+                  name="secretKey"
+                  placeholder="Enter your secret key"
                   required
                   className="w-full px-6 py-4 pr-14 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-all"
                 />
@@ -167,7 +166,7 @@ const AdminLogin = () => {
 
             <div className="text-right">
               <Link to="/admin/forgot-password" size="sm" className="text-xs text-white/30 hover:text-primary transition-colors">
-                Forgot password?
+                Forgot secret key?
               </Link>
             </div>
 

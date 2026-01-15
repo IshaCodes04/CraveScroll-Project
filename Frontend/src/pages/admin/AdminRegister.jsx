@@ -18,13 +18,11 @@ const AdminRegister = () => {
         try {
             const adminName = e.target.adminName.value;
             const email = e.target.email.value;
-            const password = e.target.password.value;
             const secretKey = e.target.secretKey.value;
 
             const response = await axios.post("http://localhost:3000/api/auth/admin/register", {
                 adminName,
                 email,
-                password,
                 secretKey
             }, { withCredentials: true });
 
@@ -162,28 +160,6 @@ const AdminRegister = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">
-                                Password
-                            </label>
-                            <div className="relative">
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    name="password"
-                                    placeholder="••••••••"
-                                    required
-                                    className="w-full px-6 py-3.5 pr-14 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-all font-medium"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-5 top-1/2 -translate-y-1/2 text-white/30 hover:text-white"
-                                >
-                                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                                </button>
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
                             <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1 flex items-center gap-2">
                                 <Lock className="w-3 h-3 text-primary" /> Secret Admin Key
                             </label>
@@ -191,7 +167,7 @@ const AdminRegister = () => {
                                 <input
                                     type={showSecret ? 'text' : 'password'}
                                     name="secretKey"
-                                    placeholder="Authorization Key"
+                                    placeholder="Create your secret key"
                                     required
                                     className="w-full px-6 py-3.5 pr-14 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-all font-mono"
                                 />
@@ -203,6 +179,7 @@ const AdminRegister = () => {
                                     {showSecret ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                 </button>
                             </div>
+                            <p className="text-[10px] text-white/30 mt-1 ml-1">This will be your unique admin authentication key</p>
                         </div>
 
                         <button

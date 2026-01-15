@@ -5,7 +5,7 @@ import {
   Settings, CheckCircle, XCircle, Clock,
   UtensilsCrossed, Search, Bell, Menu, X,
   PlayCircle, Activity, ArrowUpRight,
-  Star, Flame
+  Star, Flame, ChevronRight, Heart
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -13,7 +13,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [pendingPartners, setPendingPartners] = useState([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [stats, setStats] = useState({
     totalUsers: 0,
     foodPartners: 0,
@@ -23,30 +23,42 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchDashboardData();
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const fetchDashboardData = async () => {
     try {
-      // Fetch stats and pending partners in parallel
       const [pendingRes, statsRes] = await Promise.all([
         axios.get("http://localhost:3000/api/food-partner/admin/pending", { withCredentials: true }),
         axios.get("http://localhost:3000/api/admin/stats", { withCredentials: true })
       ]);
 
-      const pending = pendingRes.data.pendingPartners || [];
-      setPendingPartners(pending);
-
+      setPendingPartners(pendingRes.data.pendingPartners || []);
       if (statsRes.data.success) {
         setStats(statsRes.data.stats);
       }
     } catch (error) {
       console.error("Dashboard fetch error:", error);
-      // Fallback for demo if API fails
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        navigate("/admin/login");
+        return;
+      }
+      // Demo fallback
       setStats(prev => ({
         ...prev,
-        totalUsers: prev.totalUsers || 1240,
-        foodPartners: prev.foodPartners || 85,
-        activeReels: prev.activeReels || 312
+        totalUsers: 1458,
+        foodPartners: 92,
+        activeReels: 412,
+        pendingReqs: 5
       }));
     }
   };
@@ -57,7 +69,7 @@ const AdminDashboard = () => {
 
     try {
       await axios.put(`http://localhost:3000/api/food-partner/admin/approve/${id}`, { status }, { withCredentials: true });
-      fetchDashboardData(); // Refresh everything
+      fetchDashboardData();
     } catch (error) {
       console.error("Status update error:", error);
     }
@@ -76,229 +88,212 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white flex font-['Poppins'] relative overflow-hidden">
-      {/* --- Premium Background Effects --- */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none opacity-50" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] bg-orange-600/10 rounded-full blur-[100px] pointer-events-none opacity-30" />
+    <div className="min-h-screen bg-[#FDFBF9] text-[#4A3728] flex font-['Poppins'] relative overflow-hidden">
+      {/* --- Desert Sunset Decorative Elements --- */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#FDE68A]/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-[-5%] right-[-5%] w-[30%] h-[30%] bg-[#FDBA74]/20 rounded-full blur-[80px] pointer-events-none" />
 
-      {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+      {/* Organic Shapes Background */}
+      <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-[#FEF3C7]/40 rounded-full blur-[120px] pointer-events-none opacity-50" />
 
-      {/* Floating Decorative Food Image */}
-      <div className="absolute top-[15%] right-[5%] w-[300px] h-[300px] pointer-events-none hidden xl:block animate-float opacity-40">
-        <img
-          src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000&auto=format&fit=crop"
-          alt="Salad Bowl"
-          className="w-full h-full object-contain rounded-full shadow-[0_0_50px_rgba(249,115,22,0.2)]"
+      {/* Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-[#4A3728]/10 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
         />
-      </div>
+      )}
 
-      {/* Sidebar */}
+      {/* Sidebar - Warm Theme */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-72 bg-[#0a0a0a]/80 backdrop-blur-2xl border-r border-white/10 transform transition-transform duration-500 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-72 bg-[#FFFFFF] border-r border-[#F3E8D9] transform transition-all duration-500 ease-in-out shadow-[10px_0_40px_rgba(74,55,40,0.02)] ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           }`}
       >
         <div className="h-full flex flex-col p-8">
-          <div className="flex items-center gap-4 mb-12">
-            <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-[0_0_25px_rgba(249,115,22,0.4)] rotate-3">
-              <UtensilsCrossed className="w-7 h-7 text-white" />
+          <div className="flex items-center gap-3 mb-12">
+            <div className="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center shadow-lg shadow-[#D97706]/20 transition-transform hover:scale-105">
+              <UtensilsCrossed className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-black tracking-tight leading-none">CRAVE</h1>
-              <span className="text-[10px] text-primary font-black uppercase tracking-[3px]">Admin Hub</span>
+              <h1 className="text-xl font-black tracking-tight leading-none text-[#4A3728]">CraveScroll</h1>
+              <span className="text-[9px] text-[#D97706] font-bold uppercase tracking-[2px]">Management</span>
             </div>
           </div>
 
-          <nav className="flex-1 space-y-3">
-            <SidebarLink icon={<Activity size={20} />} label="Overview" active />
-            <SidebarLink icon={<Users size={20} />} label="Community" />
-            <SidebarLink icon={<ShoppingBag size={20} />} label="Partners" />
-            <SidebarLink icon={<PlayCircle size={20} />} label="Reel Feed" />
-            <SidebarLink icon={<Settings size={20} />} label="System" />
+          <nav className="flex-1 space-y-2">
+            <SidebarLink icon={<Activity size={18} />} label="Overview" active />
+            <SidebarLink icon={<Users size={18} />} label="Users" />
+            <SidebarLink icon={<ShoppingBag size={18} />} label="Partners" />
+            <SidebarLink icon={<PlayCircle size={18} />} label="Reels" />
+            <SidebarLink icon={<Settings size={18} />} label="Settings" />
           </nav>
 
-          <div className="mt-auto pt-8">
-            <button
-              onClick={handleLogout}
-              disabled={loading}
-              className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-white/40 hover:text-red-400 hover:bg-red-400/10 transition-all group border border-transparent hover:border-red-400/20"
-            >
-              <LogOut size={20} className="group-hover:-translate-x-1 transition-transform" />
-              <span className="font-bold text-sm tracking-wide uppercase">{loading ? '...' : 'Logout'}</span>
-            </button>
-          </div>
+          <button
+            onClick={handleLogout}
+            disabled={loading}
+            className="mt-auto w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-[#A8A29E] hover:text-[#B45309] hover:bg-[#FFFBEB] transition-all group"
+          >
+            <LogOut size={18} className="group-hover:-translate-x-1 transition-transform" />
+            <span className="font-bold text-xs tracking-wide uppercase">{loading ? '...' : 'Logout Admin'}</span>
+          </button>
         </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 z-10">
         {/* Header */}
-        <header className="h-24 flex items-center justify-between px-10">
-          <div className="flex items-center gap-6">
+        <header className="h-20 flex items-center justify-between px-6 lg:px-10 shrink-0">
+          <div className="flex items-center gap-4">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="lg:hidden p-3 bg-white/5 rounded-xl text-white/60 hover:text-white"
+              className="lg:hidden p-2.5 bg-white border border-[#F3E8D9] rounded-xl text-[#4A3728] shadow-sm hover:bg-[#FAF7F2]"
             >
               {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
-            <div className="hidden md:block">
-              <h2 className="text-2xl font-bold">Admin Dashboard</h2>
-              <p className="text-xs text-white/30 font-medium">Monitoring platform statistics in real-time</p>
+            <div className="hidden sm:block">
+              <h2 className="text-xl font-bold text-[#4A3728]">Welcome Back, Admin</h2>
+              <p className="text-[10px] text-[#A8A29E] font-medium tracking-wide">Here's your platform summary</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-8">
-            <div className="relative hidden xl:block">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4" />
+          <div className="flex items-center gap-4 lg:gap-6">
+            <div className="relative hidden md:block">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A8A29E] w-4 h-4" />
               <input
                 type="text"
-                placeholder="Search analytics..."
-                className="bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-6 text-sm focus:outline-none focus:border-primary/50 w-72 transition-all focus:bg-white/[0.08]"
+                placeholder="Search resources..."
+                className="bg-white border border-[#F3E8D9] rounded-2xl py-2.5 pl-10 pr-6 text-sm focus:outline-none focus:border-[#D97706]/40 w-60 lg:w-72 transition-all shadow-sm"
               />
             </div>
-            <div className="flex items-center gap-4">
-              <button className="p-3 bg-white/5 border border-white/10 rounded-xl text-white/60 hover:text-white relative transition-colors shadow-sm">
-                <Bell size={20} />
-                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-[#050505]" />
+            <div className="flex items-center gap-3">
+              <button className="p-2.5 bg-white border border-[#F3E8D9] rounded-xl text-[#A8A29E] hover:text-[#D97706] transition-all shadow-sm relative">
+                <Bell size={18} />
+                <span className="absolute top-2 right-2 w-2 h-2 bg-[#D97706] rounded-full border-2 border-white" />
               </button>
-              <div className="h-10 w-[1px] bg-white/10 mx-2 hidden sm:block" />
-              <div className="flex items-center gap-3 bg-white/5 border border-white/10 p-1.5 pr-4 rounded-2xl sm:flex hidden hover:bg-white/[0.08] transition-all cursor-pointer">
-                <img src="https://ui-avatars.com/api/?name=Admin&background=f97316&color=fff" className="w-8 h-8 rounded-xl" alt="Admin" />
-                <span className="text-xs font-bold uppercase tracking-wider text-white/80">Isha Singh</span>
+              <div className="h-8 w-[1px] bg-[#F3E8D9] hidden sm:block" />
+              <div className="flex items-center gap-3 bg-white border border-[#F3E8D9] p-1.5 pr-4 rounded-2xl hover:bg-[#FAF7F2] transition-all cursor-pointer shadow-sm group">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=d97706&color=fff" className="w-8 h-8 rounded-lg" alt="Admin" />
+                <span className="text-[10px] font-bold text-[#4A3728] hidden lg:block">ISHA SINGH</span>
               </div>
             </div>
           </div>
         </header>
 
-        {/* Dashboard View */}
-        <div className="flex-1 overflow-y-auto px-10 pb-10 custom-scrollbar">
-          {/* Welcome Banner */}
-          <div className="mb-10 p-10 rounded-[40px] bg-gradient-to-br from-primary/30 via-primary/5 to-transparent border border-white/10 relative overflow-hidden group shadow-2xl">
-            {/* Subtle Food Image in Banner */}
-            <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-[url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-10 group-hover:opacity-20 transition-opacity" />
+        {/* Scrollable Body */}
+        <div className="flex-1 overflow-y-auto px-6 lg:px-10 pb-10 custom-scrollbar">
+          {/* Hero Banner - Warm Sunset */}
+          <div className="mb-8 p-10 rounded-[32px] bg-gradient-to-br from-[#FFFBEB] to-[#FEF3C7] border border-[#F3E8D9] relative overflow-hidden group shadow-sm">
+            <div className="absolute right-0 top-0 bottom-0 w-full lg:w-1/2 bg-[url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000')] bg-cover bg-center opacity-[0.05] lg:opacity-10 group-hover:opacity-15 transition-opacity" />
 
             <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="px-3 py-1 bg-primary/20 text-primary rounded-full text-[10px] font-black uppercase tracking-widest border border-primary/30">
-                  System Status: Optimal
-                </div>
-                <div className="flex items-center gap-1 text-orange-400 text-xs font-bold">
-                  <Flame size={14} className="animate-pulse" />
-                  Platform is buzzing!
-                </div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D97706]/10 text-[#D97706] rounded-full text-[10px] font-bold uppercase tracking-widest mb-4">
+                <Flame size={12} /> Spotlight
               </div>
-              <h3 className="text-5xl font-black mb-3 tracking-tighter leading-none">CraveScroll <span className="text-primary">Live</span></h3>
-              <p className="text-white/40 max-w-md leading-relaxed font-medium">Monitoring users, partners, and every delicious reel published on the platform.</p>
-
-              <div className="flex gap-4 mt-8">
-                <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
-                  <Star className="text-yellow-400 w-4 h-4 fill-yellow-400" />
-                  <span className="text-sm font-bold italic">Top Rated Admin</span>
-                </div>
-              </div>
+              <h3 className="text-3xl lg:text-5xl font-black mb-3 tracking-tight text-[#4A3728]">
+                Healthy growth <span className="text-[#D97706]">today!</span>
+              </h3>
+              <p className="text-[#78716C] max-w-md leading-relaxed font-medium text-sm lg:text-base">
+                Your community is thriving. Keep reviewing partners to maintain quality content.
+              </p>
             </div>
           </div>
 
-          {/* Stats Sections */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
-            <PremiumStatCard
-              icon={<Users className="text-blue-400" />}
-              label="Total Users"
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <StatCard
+              icon={<Users size={20} />}
+              label="Total Residents"
               value={stats.totalUsers}
-              trend="+ 24 New"
-              color="#3b82f6"
+              trend="+128"
+              color="#D97706"
             />
-            <PremiumStatCard
-              icon={<ShoppingBag className="text-orange-400" />}
-              label="Partner Network"
+            <StatCard
+              icon={<ShoppingBag size={20} />}
+              label="Food Partners"
               value={stats.foodPartners}
-              trend="+ 2 Today"
-              color="#f97316"
+              trend="+4"
+              color="#A16207"
             />
-            <PremiumStatCard
-              icon={<PlayCircle className="text-green-400" />}
-              label="Total Reels"
+            <StatCard
+              icon={<PlayCircle size={20} />}
+              label="Reels Served"
               value={stats.activeReels}
-              trend="+ 18 Active"
-              color="#22c55e"
+              trend="+24"
+              color="#B45309"
             />
-            <PremiumStatCard
-              icon={<Bell className="text-red-400" />}
-              label="Verification Queue"
+            <StatCard
+              icon={<Bell size={20} />}
+              label="Queue Status"
               value={stats.pendingReqs}
-              trend="High Priority"
-              color="#ef4444"
               isUrgent={stats.pendingReqs > 0}
+              trend="Priority"
+              color="#92400E"
             />
           </div>
 
-          {/* Applications Section */}
-          <div className="bg-[#121212]/50 backdrop-blur-3xl border border-white/5 rounded-[40px] overflow-hidden shadow-[0_30px_60px_-12px_rgba(0,0,0,0.5)]">
-            <div className="p-10 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
+          {/* Verification Table */}
+          <div className="bg-[#FFFFFF] border border-[#F3E8D9] rounded-[32px] shadow-sm overflow-hidden">
+            <div className="p-8 border-b border-[#F3E8D9] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h4 className="text-2xl font-black flex items-center gap-4">
-                  <div className="w-2 h-8 bg-primary rounded-full shadow-[0_0_15px_rgba(249,115,22,0.5)]" />
-                  Pending Approval Queue
+                <h4 className="text-xl font-bold flex items-center gap-3">
+                  <div className="w-1.5 h-6 bg-[#D97706] rounded-full" />
+                  Partner Applications
                 </h4>
-                <p className="text-sm text-white/30 mt-1 ml-6">Carefully review each food partner before authorizing access</p>
+                <p className="text-xs text-[#A8A29E] mt-1 font-medium">Verification requests needing attention</p>
               </div>
-              <div className="flex flex-col items-end">
-                <span className="text-3xl font-black text-primary">{pendingPartners.length}</span>
-                <span className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Active Requests</span>
+              <div className="px-5 py-2.5 bg-[#FFFBEB] text-[#D97706] rounded-2xl font-black text-xl border border-[#FEF3C7]">
+                {pendingPartners.length}
               </div>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="bg-white/[0.02] text-white/20 text-[10px] uppercase tracking-[4px] font-black">
-                    <th className="px-10 py-6 uppercase">Legal Entity</th>
-                    <th className="px-10 py-6 uppercase">Representation</th>
-                    <th className="px-10 py-6 uppercase">Filing Date</th>
-                    <th className="px-10 py-6 text-right uppercase">Security Check</th>
+                  <tr className="bg-[#FAF7F2] text-[#A8A29E] text-[10px] uppercase tracking-[2px] font-extrabold">
+                    <th className="px-8 py-5">Partner Profile</th>
+                    <th className="px-8 py-5">Legal Name</th>
+                    <th className="px-8 py-5">Requested</th>
+                    <th className="px-8 py-5 text-right">Verification</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-[#F3E8D9]">
                   {pendingPartners.length > 0 ? (
                     pendingPartners.map((partner) => (
-                      <tr key={partner._id} className="hover:bg-white/[0.04] transition-all group">
-                        <td className="px-10 py-8">
-                          <div className="flex items-center gap-5">
-                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/30 to-orange-600/30 flex items-center justify-center text-white font-black text-2xl border border-primary/20 group-hover:rotate-6 transition-transform shadow-lg shadow-black/40">
+                      <tr key={partner._id} className="hover:bg-[#FAF7F2]/50 transition-all group">
+                        <td className="px-8 py-6">
+                          <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-[#FEF3C7] flex items-center justify-center text-[#D97706] font-black text-lg border border-[#FDE68A]">
                               {partner.businessName[0]}
                             </div>
                             <div>
-                              <div className="font-black text-white text-lg group-hover:text-primary transition-colors tracking-tight">{partner.businessName}</div>
-                              <div className="text-xs text-white/30 font-medium italic">{partner.email}</div>
+                              <div className="font-bold text-[#4A3728] text-base group-hover:text-[#D97706] transition-colors">{partner.businessName}</div>
+                              <div className="text-[11px] text-[#A8A29E] font-medium">{partner.email}</div>
                             </div>
                           </div>
                         </td>
-                        <td className="px-10 py-8">
-                          <div className="text-white font-bold text-base">{partner.contactName}</div>
-                          <div className="text-[10px] text-primary/80 font-black uppercase mt-1 tracking-wider">Business Lead</div>
+                        <td className="px-8 py-6">
+                          <div className="text-[#4A3728] font-semibold text-sm">{partner.contactName}</div>
+                          <div className="text-[9px] text-[#D97706] font-bold uppercase mt-0.5 tracking-wider">Entrepreneur</div>
                         </td>
-                        <td className="px-10 py-8">
-                          <div className="flex flex-col">
-                            <span className="text-sm font-bold text-white/60">
-                              {partner.createdAt ? new Date(partner.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Processing'}
-                            </span>
-                            <span className="text-[10px] text-white/20 font-bold uppercase mt-1">Application Hub</span>
-                          </div>
+                        <td className="px-8 py-6">
+                          <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#78716C]">
+                            <Clock size={14} className="text-[#D97706]" />
+                            {partner.createdAt ? new Date(partner.createdAt).toLocaleDateString() : 'Awaiting'}
+                          </span>
                         </td>
-                        <td className="px-10 py-8">
-                          <div className="flex items-center justify-end gap-4">
+                        <td className="px-8 py-6">
+                          <div className="flex items-center justify-end gap-2 text-right">
                             <button
                               onClick={() => handleApprove(partner._id, 'approved')}
-                              className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-green-500/10 text-green-400 hover:bg-green-500 hover:text-white transition-all border border-green-400/20 font-black text-xs uppercase tracking-widest shadow-lg shadow-green-500/5"
+                              className="px-5 py-2.5 rounded-xl bg-[#D97706] text-white hover:bg-[#B45309] transition-all font-bold text-[10px] uppercase tracking-widest shadow-md shadow-[#D97706]/10"
                             >
-                              <CheckCircle size={16} /> Grant Access
+                              Verify
                             </button>
                             <button
                               onClick={() => handleApprove(partner._id, 'rejected')}
-                              className="p-3.5 rounded-2xl bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition-all border border-red-500/20 shadow-lg shadow-red-500/5"
+                              className="p-2.5 rounded-xl border border-[#F3E8D9] text-[#A8A29E] hover:text-[#EF4444] hover:bg-[#FEF2F2] transition-all"
                             >
-                              <XCircle size={20} />
+                              <XCircle size={18} />
                             </button>
                           </div>
                         </td>
@@ -306,15 +301,12 @@ const AdminDashboard = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="4" className="px-10 py-32 text-center">
-                        <div className="max-w-xs mx-auto space-y-6">
-                          <div className="w-24 h-24 bg-white/[0.03] border border-white/5 rounded-[40px] flex items-center justify-center mx-auto text-primary/20 rotate-12 group-hover:rotate-0 transition-transform">
-                            <UtensilsCrossed size={48} />
+                      <td colSpan="4" className="px-10 py-24 text-center">
+                        <div className="flex flex-col items-center gap-4">
+                          <div className="w-16 h-16 bg-[#FAF7F2] rounded-3xl flex items-center justify-center border border-[#F3E8D9]">
+                            <UtensilsCrossed size={32} className="text-[#E7E5E4]" />
                           </div>
-                          <div className="space-y-2">
-                            <p className="text-2xl font-black text-white/40 tracking-tight italic">Clear Skies! ☀️</p>
-                            <p className="text-xs text-white/20 font-bold uppercase tracking-widest leading-loose">No pending background checks or partner applications at this moment.</p>
-                          </div>
+                          <p className="text-xs font-bold text-[#D6D3D1] uppercase tracking-[3px]">All Caught Up!</p>
                         </div>
                       </td>
                     </tr>
@@ -331,43 +323,35 @@ const AdminDashboard = () => {
 
 // UI Components
 const SidebarLink = ({ icon, label, active = false }) => (
-  <button className={`w-full flex items-center gap-5 px-6 py-4.5 rounded-[24px] transition-all relative group ${active
-      ? 'bg-primary text-white shadow-[0_15px_30px_-5px_rgba(249,115,22,0.4)] scale-[1.02]'
-      : 'text-white/30 hover:text-white hover:bg-white/[0.06]'
+  <button className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all relative group ${active
+    ? 'bg-[#FFFBEB] text-[#D97706] border border-[#FEF3C7] shadow-sm'
+    : 'text-[#A8A29E] hover:text-[#4A3728] hover:bg-[#FAF7F2]'
     }`}>
-    <span className={`${active ? 'text-white' : 'group-hover:text-primary group-hover:scale-110 transition-all'}`}>{icon}</span>
-    <span className="font-bold text-sm tracking-wide">{label}</span>
-    {active && <div className="ml-auto w-2 h-2 bg-white rounded-full shadow-[0_0_15px_white]" />}
+    <span className={`${active ? 'text-[#D97706]' : 'group-hover:scale-110 transition-all'}`}>{icon}</span>
+    <span className="font-bold text-sm tracking-tight">{label}</span>
+    {active && <div className="ml-auto w-1 h-3 bg-[#D97706] rounded-full" />}
   </button>
 );
 
-const PremiumStatCard = ({ icon, label, value, trend, color, isUrgent = false }) => (
-  <div className="bg-[#121212]/50 backdrop-blur-2xl border border-white/5 p-8 rounded-[40px] group hover:border-white/20 transition-all cursor-pointer relative overflow-hidden shadow-xl">
-    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/[0.04] to-transparent rounded-bl-[120px]" />
-
-    <div className="flex items-center justify-between mb-8">
-      <div className="w-16 h-16 rounded-[22px] bg-white/[0.03] border border-white/5 flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner text-2xl">
+const StatCard = ({ icon, label, value, trend, color, isUrgent = false }) => (
+  <div className="bg-white p-6 rounded-[28px] border border-[#F3E8D9] hover:border-[#D97706]/20 transition-all cursor-pointer shadow-sm group relative overflow-hidden">
+    <div className="flex items-center justify-between mb-6">
+      <div className="w-12 h-12 bg-[#FAF7F2] rounded-2xl flex items-center justify-center text-[#D97706] border border-[#F3E8D9] group-hover:scale-110 transition-transform shadow-sm">
         {icon}
       </div>
-      <div className={`text-[10px] font-black px-4 py-1.5 rounded-full border tracking-widest ${isUrgent
-          ? 'bg-red-500 text-white border-red-400 animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.4)]'
-          : 'bg-white/5 text-white/60 border-white/10'
+      <div className={`text-[10px] font-black px-3 py-1 rounded-full border tracking-widest ${isUrgent
+        ? 'bg-[#EF4444] text-white border-[#EF4444] animate-pulse'
+        : 'bg-[#FAF7F2] text-[#A8A29E] border-[#F3E8D9]'
         }`}>
         {trend}
       </div>
     </div>
-
     <div className="relative z-10">
-      <div className="text-5xl font-black mb-2 tracking-tighter group-hover:text-primary transition-colors leading-none">
+      <div className="text-4xl font-extrabold mb-1 tracking-tighter text-[#4A3728] group-hover:text-[#D97706] transition-colors leading-none italic">
         {typeof value === 'number' ? value.toLocaleString() : value}
       </div>
-      <div className="text-[10px] text-white/30 font-black uppercase tracking-[4px] ml-1">{label}</div>
+      <div className="text-[9px] text-[#A8A29E] font-extrabold uppercase tracking-[2px] ml-0.5">{label}</div>
     </div>
-
-    <div
-      className="absolute bottom-[-1px] left-[15%] right-[15%] h-[2px] opacity-0 group-hover:opacity-100 transition-opacity blur-[1px]"
-      style={{ backgroundColor: color, boxShadow: `0 0 20px ${color}` }}
-    />
   </div>
 );
 
