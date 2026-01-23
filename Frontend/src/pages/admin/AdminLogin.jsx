@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UtensilsCrossed, Users, BarChart3, AlertCircle, LogIn, Eye, EyeOff } from 'lucide-react';
+import { ChefHat, Users, BarChart3, AlertCircle, LogIn, Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 
 const AdminLogin = () => {
@@ -43,13 +43,13 @@ const AdminLogin = () => {
       {/* Left Side - Branding */}
       <div className="hidden lg:flex flex-1 relative z-10 flex-col justify-center items-center p-12">
         <div className="max-w-md w-full">
-          <div className="flex items-center gap-4 mb-16">
-            <div className="w-14 h-14 bg-[#D97706] rounded-2xl flex items-center justify-center shadow-lg shadow-[#D97706]/20 transition-transform hover:scale-105">
-              <UtensilsCrossed className="w-8 h-8 text-white" />
+          <div className="flex items-center gap-5 mb-16">
+            <div className="w-16 h-16 bg-[#D97706] rounded-3xl flex items-center justify-center shadow-lg shadow-[#D97706]/20 transition-transform hover:scale-105">
+              <ChefHat className="w-10 h-10 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-black tracking-tight leading-none text-[#4A3728]">CraveScroll</h1>
-              <span className="text-xs text-[#D97706] font-bold uppercase tracking-[3px]">Management</span>
+              <h1 className="text-4xl font-black tracking-tighter leading-none text-[#4A3728]">CraveScroll</h1>
+              <span className="text-[10px] text-[#D97706] font-bold uppercase tracking-[4px]">Management</span>
             </div>
           </div>
 
@@ -88,11 +88,14 @@ const AdminLogin = () => {
       <div className="flex-1 flex items-center justify-center p-6 lg:p-12 relative z-10">
         <div className="w-full max-w-lg bg-white border border-[#F3E8D9] rounded-[48px] p-10 lg:p-14 shadow-[0_20px_50px_rgba(74,55,40,0.05)]">
           <div className="text-center mb-12">
-            <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
-              <div className="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center">
-                <UtensilsCrossed className="w-6 h-6 text-white" />
+            <div className="lg:hidden flex flex-col items-center gap-4 mb-8">
+              <div className="w-20 h-20 bg-[#D97706] rounded-[2rem] flex items-center justify-center shadow-lg">
+                <ChefHat className="w-12 h-12 text-white" />
               </div>
-              <span className="text-xl font-black text-[#4A3728]">CraveScroll</span>
+              <div className="flex flex-col">
+                <span className="text-2xl font-black text-[#4A3728]">CraveScroll</span>
+                <span className="text-[8px] text-[#D97706] font-bold uppercase tracking-[3px]">Management</span>
+              </div>
             </div>
             <h3 className="text-3xl font-black text-[#4A3728] mb-3">Welcome Back</h3>
             <p className="text-[#A8A29E] font-medium">Please sign in to your admin account</p>

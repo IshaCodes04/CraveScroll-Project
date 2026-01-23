@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   LogOut, Users, ShoppingBag, TrendingUp,
   Settings, CheckCircle, XCircle, Clock,
-  UtensilsCrossed, Search, Bell, Menu, X,
+  ChefHat, Search, Bell, Menu, X,
   PlayCircle, Activity, ArrowUpRight,
   Star, Flame, ChevronRight, Heart
 } from 'lucide-react';
@@ -112,7 +112,7 @@ const AdminDashboard = () => {
         <div className="h-full flex flex-col p-8">
           <div className="flex items-center gap-3 mb-12">
             <div className="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center shadow-lg shadow-[#D97706]/20 transition-transform hover:scale-105">
-              <UtensilsCrossed className="w-6 h-6 text-white" />
+              <ChefHat className="w-6 h-6 text-white" />
             </div>
             <div>
               <h1 className="text-xl font-black tracking-tight leading-none text-[#4A3728]">CraveScroll</h1>
