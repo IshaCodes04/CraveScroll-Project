@@ -304,7 +304,7 @@ const AdminDashboard = () => {
                       <td colSpan="4" className="px-10 py-24 text-center">
                         <div className="flex flex-col items-center gap-4">
                           <div className="w-16 h-16 bg-[#FAF7F2] rounded-3xl flex items-center justify-center border border-[#F3E8D9]">
-                            <UtensilsCrossed size={32} className="text-[#E7E5E4]" />
+                            <ChefHat size={32} className="text-[#E7E5E4]" />
                           </div>
                           <p className="text-xs font-bold text-[#D6D3D1] uppercase tracking-[3px]">All Caught Up!</p>
                         </div>
