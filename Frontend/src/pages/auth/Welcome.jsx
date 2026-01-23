@@ -117,7 +117,7 @@ const Welcome = () => {
           className="text-white/90 text-base sm:text-lg mb-6 sm:mb-8 font-medium animate-fadeIn px-4"
           style={{ animationDelay: "0.2s" }}
         >
-          Discover & savor endless culinary delights
+          Where Cravings Meet the Reel.
         </p>
 
         <div className="mb-6 sm:mb-10 min-h-[80px] flex items-center justify-center px-4">
@@ -161,8 +161,8 @@ const Welcome = () => {
             <div
               key={index}
               className={`rounded-full transition-all duration-300 ${index === currentQuoteIndex
-                  ? "w-10 h-2.5 bg-orange-500"
-                  : "w-2.5 h-2.5 bg-white/40"
+                ? "w-10 h-2.5 bg-orange-500"
+                : "w-2.5 h-2.5 bg-white/40"
                 }`}
             />
           ))}
