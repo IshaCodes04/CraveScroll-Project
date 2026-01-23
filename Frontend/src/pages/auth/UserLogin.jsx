@@ -160,8 +160,7 @@ const UserLogin = () => {
               <Logo className="w-16 h-16 drop-shadow-xl" />
             </div>
             <h1
-              className="text-4xl text-[#F97316]"
-              style={{ fontFamily: "'Great Vibes', cursive" }}
+              className="text-4xl font-extrabold bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent"
             >
               CraveScroll
             </h1>

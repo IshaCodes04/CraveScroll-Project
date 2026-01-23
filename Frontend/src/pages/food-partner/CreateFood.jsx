@@ -275,8 +275,11 @@ const CreateFood = () => {
             </div>
             <h1 style={{
               fontSize: '32px',
-              color: '#F97316',
-              fontFamily: "'Great Vibes', cursive",
+              fontWeight: '800',
+              background: 'linear-gradient(to right, rgb(251, 146, 60), rgb(249, 115, 22), rgb(234, 88, 12))',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
               margin: 0
             }}>
               CraveScroll
