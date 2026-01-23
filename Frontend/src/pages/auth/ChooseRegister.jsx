@@ -36,10 +36,10 @@ const ChooseRegister = () => {
           className="flex flex-col items-center mb-8 animate-fadeIn"
           style={{ animationDelay: "0.2s" }}
         >
-          <div className="flex justify-center mb-6 animate-float">
-            <Logo className="w-20 h-20 drop-shadow-lg" />
+          <div className="flex justify-center mb-4 sm:mb-6 animate-float">
+            <Logo className="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-lg" />
           </div>
-          <h1 className="text-5xl font-extrabold mb-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-5xl font-extrabold mb-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent">
             CraveScroll
           </h1>
           <p

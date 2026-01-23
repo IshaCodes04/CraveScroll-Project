@@ -149,13 +149,13 @@ const ReelFeed = ({
             <div className="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none" />
 
             {/* Header with CraveScroll */}
-            <div className="absolute top-0 left-0 right-0 p-4 z-10">
-              <div className="flex items-center gap-4">
+            <div className="absolute top-0 left-0 right-0 p-3 sm:p-4 z-10 select-none">
+              <div className="flex items-center gap-2 sm:gap-4">
                 <div className="flex items-center justify-center animate-float">
-                  <Logo size={32} className="drop-shadow-lg" />
+                  <Logo size={24} className="w-6 h-6 sm:w-8 sm:h-8 drop-shadow-lg" />
                 </div>
                 <h1
-                  className="text-4xl font-extrabold drop-shadow-lg bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent"
+                  className="text-xl sm:text-3xl lg:text-4xl font-extrabold drop-shadow-lg bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent"
                 >
                   CraveScroll
                 </h1>

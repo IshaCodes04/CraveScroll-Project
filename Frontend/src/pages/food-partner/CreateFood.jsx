@@ -264,17 +264,12 @@ const CreateFood = () => {
           }}>
           <style>{`::-webkit-scrollbar { display: none; }`}</style>
           {/* Mobile Logo */}
-          <div className="lg:hidden text-center mb-6">
-            <div style={{
-              margin: '0 auto 16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <Logo size={64} className="drop-shadow-xl" />
+          <div className="lg:hidden text-center mb-4 sm:mb-6">
+            <div className="flex items-center justify-center mb-3 sm:mb-4">
+              <Logo className="w-12 h-12 sm:w-16 sm:h-16 drop-shadow-xl" />
             </div>
             <h1 style={{
-              fontSize: '32px',
+              fontSize: '28px',
               fontWeight: '800',
               background: 'linear-gradient(to right, rgb(251, 146, 60), rgb(249, 115, 22), rgb(234, 88, 12))',
               WebkitBackgroundClip: 'text',

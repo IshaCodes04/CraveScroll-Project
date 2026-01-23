@@ -158,12 +158,12 @@ const FoodPartnerRegister = () => {
           }}
         >
           {/* Mobile Logo */}
-          <div className="lg:hidden text-center mb-6">
-            <div className="flex justify-center mb-4">
-              <Logo className="w-16 h-16 drop-shadow-xl" />
+          <div className="lg:hidden text-center mb-4 sm:mb-6">
+            <div className="flex justify-center mb-2 sm:mb-4">
+              <Logo className="w-12 h-12 sm:w-16 sm:h-16 drop-shadow-xl" />
             </div>
             <h1
-              className="text-4xl font-extrabold bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent"
+              className="text-2xl sm:text-4xl font-extrabold bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent"
             >
               CraveScroll
             </h1>

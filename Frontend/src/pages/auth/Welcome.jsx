@@ -108,7 +108,7 @@ const Welcome = () => {
           <Logo className="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-2xl" />
         </div>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent animate-fadeIn">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent animate-fadeIn">
           CraveScroll
         </h1>
 
