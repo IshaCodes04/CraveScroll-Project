@@ -1,13 +1,14 @@
-import { User, ChefHat, ChevronLeft } from "lucide-react";
+import { User, ChevronLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Logo from "../../components/Logo";
 
 const foodBg =
   "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 const ChooseRegister = () => {
   const navigate = useNavigate();
-  
+
   return (
     <div className="min-h-screen relative flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -20,23 +21,23 @@ const ChooseRegister = () => {
       <div className="absolute inset-0 bg-black/60" />
 
       {/* CoBack Button */}
-        <button
-          onClick={() => navigate("/welcome")}
-          className="absolute top-6 left-6 text-white/60 hover:text-white transition-colors"
-          aria-label="Go back"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
+      <button
+        onClick={() => navigate("/welcome")}
+        className="absolute top-6 left-6 text-white/60 hover:text-white transition-colors"
+        aria-label="Go back"
+      >
+        <ChevronLeft className="w-6 h-6" />
+      </button>
 
-        {/* ntent */}
+      {/* ntent */}
       <div className="relative z-10 w-full max-w-md mx-auto px-6 py-12">
         {/* Logo */}
         <div
           className="flex flex-col items-center mb-8 animate-fadeIn"
           style={{ animationDelay: "0.2s" }}
         >
-          <div className="w-20 h-20 bg-[#F97316] rounded-full flex items-center justify-center mb-6 shadow-lg animate-float">
-            <ChefHat className="w-10 h-10 text-white" />
+          <div className="flex justify-center mb-6 animate-float">
+            <Logo className="w-20 h-20 drop-shadow-lg" />
           </div>
           <h1 className="text-5xl font-extrabold mb-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent">
             CraveScroll

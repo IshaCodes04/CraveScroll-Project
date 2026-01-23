@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { ChefHat, Upload, Film, Sparkles, Eye, Heart, Play } from 'lucide-react';
+import { Upload, Film, Sparkles, Eye, Heart, Play } from 'lucide-react';
 import foodVideo from "../../assets/createFood.mp4";
+import Logo from '../../components/Logo';
 
 const CreateFood = () => {
   const [name, setName] = useState('');
@@ -145,25 +146,13 @@ const CreateFood = () => {
       {/* Left Side - Branding (Hidden on mobile, visible on lg) */}
       <div className="hidden lg:flex flex-1 flex-col justify-start items-center p-12 pt-16 relative z-10">
         <div style={{ textAlign: 'center', maxWidth: '360px' }}>
-          {/* Chef Hat Icon - Floating */}
           <div style={{
             marginBottom: '32px',
             display: 'flex',
             justifyContent: 'center',
             animation: 'float 3s ease-in-out infinite'
           }}>
-            <div style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #F97316 0%, #FB923C 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 20px 60px -15px rgba(0,0,0,0.3)'
-            }}>
-              <ChefHat className="w-10 h-10 text-white" strokeWidth={2.5} />
-            </div>
+            <Logo size={80} className="drop-shadow-2xl" />
           </div>
 
           {/* Logo */}
@@ -277,16 +266,12 @@ const CreateFood = () => {
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-6">
             <div style={{
-              width: '64px',
-              height: '64px',
-              borderRadius: '50%',
-              background: '#F97316',
               margin: '0 auto 16px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <ChefHat className="w-8 h-8 text-white" />
+              <Logo size={64} className="drop-shadow-xl" />
             </div>
             <h1 style={{
               fontSize: '32px',
@@ -322,7 +307,7 @@ const CreateFood = () => {
                 letterSpacing: '0.5px',
                 fontFamily: "'Poppins', sans-serif"
               }}>Food Video</label>
-              
+
               <input
                 ref={fileInputRef}
                 type="file"

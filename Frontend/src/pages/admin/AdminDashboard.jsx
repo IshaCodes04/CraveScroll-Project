@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import {
   LogOut, Users, ShoppingBag, TrendingUp,
   Settings, CheckCircle, XCircle, Clock,
-  ChefHat, Search, Bell, Menu, X,
+  Search, Bell, Menu, X,
   PlayCircle, Activity, ArrowUpRight,
   Star, Flame, ChevronRight, Heart
 } from 'lucide-react';
 import axios from 'axios';
+import Logo from '../../components/Logo';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -111,8 +112,8 @@ const AdminDashboard = () => {
       >
         <div className="h-full flex flex-col p-8">
           <div className="flex items-center gap-3 mb-12">
-            <div className="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center shadow-lg shadow-[#D97706]/20 transition-transform hover:scale-105">
-              <ChefHat className="w-6 h-6 text-white" />
+            <div className="flex items-center justify-center transition-transform hover:scale-105">
+              <Logo className="w-10 h-10 drop-shadow-lg" />
             </div>
             <div>
               <h1 className="text-xl font-black tracking-tight leading-none text-[#4A3728]">CraveScroll</h1>
@@ -303,8 +304,8 @@ const AdminDashboard = () => {
                     <tr>
                       <td colSpan="4" className="px-10 py-24 text-center">
                         <div className="flex flex-col items-center gap-4">
-                          <div className="w-16 h-16 bg-[#FAF7F2] rounded-3xl flex items-center justify-center border border-[#F3E8D9]">
-                            <ChefHat size={32} className="text-[#E7E5E4]" />
+                          <div className="flex items-center justify-center">
+                            <Logo className="w-16 h-16 opacity-30 grayscale" />
                           </div>
                           <p className="text-xs font-bold text-[#D6D3D1] uppercase tracking-[3px]">All Caught Up!</p>
                         </div>

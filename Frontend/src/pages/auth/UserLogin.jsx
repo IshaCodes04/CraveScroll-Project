@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ChefHat, Mail, Lock, AlertCircle, Loader2 } from "lucide-react";
+import { Mail, Lock, AlertCircle, Loader2 } from "lucide-react";
 import axios from "axios";
+import Logo from "../../components/Logo";
 
 const UserLogin = () => {
   const navigate = useNavigate();
@@ -55,12 +56,9 @@ const UserLogin = () => {
       {/* Left Side - Branding */}
       <div className="hidden lg:flex flex-1 relative z-10 flex-col justify-center items-center p-12">
         <div className="text-center max-w-lg">
-          {/* Chef Hat Icon */}
-          <div
-            className="inline-flex items-center justify-center w-24 h-24 rounded-full mb-8 animate-float shadow-2xl"
-            style={{ background: "linear-gradient(135deg, #F97316 0%, #FB923C 100%)" }}
-          >
-            <ChefHat className="w-12 h-12 text-white" />
+          {/* Logo Icon */}
+          <div className="flex justify-center mb-8 animate-float">
+            <Logo className="w-24 h-24 drop-shadow-2xl" />
           </div>
 
           {/* Logo */}
@@ -158,11 +156,8 @@ const UserLogin = () => {
         >
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-6">
-            <div
-              className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4"
-              style={{ background: "#F97316" }}
-            >
-              <ChefHat className="w-8 h-8 text-white" />
+            <div className="flex justify-center mb-4">
+              <Logo className="w-16 h-16 drop-shadow-xl" />
             </div>
             <h1
               className="text-4xl text-[#F97316]"

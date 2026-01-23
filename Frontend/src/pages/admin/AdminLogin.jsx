@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ChefHat, Users, BarChart3, AlertCircle, LogIn, Eye, EyeOff } from 'lucide-react';
+import { Users, BarChart3, AlertCircle, LogIn, Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
+import Logo from '../../components/Logo';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -44,8 +45,8 @@ const AdminLogin = () => {
       <div className="hidden lg:flex flex-1 relative z-10 flex-col justify-center items-center p-12">
         <div className="max-w-md w-full">
           <div className="flex items-center gap-5 mb-16">
-            <div className="w-16 h-16 bg-[#D97706] rounded-3xl flex items-center justify-center shadow-lg shadow-[#D97706]/20 transition-transform hover:scale-105">
-              <ChefHat className="w-10 h-10 text-white" />
+            <div className="flex items-center justify-center transition-transform hover:scale-105">
+              <Logo className="w-16 h-16 drop-shadow-xl" />
             </div>
             <div>
               <h1 className="text-4xl font-black tracking-tighter leading-none text-[#4A3728]">CraveScroll</h1>
@@ -89,8 +90,8 @@ const AdminLogin = () => {
         <div className="w-full max-w-lg bg-white border border-[#F3E8D9] rounded-[48px] p-10 lg:p-14 shadow-[0_20px_50px_rgba(74,55,40,0.05)]">
           <div className="text-center mb-12">
             <div className="lg:hidden flex flex-col items-center gap-4 mb-8">
-              <div className="w-20 h-20 bg-[#D97706] rounded-[2rem] flex items-center justify-center shadow-lg">
-                <ChefHat className="w-12 h-12 text-white" />
+              <div className="flex items-center justify-center">
+                <Logo className="w-20 h-20 drop-shadow-lg" />
               </div>
               <div className="flex flex-col">
                 <span className="text-2xl font-black text-[#4A3728]">CraveScroll</span>

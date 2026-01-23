@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { ChefHat, Globe, Heart, Share2 } from "lucide-react";
+import { Globe, Heart, Share2 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
+import Logo from "../../components/Logo";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const Welcome = () => {
 
   const features = [
     {
-      icon: ChefHat,
+      icon: Logo,
       title: "Endless Scroll",
       description: "Discover unlimited recipes",
     },
@@ -104,9 +105,7 @@ const Welcome = () => {
 
       <div className="relative z-10 w-full max-w-[550px] px-4 sm:px-6 py-8 sm:py-10 text-center">
         <div className="mb-6 sm:mb-8 flex justify-center animate-float">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-2xl">
-            <ChefHat className="w-8 h-8 sm:w-10 sm:h-10 text-white" strokeWidth={2.5} />
-          </div>
+          <Logo className="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-2xl" />
         </div>
 
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent animate-fadeIn">
