@@ -33,7 +33,7 @@ const Home = () => {
       .catch((error) => {
         console.error("Error fetching videos:", error);
         if (error.response?.status === 401) {
-          navigate("/user/login");
+          navigate("/user/login"); // navigate to user login page 
         }
       })
       .finally(() => setLoading(false));
