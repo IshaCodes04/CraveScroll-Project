@@ -16,19 +16,26 @@ const AdminLogin = () => {
     setLoading(true);
 
     try {
-      const email = e.target.email.value;
-      const secretKey = e.target.secretKey.value;
+      const email = e.target.email.value.trim();
+      const secretKey = e.target.secretKey.value.trim();
+
+      if (!email || !secretKey) {
+        setError("Please enter both email and secret key");
+        setLoading(false);
+        return;
+      }
 
       const response = await axios.post("http://localhost:3000/api/auth/admin/login", {
         email,
         secretKey
       }, { withCredentials: true });
 
-      console.log(response.data);
+      console.log("Login successful:", response.data);
       navigate("/admin/dashboard");
     } catch (error) {
       console.error("Login error:", error);
-      setError(error.response?.data?.message || "Login failed. Please try again.");
+      const message = error.response?.data?.message || "Authentication failed. Please check your credentials.";
+      setError(message);
     } finally {
       setLoading(false);
     }

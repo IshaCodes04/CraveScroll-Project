@@ -16,9 +16,15 @@ const AdminRegister = () => {
         setLoading(true);
 
         try {
-            const adminName = e.target.adminName.value;
-            const email = e.target.email.value;
-            const secretKey = e.target.secretKey.value;
+            const adminName = e.target.adminName.value.trim();
+            const email = e.target.email.value.trim();
+            const secretKey = e.target.secretKey.value.trim();
+
+            if (!adminName || !email || !secretKey) {
+                setError("Please fill in all fields");
+                setLoading(false);
+                return;
+            }
 
             const response = await axios.post("http://localhost:3000/api/auth/admin/register", {
                 adminName,
@@ -26,11 +32,12 @@ const AdminRegister = () => {
                 secretKey
             }, { withCredentials: true });
 
-            console.log(response.data);
+            console.log("Registration successful:", response.data);
             navigate("/admin/dashboard");
         } catch (error) {
             console.error("Registration error:", error);
-            setError(error.response?.data?.message || "Registration failed. Please try again.");
+            const message = error.response?.data?.message || "Registration failed. Please check your connection.";
+            setError(message);
         } finally {
             setLoading(false);
         }

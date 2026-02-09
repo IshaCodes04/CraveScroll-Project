@@ -64,108 +64,136 @@ const Profile = () => {
     const bio = profile?.bio || profile?.description || "Hi, I like to think of my cooking as expressions of love for my family and friends, especially when it's healthy food!"
 
     return (
-        <main className="profile-page">
-            <header className="profile-page-header">
-                <div className="flex items-center justify-center p-2 mb-2 lg:mb-0">
-                    <Logo size={40} className="drop-shadow-md" />
-                </div>
-                <h1 className="cravescroll-heading">cravescroll</h1>
-            </header>
-            <section className="profile-header">
-                <div className="profile-top-section">
-                    <div className="profile-avatar-wrapper">
-                        <img
-                            className="profile-avatar"
-                            src={profileImage}
-                            alt={displayName}
-                            loading="lazy"
-                        />
-                        <div className="profile-avatar-ring"></div>
+        <div className="profile-page-container">
+            {/* Background Decorative Elements - Only visible on laptop screens */}
+            <div className="bg-decorations">
+                <div className="blob blob-1"></div>
+                <div className="blob blob-2"></div>
+                <div className="blob blob-3"></div>
+
+                <div className="floating-food food-1">🍕</div>
+                <div className="floating-food food-2">🍔</div>
+                <div className="floating-food food-3">🍜</div>
+                <div className="floating-food food-4">🍣</div>
+                <div className="floating-food food-5">🥑</div>
+                <div className="floating-food food-6">🍰</div>
+                <div className="floating-food food-7">🍩</div>
+                <div className="floating-food food-8">🌮</div>
+                <div className="floating-food food-9">🥗</div>
+                <div className="floating-food food-10">🥞</div>
+                <div className="floating-food food-11">🍦</div>
+                <div className="floating-food food-12">🍟</div>
+                <div className="floating-food food-13">🥐</div>
+                <div className="floating-food food-14">🥓</div>
+                <div className="floating-food food-15">🍳</div>
+                <div className="floating-food food-16">🥨</div>
+                <div className="floating-food food-17">🧀</div>
+                <div className="floating-food food-18">🍖</div>
+            </div>
+
+            <main className="profile-page">
+                <header className="profile-page-header">
+                    <div className="flex items-center justify-center p-2 mb-2 lg:mb-0">
+                        <Logo size={40} className="drop-shadow-md" />
                     </div>
-
-                    <div className="profile-header-info">
-                        <h1 className="profile-name">{displayName}</h1>
-                        <p className="profile-subtitle">
-                            <span className="subtitle-icon">🍽️</span>
-                            Food lover & Influencer
-                        </p>
-
-                        <div className="profile-actions">
-                            <button
-                                className={`btn-follow ${isFollowing ? 'btn-following' : ''}`}
-                                onClick={handleFollowClick}
-                            >
-                                {isFollowing ? 'Following' : 'Follow'}
-                            </button>
-                            <button
-                                className="btn-contact"
-                                onClick={handleContactClick}
-                            >
-                                Contact
-                            </button>
+                    <h1 className="cravescroll-heading">cravescroll</h1>
+                </header>
+                <section className="profile-header">
+                    <div className="profile-top-section">
+                        <div className="profile-avatar-wrapper">
+                            <img
+                                className="profile-avatar"
+                                src={profileImage}
+                                alt={displayName}
+                                loading="lazy"
+                            />
+                            <div className="profile-avatar-ring"></div>
                         </div>
-                    </div>
-                </div>
 
-                <p className="profile-bio">
-                    {bio}
-                </p>
+                        <div className="profile-header-info">
+                            <h1 className="profile-name">{displayName}</h1>
+                            <p className="profile-subtitle">
+                                <span className="subtitle-icon">🍽️</span>
+                                Food lover & Influencer
+                            </p>
 
-                <div className="profile-stats-row" role="list" aria-label="Stats">
-                    <div className="profile-stat-item" role="listitem">
-                        <span className="profile-stat-number">{profile?.totalMeals || videos.length || 7}</span>
-                        <span className="profile-stat-text">Recipes</span>
-                    </div>
-                    <div className="profile-stat-item" role="listitem">
-                        <span className="profile-stat-number">
-                            {profile?.customersServed
-                                ? profile.customersServed >= 1000
-                                    ? `${(profile.customersServed / 1000).toFixed(1)}K`
-                                    : profile.customersServed
-                                : '50K'
-                            }
-                        </span>
-                        <span className="profile-stat-text">Followers</span>
-                    </div>
-                    <div className="profile-stat-item" role="listitem">
-                        <span className="profile-stat-number">100</span>
-                        <span className="profile-stat-text">Following</span>
-                    </div>
-                </div>
-            </section>
-
-            <section className="profile-grid" aria-label="Food Reels">
-                {videos.length > 0 ? (
-                    videos.map((v) => (
-                        <div
-                            key={v.id || v._id}
-                            className="profile-grid-item"
-                            onMouseEnter={() => handleVideoHover(v.id || v._id, true)}
-                            onMouseLeave={() => handleVideoHover(v.id || v._id, false)}
-                        >
-                            <video
-                                ref={el => videoRefs.current[v.id || v._id] = el}
-                                className="profile-grid-video"
-                                src={v.video || v.videoUrl}
-                                muted
-                                loop
-                                playsInline
-                            >
-                            </video>
-                            <div className="video-overlay">
-                                <div className="play-icon">▶</div>
+                            <div className="profile-actions">
+                                <button
+                                    className={`btn-follow ${isFollowing ? 'btn-following' : ''}`}
+                                    onClick={handleFollowClick}
+                                >
+                                    {isFollowing ? 'Following' : 'Follow'}
+                                </button>
+                                <button
+                                    className="btn-contact"
+                                    onClick={handleContactClick}
+                                >
+                                    Contact
+                                </button>
                             </div>
                         </div>
-                    ))
-                ) : (
-                    <div className="profile-empty-state">
-                        <div className="empty-state-icon">📹</div>
-                        <p>No food reels yet</p>
-                        <span>Check back soon for delicious content!</span>
                     </div>
-                )}
-            </section>
-        </main>
+
+                    <p className="profile-bio">
+                        {bio}
+                    </p>
+
+                    <div className="profile-stats-row" role="list" aria-label="Stats">
+                        <div className="profile-stat-item" role="listitem">
+                            <span className="profile-stat-number">{profile?.totalMeals || videos.length || 7}</span>
+                            <span className="profile-stat-text">Recipes</span>
+                        </div>
+                        <div className="profile-stat-item" role="listitem">
+                            <span className="profile-stat-number">
+                                {profile?.customersServed
+                                    ? profile.customersServed >= 1000
+                                        ? `${(profile.customersServed / 1000).toFixed(1)}K`
+                                        : profile.customersServed
+                                    : '50K'
+                                }
+                            </span>
+                            <span className="profile-stat-text">Followers</span>
+                        </div>
+                        <div className="profile-stat-item" role="listitem">
+                            <span className="profile-stat-number">100</span>
+                            <span className="profile-stat-text">Following</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="profile-grid" aria-label="Food Reels">
+                    {videos.length > 0 ? (
+                        videos.map((v) => (
+                            <div
+                                key={v.id || v._id}
+                                className="profile-grid-item"
+                                onMouseEnter={() => handleVideoHover(v.id || v._id, true)}
+                                onMouseLeave={() => handleVideoHover(v.id || v._id, false)}
+                            >
+                                <video
+                                    ref={el => videoRefs.current[v.id || v._id] = el}
+                                    className="profile-grid-video"
+                                    src={v.video || v.videoUrl}
+                                    muted
+                                    loop
+                                    playsInline
+                                >
+                                </video>
+                                <div className="video-overlay">
+                                    <div className="play-icon">▶</div>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="profile-empty-state">
+                            <div className="empty-state-icon">📹</div>
+                            <p>No food reels yet</p>
+                            <span>Check back soon for delicious content!</span>
+                        </div>
+                    )}
+                </section>
+            </main>
+        </div>
     )
 }
 
