@@ -231,16 +231,7 @@ body {
     overflow: hidden;
 }
 
-.profile-page::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
-    z-index: 10;
-}
+
 
 @media (max-width: 1024px) {
     .profile-page {
@@ -607,8 +598,7 @@ body {
     padding: 10px 0;
     /* Tight padding */
     border-top: 1px solid #f0f0f0;
-    border-bottom: 2px solid transparent;
-    border-image: linear-gradient(90deg, #fb923c 0%, #f97316 50%, #ea580c 100%) 1;
+    border-bottom: 1px solid #f0f0f0;
     background: rgba(251, 146, 60, 0.02);
     margin-top: 0;
 }
@@ -755,172 +745,127 @@ body {
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-    .profile-page {
-        padding: 12px 12px;
-        background: #fff;
+    .profile-page-container {
+        background: #ffffff;
+        /* Simpler background for mobile */
     }
 
-    .profile-page-header {
-        padding: 8px 0 12px 0;
-        margin-bottom: 12px;
+    .profile-page {
+        margin: 0;
+        border-radius: 0;
+        width: 100%;
+        max-width: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    .outdoor-header {
+        margin: 0 auto;
+        padding: 5px 0;
+    }
+
+    .outdoor-header .cravescroll-heading {
+        font-size: 26px;
+    }
+
+    .profile-banner {
+        height: 160px;
     }
 
     .profile-header {
-        padding: 12px 0;
-        margin-bottom: 12px;
+        padding: 0 20px 10px 20px;
     }
 
     .profile-top-section {
-        gap: 12px;
-        margin-bottom: 10px;
+        gap: 15px;
+        margin-top: -45px;
+        margin-bottom: 15px;
+        align-items: center;
     }
 
     .profile-avatar {
-        width: 75px;
-        height: 75px;
+        width: 90px;
+        height: 90px;
+        border-width: 3px;
     }
 
     .profile-avatar-ring {
-        width: 83px;
-        height: 83px;
-        top: -4px;
-        left: -4px;
+        width: 94px;
+        height: 94px;
     }
 
     .profile-name {
-        font-size: 18px;
-        margin-bottom: 3px;
+        font-size: 22px;
     }
 
-    .profile-subtitle {
-        font-size: 12px;
-        margin-bottom: 8px;
+    .profile-actions {
+        gap: 10px;
     }
 
     .btn-follow,
     .btn-contact {
-        padding: 6px 16px;
-        font-size: 12px;
-    }
-
-    .chef-hat-container {
-        width: 45px;
-        height: 45px;
-    }
-
-    .chef-hat-icon {
-        width: 24px;
-        height: 24px;
-    }
-
-    .cravescroll-heading {
-        font-size: 24px;
-    }
-
-    .profile-bio {
-        font-size: 13px;
-        padding: 10px;
-        margin: 10px 0 12px 0;
-    }
-
-    .profile-stats-row {
-        padding: 10px 0;
-    }
-
-    .profile-stat-number {
-        font-size: 18px;
-        margin-bottom: 2px;
-    }
-
-    .profile-stat-text {
-        font-size: 10px;
+        padding: 8px 0;
+        flex: 1;
+        text-align: center;
+        justify-content: center;
     }
 
     .profile-grid {
+        padding: 10px 10px 30px;
         gap: 2px;
-        padding-top: 5px;
-        padding-bottom: 12px;
     }
 }
 
 @media (max-width: 480px) {
-    .profile-page {
-        padding: 10px 10px;
-    }
-
-    .profile-page-header {
-        padding: 6px 0 10px 0;
-        margin-bottom: 10px;
-    }
-
-    .profile-header {
-        padding: 10px 0;
-        margin-bottom: 10px;
-    }
-
-    .profile-avatar {
-        width: 65px;
-        height: 65px;
-    }
-
-    .profile-avatar-ring {
-        width: 73px;
-        height: 73px;
-        top: -4px;
-        left: -4px;
-    }
-
-    .profile-name {
-        font-size: 16px;
-        margin-bottom: 2px;
-    }
-
-    .profile-subtitle {
-        font-size: 11px;
-        margin-bottom: 6px;
-    }
-
-    .profile-actions {
-        gap: 6px;
-    }
-
-    .btn-follow,
-    .btn-contact {
-        padding: 5px 14px;
-        font-size: 11px;
-        flex: 1;
-        min-width: 80px;
-    }
-
-    .chef-hat-container {
-        width: 40px;
-        height: 40px;
-    }
-
-    .chef-hat-icon {
-        width: 22px;
-        height: 22px;
-    }
-
-    .cravescroll-heading {
+    .outdoor-header .cravescroll-heading {
         font-size: 22px;
     }
 
-    .profile-bio {
-        font-size: 12px;
-        padding: 8px;
-        margin: 8px 0 10px 0;
+    .profile-banner {
+        height: 140px;
+    }
+
+    .profile-top-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: -50px;
+    }
+
+    .profile-header-info {
+        padding-top: 5px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .name-wrapper {
+        justify-content: center;
+    }
+
+    .profile-name {
+        font-size: 20px;
+    }
+
+    .profile-subtitle {
+        justify-content: center;
+    }
+
+    .profile-actions {
+        width: 100%;
+        margin-top: 5px;
     }
 
     .profile-stats-row {
-        padding: 8px 0;
+        gap: 10px;
     }
 
     .profile-stat-number {
-        font-size: 16px;
+        font-size: 18px;
     }
 
     .profile-stat-text {
-        font-size: 9px;
+        font-size: 10px;
     }
 }
