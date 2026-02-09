@@ -1,7 +1,8 @@
 body {
     margin: 0;
     padding: 0;
-    background: #ffffff !important;
+    background: #fff7ed !important;
+    /* Match theme and force override any dark mode blue */
     overflow-x: hidden;
 }
 
@@ -9,7 +10,10 @@ body {
     position: relative;
     width: 100%;
     min-height: 100vh;
-    background: linear-gradient(135deg, #ffffff 0%, #fafff8 100%);
+    background: linear-gradient(135deg, #fff7ed 0%, #fff1e6 50%, #fef3c7 100%);
+    background-attachment: fixed;
+    overflow: hidden;
+    /* Prevent margin collapse that shows the body background */
 }
 
 /* Background Decorations */
@@ -28,7 +32,7 @@ body {
     position: absolute;
     border-radius: 50%;
     filter: blur(120px);
-    opacity: 0.12;
+    opacity: 0.18;
     z-index: 0;
 }
 
@@ -37,7 +41,7 @@ body {
     left: -10%;
     width: 45%;
     height: 45%;
-    background: #FFEDD5;
+    background: #fb923c;
     animation: blob-float 18s ease-in-out infinite alternate;
 }
 
@@ -46,7 +50,7 @@ body {
     right: -10%;
     width: 40%;
     height: 40%;
-    background: #FEF3C7;
+    background: #ea580c;
     animation: blob-float 25s ease-in-out infinite alternate-reverse;
 }
 
@@ -55,8 +59,8 @@ body {
     left: 20%;
     width: 300px;
     height: 300px;
-    background: #ECFDF5;
-    opacity: 0.08;
+    background: #fde68a;
+    opacity: 0.12;
 }
 
 @keyframes blob-float {
@@ -215,14 +219,26 @@ body {
     max-width: 900px;
     margin: 40px auto;
     padding: 40px;
-    background: rgba(255, 255, 255, 0.95);
+    background: #ffffff;
     min-height: calc(100vh - 80px);
-    box-shadow: 0 20px 50px rgba(74, 55, 40, 0.05);
+    box-shadow: 0 25px 50px -12px rgba(249, 115, 22, 0.15),
+        0 0 20px rgba(0, 0, 0, 0.05);
     border-radius: 40px;
     position: relative;
     z-index: 2;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(251, 146, 60, 0.2);
+    overflow: hidden;
+}
+
+.profile-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
+    z-index: 10;
 }
 
 @media (max-width: 1024px) {
@@ -329,7 +345,7 @@ body {
 /* Header Section */
 .profile-header {
     padding: 15px 0;
-    background: #fff;
+    background: transparent;
     border-bottom: 1px solid #f0f0f0;
     margin-bottom: 15px;
 }
@@ -339,7 +355,7 @@ body {
     align-items: flex-start;
     gap: 15px;
     margin-bottom: 12px;
-    background: #fff;
+    background: transparent;
 }
 
 .profile-avatar-wrapper {
@@ -519,12 +535,13 @@ body {
 .profile-stats-row {
     display: flex;
     justify-content: space-around;
-    padding: 12px 0;
+    padding: 16px 0;
     border-top: 1px solid #f0f0f0;
     border-bottom: 2px solid transparent;
-    border-image: linear-gradient(90deg, #d946aa 0%, #7c3aed 100%) 1;
-    background: #fff;
+    border-image: linear-gradient(90deg, #fb923c 0%, #f97316 50%, #ea580c 100%) 1;
+    background: rgba(251, 146, 60, 0.02);
     margin-top: 0;
+    border-radius: 12px;
 }
 
 .profile-stat-item {
