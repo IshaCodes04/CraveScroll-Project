@@ -217,8 +217,9 @@ body {
 
 .profile-page {
     max-width: 900px;
-    margin: 40px auto;
-    padding: 40px;
+    margin: 20px auto;
+    padding: 0;
+    /* Removed padding to allow banner to bleed */
     background: #ffffff;
     min-height: calc(100vh - 80px);
     box-shadow: 0 25px 50px -12px rgba(249, 115, 22, 0.15),
@@ -253,15 +254,26 @@ body {
 
 /* Cravescroll Heading */
 .profile-page-header {
-    padding: 10px 0 15px 0;
-    border-bottom: 1px solid #f0f0f0;
-    margin-bottom: 15px;
+    padding: 10px 0;
+    margin-bottom: 0;
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 12px;
+}
+
+.outdoor-header {
+    max-width: 900px;
+    margin: 30px auto 10px;
+    justify-content: center;
+    /* Centered heading */
+    z-index: 10;
+}
+
+.outdoor-header .cravescroll-heading {
+    font-size: 32px;
 }
 
 .chef-hat-container {
@@ -342,20 +354,50 @@ body {
     font-size: 14px;
 }
 
+.profile-banner {
+    position: relative;
+    height: 190px;
+    /* Balanced height */
+    width: 100%;
+    overflow: hidden;
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.profile-page:hover .banner-image {
+    transform: scale(1.08);
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.5) 100%);
+}
+
 /* Header Section */
 .profile-header {
-    padding: 15px 0;
+    padding: 0 40px 10px 40px;
     background: transparent;
     border-bottom: 1px solid #f0f0f0;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .profile-top-section {
     display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    margin-bottom: 12px;
-    background: transparent;
+    align-items: center;
+    gap: 25px;
+    margin-top: -55px;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 5;
 }
 
 .profile-avatar-wrapper {
@@ -364,34 +406,31 @@ body {
 }
 
 .profile-avatar {
-    width: 85px;
-    height: 85px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #00d66b;
+    border: 4px solid #ffffff;
     position: relative;
     z-index: 2;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 214, 107, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .profile-avatar:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0, 214, 107, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.3);
 }
 
 .profile-avatar-ring {
     position: absolute;
-    top: -4px;
-    left: -4px;
-    width: 93px;
-    height: 93px;
+    top: -2px;
+    left: -2px;
+    width: 114px;
+    height: 114px;
     border-radius: 50%;
-    border: 2px solid transparent;
-    background: linear-gradient(135deg, #00d66b, #00b855) padding-box,
-        linear-gradient(135deg, #00d66b, #00b855) border-box;
-    opacity: 0.3;
-    animation: pulse-ring 2s ease-in-out infinite;
+    border: 2px solid #fb923c;
+    opacity: 0.5;
 }
 
 @keyframes pulse-ring {
@@ -411,15 +450,44 @@ body {
 .profile-header-info {
     flex: 1;
     min-width: 0;
+    padding-top: 50px;
+    /* Align info text below banner line */
+}
+
+.name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
 }
 
 .profile-name {
-    font-size: 22px;
-    font-weight: 700;
-    margin: 0 0 4px 0;
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0;
     color: #1a1a1a;
     letter-spacing: -0.5px;
     line-height: 1.2;
+}
+
+.verified-badge {
+    font-size: 20px;
+    animation: badge-pulse 2s ease-in-out infinite;
+    cursor: help;
+}
+
+@keyframes badge-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0px rgba(249, 115, 22, 0));
+    }
+
+    50% {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.5));
+    }
 }
 
 .profile-subtitle {
@@ -443,16 +511,16 @@ body {
 }
 
 .btn-follow {
-    background: linear-gradient(135deg, #00d66b 0%, #00b855 100%);
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
     color: white;
     border: none;
-    padding: 7px 20px;
+    padding: 7px 25px;
     border-radius: 20px;
     font-weight: 600;
     cursor: pointer;
     font-size: 13px;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 214, 107, 0.25);
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.25);
     position: relative;
     overflow: hidden;
     white-space: nowrap;
@@ -511,9 +579,9 @@ body {
 }
 
 .btn-contact:hover {
-    border-color: #00d66b;
-    color: #00d66b;
-    background: rgba(0, 214, 107, 0.05);
+    border-color: #fb923c;
+    color: #fb923c;
+    background: rgba(249, 115, 22, 0.05);
     transform: translateY(-2px);
 }
 
@@ -525,23 +593,24 @@ body {
     font-size: 14px;
     color: #555;
     line-height: 1.5;
-    margin: 12px 0 15px 0;
-    padding: 12px;
-    background: linear-gradient(135deg, rgba(0, 214, 107, 0.05) 0%, rgba(217, 70, 170, 0.05) 100%);
-    border-radius: 10px;
-    border-left: 3px solid #00d66b;
+    margin: 5px 0 12px 0;
+    /* Reduced vertical space */
+    padding: 12px 15px;
+    background: linear-gradient(135deg, rgba(251, 146, 60, 0.05) 0%, rgba(234, 88, 12, 0.05) 100%);
+    border-radius: 12px;
+    border-left: 3px solid #fb923c;
 }
 
 .profile-stats-row {
     display: flex;
     justify-content: space-around;
-    padding: 16px 0;
+    padding: 10px 0;
+    /* Tight padding */
     border-top: 1px solid #f0f0f0;
     border-bottom: 2px solid transparent;
     border-image: linear-gradient(90deg, #fb923c 0%, #f97316 50%, #ea580c 100%) 1;
     background: rgba(251, 146, 60, 0.02);
     margin-top: 0;
-    border-radius: 12px;
 }
 
 .profile-stat-item {
@@ -563,7 +632,7 @@ body {
     font-weight: 700;
     color: #1a1a1a;
     margin-bottom: 3px;
-    background: linear-gradient(135deg, #00d66b 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -584,10 +653,10 @@ body {
 .profile-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    padding-top: 5px;
+    gap: 3px;
+    padding: 10px 40px 30px;
     background: #fff;
-    padding-bottom: 15px;
+    padding-bottom: 30px;
 }
 
 .profile-grid-item {

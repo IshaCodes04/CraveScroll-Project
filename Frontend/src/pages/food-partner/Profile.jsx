@@ -91,13 +91,23 @@ const Profile = () => {
                 <div className="floating-food food-18">🍖</div>
             </div>
 
+            <header className="profile-page-header outdoor-header">
+                <div className="flex items-center justify-center p-2 mb-2 lg:mb-0">
+                    <Logo size={40} className="drop-shadow-lg" />
+                </div>
+                <h1 className="cravescroll-heading">cravescroll</h1>
+            </header>
+
             <main className="profile-page">
-                <header className="profile-page-header">
-                    <div className="flex items-center justify-center p-2 mb-2 lg:mb-0">
-                        <Logo size={40} className="drop-shadow-md" />
-                    </div>
-                    <h1 className="cravescroll-heading">cravescroll</h1>
-                </header>
+                <div className="profile-banner">
+                    <img
+                        src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1470&auto=format&fit=crop"
+                        alt="Profile Banner"
+                        className="banner-image"
+                    />
+                    <div className="banner-overlay"></div>
+                </div>
+
                 <section className="profile-header">
                     <div className="profile-top-section">
                         <div className="profile-avatar-wrapper">
@@ -111,7 +121,10 @@ const Profile = () => {
                         </div>
 
                         <div className="profile-header-info">
-                            <h1 className="profile-name">{displayName}</h1>
+                            <div className="name-wrapper">
+                                <h1 className="profile-name">{displayName}</h1>
+                                <span className="verified-badge" title="Verified Chef">👨‍🍳</span>
+                            </div>
                             <p className="profile-subtitle">
                                 <span className="subtitle-icon">🍽️</span>
                                 Food lover & Influencer
