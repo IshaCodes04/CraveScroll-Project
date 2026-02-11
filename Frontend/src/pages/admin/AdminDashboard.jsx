@@ -132,10 +132,22 @@ const AdminDashboard = () => {
           <button
             onClick={handleLogout}
             disabled={loading}
-            className="mt-auto w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-[#A8A29E] hover:text-[#B45309] hover:bg-[#FFFBEB] transition-all group"
+            className="group mt-auto w-full relative h-[56px] flex items-center justify-center 
+              bg-gradient-to-r from-[#FFFBEB] to-[#FEF3C7] 
+              border border-[#F3E8D9] rounded-2xl 
+              text-[#A8A29E] hover:text-[#D97706]
+              transition-all duration-300 ease-out overflow-hidden
+              hover:border-[#D97706]/30 hover:shadow-lg hover:shadow-[#D97706]/5"
           >
-            <LogOut size={18} className="group-hover:-translate-x-1 transition-transform" />
-            <span className="font-bold text-xs tracking-wide uppercase">{loading ? '...' : 'Logout Admin'}</span>
+            {/* Shine effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#D97706]/5 to-transparent -translate-x-full group-hover:transition-transform group-hover:duration-1000 group-hover:translate-x-full" />
+
+            <div className="relative flex items-center gap-3">
+              <LogOut size={18} className="group-hover:translate-x-1 transition-transform" />
+              <span className="font-black text-[10px] uppercase tracking-[2px]">
+                {loading ? 'Processing...' : 'Logout Admin'}
+              </span>
+            </div>
           </button>
         </div>
       </aside>

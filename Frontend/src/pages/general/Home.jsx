@@ -164,11 +164,25 @@ const Home = () => {
       {isUser && (
         <button
           onClick={handleLogout}
-          className="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 bg-red-500/90 hover:bg-red-600 text-white rounded-full shadow-lg backdrop-blur-sm transition-all duration-300"
-          style={{ zIndex: 9999 }}
+          className="group fixed top-4 right-4 z-[9999] flex items-center justify-center gap-2.5 
+            px-5 py-2.5 sm:px-6 sm:py-3
+            rounded-full
+            bg-gradient-to-r from-red-500 via-rose-600 to-red-700
+            text-white text-sm font-bold
+            shadow-[0_0_15px_rgba(239,68,68,0.3)]
+            hover:shadow-[0_0_25px_rgba(239,68,68,0.5)]
+            hover:scale-105 active:scale-95
+            transition-all duration-300 ease-out
+            overflow-hidden"
+          title="Sign Out"
         >
-          <LogOut className="w-4 h-4" />
-          <span className="text-sm font-semibold">Logout</span>
+          {/* Shine effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine" />
+
+          <div className="relative flex items-center gap-2">
+            <LogOut className="w-4 h-4 sm:w-[18px] sm:h-[18px] group-hover:translate-x-1 transition-transform duration-300" />
+            <span className="tracking-wide">Logout</span>
+          </div>
         </button>
       )}
 
