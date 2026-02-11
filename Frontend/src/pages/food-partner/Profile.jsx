@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import '../../styles/profile.css'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import { UserPlus, Mail, ChefHat, Users, BookOpen, CheckCircle } from 'lucide-react'
 import Logo from '../../components/Logo'
 
 const Profile = () => {
@@ -123,53 +124,75 @@ const Profile = () => {
                         <div className="profile-header-info">
                             <div className="name-wrapper">
                                 <h1 className="profile-name">{displayName}</h1>
-                                <span className="verified-badge" title="Verified Chef">👨‍🍳</span>
+                                <CheckCircle className="verified-icon" size={20} fill="#f97316" color="white" />
                             </div>
                             <p className="profile-subtitle">
-                                <span className="subtitle-icon">🍽️</span>
-                                Food lover & Influencer
+                                <ChefHat size={14} className="subtitle-icon-lucide" />
+                                Professional Chef & Food Partner
                             </p>
 
                             <div className="profile-actions">
                                 <button
-                                    className={`btn-follow ${isFollowing ? 'btn-following' : ''}`}
+                                    className={`btn-follow-premium ${isFollowing ? 'btn-following' : ''} group overflow-hidden`}
                                     onClick={handleFollowClick}
                                 >
-                                    {isFollowing ? 'Following' : 'Follow'}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine" />
+                                    <div className="relative flex items-center gap-2">
+                                        <UserPlus size={16} />
+                                        {isFollowing ? 'Following' : 'Follow'}
+                                    </div>
                                 </button>
                                 <button
-                                    className="btn-contact"
+                                    className="btn-contact-premium"
                                     onClick={handleContactClick}
                                 >
+                                    <Mail size={16} />
                                     Contact
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <p className="profile-bio">
-                        {bio}
-                    </p>
+                    <div className="profile-bio-container">
+                        <p className="profile-bio">
+                            {bio}
+                        </p>
+                    </div>
 
-                    <div className="profile-stats-row" role="list" aria-label="Stats">
-                        <div className="profile-stat-item" role="listitem">
-                            <span className="profile-stat-number">{profile?.totalMeals || videos.length || 7}</span>
-                            <span className="profile-stat-text">Recipes</span>
+                    <div className="profile-stats-row-premium" role="list" aria-label="Stats">
+                        <div className="profile-stat-item-premium" role="listitem">
+                            <div className="stat-icon-wrapper recipes-bg">
+                                <BookOpen size={18} />
+                            </div>
+                            <div className="stat-info">
+                                <span className="profile-stat-number">{profile?.totalMeals || videos.length || 7}</span>
+                                <span className="profile-stat-text">Recipes</span>
+                            </div>
                         </div>
-                        <div className="profile-stat-item" role="listitem">
-                            <span className="profile-stat-number">
-                                {profile?.customersServed
-                                    ? profile.customersServed >= 1000
-                                        ? `${(profile.customersServed / 1000).toFixed(1)}K`
-                                        : profile.customersServed
-                                    : '50K'
-                                }
-                            </span>
-                            <span className="profile-stat-text">Followers</span>
+                        <div className="profile-stat-item-premium" role="listitem">
+                            <div className="stat-icon-wrapper followers-bg">
+                                <Users size={18} />
+                            </div>
+                            <div className="stat-info">
+                                <span className="profile-stat-number">
+                                    {profile?.customersServed
+                                        ? profile.customersServed >= 1000
+                                            ? `${(profile.customersServed / 1000).toFixed(1)}K`
+                                            : profile.customersServed
+                                        : '50K'
+                                    }
+                                </span>
+                                <span className="profile-stat-text">Followers</span>
+                            </div>
                         </div>
-                        <div className="profile-stat-item" role="listitem">
-                            <span className="profile-stat-number">100</span>
-                            <span className="profile-stat-text">Following</span>
+                        <div className="profile-stat-item-premium" role="listitem">
+                            <div className="stat-icon-wrapper following-bg">
+                                <UserPlus size={18} />
+                            </div>
+                            <div className="stat-info">
+                                <span className="profile-stat-number">100</span>
+                                <span className="profile-stat-text">Following</span>
+                            </div>
                         </div>
                     </div>
                 </section>
