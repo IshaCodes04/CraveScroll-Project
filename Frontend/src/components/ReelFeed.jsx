@@ -6,6 +6,8 @@ import {
   MessageCircle,
   Play,
   Share2,
+  Plus,
+  Utensils,
 } from "lucide-react";
 import Logo from "./Logo";
 
@@ -269,7 +271,7 @@ const ReelFeed = ({
                 {item.description}
               </p>
 
-              {/* Visit Store */}
+              {/* Visit Store / Create Food */}
               {item.foodPartner && (
                 <div className="w-full flex justify-center">
                   <Link
@@ -278,24 +280,32 @@ const ReelFeed = ({
                         ? "/create-food"
                         : "/food-partner/" + (item.foodPartner?._id || item.foodPartner)
                     }
-                    className="flex items-center justify-center gap-2
-        w-auto
-        px-5 py-2.5
-        rounded-lg
-        bg-primary
-        text-white text-sm font-semibold
-        shadow-md shadow-black/40
-        hover:bg-primary/90
-        transition-all duration-300"
+                    className="group relative flex items-center justify-center gap-2.5
+                      w-auto px-8 py-3.5
+                      rounded-full
+                      bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700
+                      text-white text-base font-bold
+                      shadow-[0_0_20px_rgba(249,115,22,0.4)]
+                      hover:shadow-[0_0_30px_rgba(249,115,22,0.6)]
+                      hover:scale-105 active:scale-95
+                      transition-all duration-300 ease-out
+                      overflow-hidden"
                   >
-                    <span className="text-base">
-                      {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
-                        ? "➕"
-                        : "🍽️"}
-                    </span>
-                    {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
-                      ? "Create Food"
-                      : "Visit Food Partner Profile"}
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine" />
+
+                    <div className="relative flex items-center gap-2">
+                      {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId ? (
+                        <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+                      ) : (
+                        <Utensils className="w-5 h-5 group-hover:animate-bounce" />
+                      )}
+                      <span className="tracking-wide">
+                        {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
+                          ? "Create Food"
+                          : "Visit Store"}
+                      </span>
+                    </div>
                   </Link>
                 </div>
               )}
