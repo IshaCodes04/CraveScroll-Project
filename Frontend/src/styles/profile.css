@@ -229,6 +229,12 @@ body {
     z-index: 2;
     border: 1px solid rgba(251, 146, 60, 0.2);
     overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+
+.profile-page:hover {
+    box-shadow: 0 35px 70px -15px rgba(249, 115, 22, 0.2),
+        0 0 30px rgba(0, 0, 0, 0.08);
 }
 
 
@@ -237,9 +243,11 @@ body {
     .profile-page {
         margin: 0 auto;
         border-radius: 0;
-        padding: 15px;
+        padding: 0;
+        /* Keep it 0 to allow banner to be full width */
         min-height: 100vh;
         background: #fff;
+        border: none;
     }
 }
 
@@ -347,8 +355,8 @@ body {
 
 .profile-banner {
     position: relative;
-    height: 190px;
-    /* Balanced height */
+    height: 240px;
+    /* Increased height for desktop */
     width: 100%;
     overflow: hidden;
 }
@@ -733,7 +741,7 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-    padding: 20px 0;
+    padding: 10px 0 25px 0;
     margin-top: 10px;
 }
 
@@ -806,8 +814,35 @@ body {
 
 @media (max-width: 768px) {
     .profile-stats-row-premium {
-        grid-template-columns: repeat(1, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .profile-stat-item-premium {
+        flex-direction: column;
+        text-align: center;
+        padding: 8px 4px;
+        gap: 4px;
+        border-radius: 12px;
+    }
+
+    .stat-icon-wrapper {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+    }
+
+    .stat-icon-wrapper svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .profile-stat-number {
+        font-size: 16px;
+    }
+
+    .profile-stat-text {
+        font-size: 9px;
     }
 }
 
@@ -816,8 +851,9 @@ body {
 .profile-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 3px;
-    padding: 10px 40px 30px;
+    gap: 15px;
+    /* Increased for cleaner look on desktop */
+    padding: 20px 40px 40px;
     background: #fff;
     padding-bottom: 30px;
 }
@@ -985,7 +1021,8 @@ body {
 
     .profile-grid {
         padding: 10px 10px 30px;
-        gap: 2px;
+        gap: 8px;
+        /* Slightly more gap on mobile too */
     }
 }
 
@@ -1002,11 +1039,12 @@ body {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        margin-top: -50px;
+        margin-top: -60px;
+        padding-bottom: 10px;
     }
 
     .profile-header-info {
-        padding-top: 5px;
+        padding-top: 10px;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -1018,16 +1056,30 @@ body {
     }
 
     .profile-name {
-        font-size: 20px;
+        font-size: 24px;
+        margin-bottom: 2px;
     }
 
     .profile-subtitle {
         justify-content: center;
+        margin-bottom: 15px;
+        font-size: 14px;
     }
 
     .profile-actions {
         width: 100%;
         margin-top: 5px;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .btn-follow-premium,
+    .btn-contact-premium {
+        padding: 10px 20px;
+        font-size: 14px;
+        flex: 1;
+        max-width: 160px;
+        justify-content: center;
     }
 
     .profile-stats-row {
