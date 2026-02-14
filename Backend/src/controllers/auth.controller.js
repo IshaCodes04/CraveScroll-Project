@@ -195,8 +195,8 @@ async function registerAdmin(req, res) {
    try {
       const { adminName, email, secretKey } = req.body;
 
-      if (!secretKey) {
-         return res.status(400).json({ message: "Secret Key is required" });
+      if (!adminName || !email || !secretKey) {
+         return res.status(400).json({ message: "All fields are required" });
       }
 
       const isAdminAlreadyExists = await adminModel.findOne({ email });
@@ -207,10 +207,14 @@ async function registerAdmin(req, res) {
          });
       }
 
+      // Hash the secret key for security
+      const salt = await bcrypt.genSalt(10);
+      const hashedSecretKey = await bcrypt.hash(secretKey, salt);
+
       const admin = await adminModel.create({
          adminName,
          email,
-         secretKey
+         secretKey: hashedSecretKey
       });
 
       const token = jwt.sign({
@@ -256,8 +260,9 @@ async function loginAdmin(req, res) {
          });
       }
 
-      // Check if secretKey matches
-      if (admin.secretKey !== secretKey) {
+      // Check if secretKey matches using bcrypt
+      const isMatch = await bcrypt.compare(secretKey, admin.secretKey);
+      if (!isMatch) {
          return res.status(400).json({
             message: "Invalid email or secret key"
          });
