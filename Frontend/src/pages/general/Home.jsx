@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LogOut } from "lucide-react";
+import { LogOut, Loader2, UtensilsCrossed } from "lucide-react";
 import "../../styles/reels.css";
 import ReelFeed from "../../components/ReelFeed";
 
@@ -33,7 +33,7 @@ const Home = () => {
       .catch((error) => {
         console.error("Error fetching videos:", error);
         if (error.response?.status === 401) {
-          navigate("/user/login"); // navigate to user login page 
+          navigate("/user/login");
         }
       })
       .finally(() => setLoading(false));
@@ -41,7 +41,6 @@ const Home = () => {
 
   useEffect(() => {
     fetchVideos();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, location.state?.refresh]);
 
   const likeVideo = async (item) => {
@@ -65,11 +64,7 @@ const Home = () => {
         })
       );
     } catch (error) {
-      console.error("Error liking video:", error);
-      // If unauthorized, redirect to login
-      if (error.response?.status === 401) {
-        navigate("/user/login");
-      }
+      if (error.response?.status === 401) navigate("/user/login");
     }
   };
 
@@ -94,11 +89,7 @@ const Home = () => {
         })
       );
     } catch (error) {
-      console.error("Error saving video:", error);
-      // If unauthorized, redirect to login
-      if (error.response?.status === 401) {
-        navigate("/user/login");
-      }
+      if (error.response?.status === 401) navigate("/user/login");
     }
   };
 
@@ -107,51 +98,42 @@ const Home = () => {
       await axios.get("http://localhost:3000/api/auth/user/logout", { withCredentials: true });
       navigate("/user/login");
     } catch (error) {
-      console.error("Logout error:", error);
-      // Even if logout fails, navigate to login
       navigate("/user/login");
     }
   };
 
   if (loading) {
     return (
-      <div
-        style={{
-          height: "100vh",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(135deg, #0f0f0f 0%, #1a0f2e 50%, #1a2a3a 100%)",
-          gap: "20px",
-        }}
-      >
-        <div
-          style={{
-            width: "60px",
-            height: "60px",
-            border: "4px solid rgba(255,107,53,0.2)",
-            borderTopColor: "#ff6b35",
-            borderRadius: "50%",
-            animation: "spin 1.2s linear infinite",
-            boxShadow: "0 0 20px rgba(255, 107, 53, 0.3)",
-          }}
-        />
-        <span
-          style={{
-            color: "rgba(255,255,255,0.8)",
-            fontSize: "16px",
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: "500",
-            letterSpacing: "0.5px",
-          }}
-        >
-          🍽️ Loading delicious reels...
-        </span>
+      <div className="h-screen w-full flex flex-col items-center justify-center bg-black overflow-hidden relative">
+        {/* Animated Background Gradients */}
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-600/20 rounded-full blur-[120px] animate-pulse" />
+
+        <div className="relative z-10 flex flex-col items-center gap-12 animate-fade-up">
+          <div className="relative group">
+            <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl group-hover:blur-3xl transition-all duration-500" />
+            <div className="w-32 h-32 rounded-full border-4 border-white/5 border-t-primary animate-spin flex items-center justify-center relative bg-black/40 backdrop-blur-sm">
+              <UtensilsCrossed className="w-10 h-10 text-primary animate-bounce" />
+            </div>
+          </div>
+
+          <div className="text-center space-y-4">
+            <h1 className="text-4xl font-black tracking-tighter text-white">
+              Crave<span className="text-primary italic">Scroll</span>
+            </h1>
+            <div className="flex flex-col items-center gap-2">
+              <p className="text-white/40 font-bold uppercase tracking-[4px] text-xs">Curating Your Feed</p>
+              <div className="w-32 h-1 bg-white/10 rounded-full overflow-hidden">
+                <div className="h-full bg-primary animate-[shimmer_2s_infinite]" style={{ width: '40%' }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <style>{`
-          @keyframes spin {
-            to { transform: rotate(360deg); }
+          @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(300%); }
           }
         `}</style>
       </div>
@@ -159,41 +141,36 @@ const Home = () => {
   }
 
   return (
-    <>
-      {/* Logout Button */}
+    <div className="relative bg-black min-h-screen">
+      {/* Premium Floating Logout */}
       {isUser && (
         <button
           onClick={handleLogout}
-          className="group fixed top-4 right-4 z-[9999] flex items-center justify-center gap-2.5 
-            px-5 py-2.5 sm:px-6 sm:py-3
-            rounded-full
-            bg-gradient-to-r from-red-500 via-rose-600 to-red-700
-            text-white text-sm font-bold
-            shadow-[0_0_15px_rgba(239,68,68,0.3)]
-            hover:shadow-[0_0_25px_rgba(239,68,68,0.5)]
-            hover:scale-105 active:scale-95
-            transition-all duration-300 ease-out
-            overflow-hidden"
-          title="Sign Out"
+          className="fixed top-6 right-6 z-[100] group flex items-center gap-4 px-6 py-3 rounded-2xl bg-white/5 backdrop-blur-2xl border border-white/10 hover:bg-white/10 hover:border-destructive/30 transition-all duration-500 shadow-2xl overflow-hidden"
         >
-          {/* Shine effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine" />
-
-          <div className="relative flex items-center gap-2">
-            <LogOut className="w-4 h-4 sm:w-[18px] sm:h-[18px] group-hover:translate-x-1 transition-transform duration-300" />
-            <span className="tracking-wide">Logout</span>
+          <div className="absolute inset-0 bg-destructive/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+          <div className="relative flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-destructive/10 flex items-center justify-center group-hover:bg-destructive group-hover:rotate-12 transition-all duration-500">
+              <LogOut className="w-4 h-4 text-destructive group-hover:text-white" />
+            </div>
+            <div className="flex flex-col items-start leading-tight">
+              <span className="text-white/90 font-black text-[10px] uppercase tracking-widest">Account</span>
+              <span className="text-white/40 font-bold text-[10px] uppercase tracking-widest group-hover:text-destructive transition-colors">Sign Out</span>
+            </div>
           </div>
         </button>
       )}
 
-      <ReelFeed
-        items={videos}
-        onLike={likeVideo}
-        onSave={saveVideo}
-        emptyMessage="No food reels yet. Check back soon!"
-        authInfo={authInfo}
-      />
-    </>
+      <main className="h-screen w-full relative">
+        <ReelFeed
+          items={videos}
+          onLike={likeVideo}
+          onSave={saveVideo}
+          emptyMessage="No food reels yet. Check back soon!"
+          authInfo={authInfo}
+        />
+      </main>
+    </div>
   );
 };
 

@@ -1,14 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Heart,
-  Bookmark,
   MessageCircle,
-  Play,
   Share2,
-  Plus,
+  Bookmark,
+  Play,
+  Volume2,
+  VolumeX,
   Utensils,
+  Plus,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import Logo from "./Logo";
 
 const ReelFeed = ({
@@ -16,72 +18,58 @@ const ReelFeed = ({
   onLike,
   onSave,
   onFollow,
-  emptyMessage = "No videos yet.",
-  authInfo = { isUser: false, isFoodPartner: false, currentPartnerId: null },
+  emptyMessage,
+  authInfo,
 }) => {
-  const videoRefs = useRef(new Map());
   const [playingStates, setPlayingStates] = useState({});
-  // Use local state for optimistic updates, but sync with props
   const [likedItems, setLikedItems] = useState({});
   const [savedItems, setSavedItems] = useState({});
-
-  // Sync local state with props when items change
-  useEffect(() => {
-    const likedMap = {};
-    const savedMap = {};
-    items.forEach(item => {
-      if (item.isLiked !== undefined) {
-        likedMap[item._id] = item.isLiked;
-      }
-      if (item.isSaved !== undefined) {
-        savedMap[item._id] = item.isSaved;
-      }
-    });
-    setLikedItems(likedMap);
-    setSavedItems(savedMap);
-  }, [items]);
+  const videoRefs = useRef({});
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const video = entry.target;
-          if (!(video instanceof HTMLVideoElement)) return;
-          const id = video.dataset.id;
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
-            video.play().catch(() => { });
-            setPlayingStates((prev) => ({ ...prev, [id]: true }));
+          const videoId = entry.target.dataset.id;
+          if (entry.isIntersecting) {
+            entry.target.play().catch((e) => console.log("Auto-play error:", e));
+            setPlayingStates((prev) => ({ ...prev, [videoId]: true }));
           } else {
-            video.pause();
-            setPlayingStates((prev) => ({ ...prev, [id]: false }));
+            entry.target.pause();
+            setPlayingStates((prev) => ({ ...prev, [videoId]: false }));
           }
         });
       },
-      { threshold: [0, 0.25, 0.6, 0.9, 1] }
+      { threshold: 0.6 }
     );
 
-    videoRefs.current.forEach((vid) => observer.observe(vid));
-    return () => observer.disconnect();
+    const currentRefs = videoRefs.current;
+    Object.values(currentRefs).forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      Object.values(currentRefs).forEach((ref) => {
+        if (ref) observer.unobserve(ref);
+      });
+    };
   }, [items]);
 
-  const setVideoRef = (id) => (el) => {
-    if (!el) {
-      videoRefs.current.delete(id);
-      return;
+  const togglePlay = (id) => {
+    const video = videoRefs.current[id];
+    if (video) {
+      if (video.paused) {
+        video.play();
+        setPlayingStates((prev) => ({ ...prev, [id]: true }));
+      } else {
+        video.pause();
+        setPlayingStates((prev) => ({ ...prev, [id]: false }));
+      }
     }
-    videoRefs.current.set(id, el);
   };
 
-  const togglePlay = (id) => {
-    const video = videoRefs.current.get(id);
-    if (!video) return;
-    if (video.paused) {
-      video.play().catch(() => { });
-      setPlayingStates((prev) => ({ ...prev, [id]: true }));
-    } else {
-      video.pause();
-      setPlayingStates((prev) => ({ ...prev, [id]: false }));
-    }
+  const setVideoRef = (id) => (el) => {
+    videoRefs.current[id] = el;
   };
 
   const handleLike = (item) => {
@@ -94,7 +82,7 @@ const ReelFeed = ({
     onSave?.(item);
   };
 
-  if (items.length === 0) {
+  if (!items || items.length === 0) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-black">
         <div className="text-center px-8">
