@@ -142,6 +142,8 @@ const PublishedReels = () => {
                         emptyMessage="You haven't published any reels yet!"
                         authInfo={authInfo}
                         hideStoreButton={true}
+                        hideProfile={true}
+                        hideDescription={true}
                     />
                 </div>
             </main>

@@ -23,6 +23,8 @@ const ReelFeed = ({
   emptyMessage,
   authInfo = {},
   hideStoreButton = false,
+  hideProfile = false,
+  hideDescription = false,
 }) => {
   const [playingStates, setPlayingStates] = useState({});
   const containerRef = useRef(null);
@@ -227,76 +229,80 @@ const ReelFeed = ({
             {/* Bottom Content Area - Medium Proportions */}
             <div className="absolute left-0 right-20 sm:right-32 bottom-24 md:bottom-28 lg:bottom-32 px-5 md:px-8 lg:px-12 z-40 max-w-2xl">
               {/* Subtle background shadow for text readability */}
-              <div className="absolute inset-x-0 -bottom-10 h-80 bg-gradient-to-t from-black/70 via-black/20 to-transparent -z-10 pointer-events-none" />
-              {/* Profile Row */}
-              <div className="flex items-center gap-4 sm:gap-7 mb-7 sm:mb-10 group/profile">
-                {/* Circular Avatar - Scaling for all views */}
-                <div className="relative shrink-0">
-                  <div className="
+              {(!hideProfile || !hideDescription) && (
+                <div className="absolute inset-x-0 -bottom-10 h-80 bg-gradient-to-t from-black/70 via-black/20 to-transparent -z-10 pointer-events-none" />
+              )}
+              {!hideProfile && (
+                <div className="flex items-center gap-4 sm:gap-7 mb-7 sm:mb-10 group/profile">
+                  {/* Circular Avatar - Scaling for all views */}
+                  <div className="relative shrink-0">
+                    <div className="
                     w-14 h-14 
                     md:w-20 md:h-20 
                     lg:w-24 lg:h-24 
                     rounded-full border-[3px] border-primary/40 p-1 
                     group-hover/profile:border-primary transition-all duration-500 shadow-2xl
                   ">
-                    <img
-                      className="w-full h-full rounded-full object-cover border-2 border-white"
-                      src={
-                        item.user?.avatar ||
-                        item.avatar ||
-                        "https://plus.unsplash.com/premium_photo-1681493353999-a3eea8b95e1d?w=100&h=100&fit=crop"
-                      }
-                      alt={item.user?.name || item.author || "Food Partner"}
-                    />
+                      <img
+                        className="w-full h-full rounded-full object-cover border-2 border-white"
+                        src={
+                          item.user?.avatar ||
+                          item.avatar ||
+                          "https://plus.unsplash.com/premium_photo-1681493353999-a3eea8b95e1d?w=100&h=100&fit=crop"
+                        }
+                        alt={item.user?.name || item.author || "Food Partner"}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex flex-col gap-2">
-                  <div className="flex flex-col gap-0.5">
-                    <div className="flex items-center gap-2 md:gap-3">
-                      <h2 className="text-white font-['Playfair_Display'] font-black text-xl md:text-3xl lg:text-5xl tracking-normal drop-shadow-md lowercase">
-                        {item.user?.name || item.author || "Food Partner"}
-                      </h2>
-                      {/* Orange Verified Badge - Medium Scale */}
-                      <div className="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/20">
-                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-4.5 text-white">
-                          <path d="M1 4.5L4 7.5L11 1" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-0.5">
+                      <div className="flex items-center gap-2 md:gap-3">
+                        <h2 className="text-white font-['Playfair_Display'] font-black text-xl md:text-3xl lg:text-5xl tracking-normal drop-shadow-md lowercase">
+                          {item.user?.name || item.author || "Food Partner"}
+                        </h2>
+                        {/* Orange Verified Badge - Medium Scale */}
+                        <div className="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/20">
+                          <svg width="12" height="9" viewBox="0 0 12 9" fill="none" className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-4.5 text-white">
+                            <path d="M1 4.5L4 7.5L11 1" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* Professional Tag Line - Medium font size */}
+                      <div className="flex items-center gap-2 text-white/95">
+                        <ChefHat className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-primary drop-shadow-sm" />
+                        <span className="text-[11px] md:text-base lg:text-xl font-medium tracking-tight drop-shadow-sm font-['Poppins']">
+                          Professional Chef & Food Partner
+                        </span>
                       </div>
                     </div>
 
-                    {/* Professional Tag Line - Medium font size */}
-                    <div className="flex items-center gap-2 text-white/95">
-                      <ChefHat className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-primary drop-shadow-sm" />
-                      <span className="text-[11px] md:text-base lg:text-xl font-medium tracking-tight drop-shadow-sm font-['Poppins']">
-                        Professional Chef & Food Partner
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Solid Follow Button - Medium Proportions */}
-                  {authInfo.currentPartnerId !== (item.foodPartner?._id || item.foodPartner) && (
-                    <button
-                      onClick={() => onFollow?.(item)}
-                      className={`
+                    {/* Solid Follow Button - Medium Proportions */}
+                    {authInfo.currentPartnerId !== (item.foodPartner?._id || item.foodPartner) && (
+                      <button
+                        onClick={() => onFollow?.(item)}
+                        className={`
                         flex items-center gap-2.5 px-6 py-2 md:px-10 md:py-3 lg:px-12 lg:py-4
                         ${item.isFollowing ? 'bg-white/10 backdrop-blur-md border border-white/20' : 'bg-primary shadow-[0_8px_20px_rgba(249,115,22,0.4)]'} 
                         rounded-full transition-all duration-300 active:scale-95 group/btn w-max
                       `}
-                    >
-                      <UserPlus className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" />
-                      <span className="text-white text-xs md:text-lg lg:text-xl font-bold tracking-wide">
-                        {item.isFollowing ? "Following" : "Follow"}
-                      </span>
-                    </button>
-                  )}
+                      >
+                        <UserPlus className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" />
+                        <span className="text-white text-xs md:text-lg lg:text-xl font-bold tracking-wide">
+                          {item.isFollowing ? "Following" : "Follow"}
+                        </span>
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Description Row - Medium Fluid Scaling */}
-              <p className="text-white/95 text-xs sm:text-sm md:text-lg lg:text-xl font-medium italic leading-snug tracking-wide max-w-xl md:max-w-2xl border-l-2 border-primary/50 pl-4 py-1.5 mb-6 md:mb-8 drop-shadow-md line-clamp-2">
-                {item.description}
-              </p>
+              {!hideDescription && (
+                <p className="text-white/95 text-xs sm:text-sm md:text-lg lg:text-xl font-medium italic leading-snug tracking-wide max-w-xl md:max-w-2xl border-l-2 border-primary/50 pl-4 py-1.5 mb-6 md:mb-8 drop-shadow-md line-clamp-2">
+                  {item.description}
+                </p>
+              )}
 
               {/* Visit Store Action - Elegant Scale */}
               {item.foodPartner && !hideStoreButton && (
