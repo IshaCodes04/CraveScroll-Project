@@ -385,6 +385,32 @@ async function followFoodPartner(req, res) {
     }
 }
 
+async function deleteFood(req, res) {
+    try {
+        const { id } = req.params;
+        const foodPartner = req.foodPartner;
+
+        if (!foodPartner) {
+            return res.status(403).json({ message: "Only food partners can delete reels" });
+        }
+
+        const food = await foodModel.findById(id);
+        if (!food) {
+            return res.status(404).json({ message: "Food reel not found" });
+        }
+
+        if (food.foodPartner.toString() !== foodPartner._id.toString()) {
+            return res.status(403).json({ message: "You can only delete your own reels" });
+        }
+
+        await foodModel.findByIdAndDelete(id);
+        res.status(200).json({ message: "Food reel deleted successfully" });
+    } catch (error) {
+        console.error('Error in deleteFood:', error);
+        res.status(500).json({ message: "Error deleting food reel", error: error.message });
+    }
+}
+
 module.exports = {
     createFood,
     getFoodItems,
@@ -392,5 +418,6 @@ module.exports = {
     followFoodPartner,
     saveFood,
     getSaveFood,
-    getPublishedReels
+    getPublishedReels,
+    deleteFood
 }

@@ -53,4 +53,10 @@ router.get('/publishedReels',
 )
 
 
+router.delete('/:id',
+    authMiddleware.authFoodPartnerMiddleware,
+    foodController.deleteFood
+)
+
+
 module.exports = router

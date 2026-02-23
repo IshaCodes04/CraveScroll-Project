@@ -5,82 +5,75 @@ const foodPartnerModel = require("../models/foodpartner.model");
 const adminModel = require("../models/admin.model");
 
 async function registerUser(req, res) {
+   try {
+      const { fullName, email, password } = req.body
+      console.log("Registering user:", { fullName, email });
 
-   const { fullName, email, password } = req.body
+      const isUserAlreadyExists = await userModel.findOne({ email })
 
-   const isUserAlreadyExists = await userModel.findOne({
-      email
-   })
-
-   if (isUserAlreadyExists) {
-      return res.status(400).json({
-         message: "User Already Exists!"
-      })
-   }
-
-   const hashedPassword = await bcrypt.hash(password, 10)
-
-   const user = await userModel.create({
-      fullName,
-      email,
-      password: hashedPassword,
-   })
-
-   const token = jwt.sign({
-      id: user._id,
-
-   }, process.env.JWT_SECRET)
-
-   res.cookie("token", token)
-
-   res.status(201).json({
-      message: "User Registered Successfully",
-      user: {
-         _id: user._id,
-         email: user.email,
-         fullName: user.fullName
+      if (isUserAlreadyExists) {
+         return res.status(400).json({ message: "User Already Exists!" })
       }
-   })
 
+      const hashedPassword = await bcrypt.hash(password, 10)
+
+      const user = await userModel.create({
+         fullName,
+         email,
+         password: hashedPassword,
+      })
+
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+
+      res.cookie("token", token)
+
+      res.status(201).json({
+         message: "User Registered Successfully",
+         user: {
+            _id: user._id,
+            email: user.email,
+            fullName: user.fullName
+         }
+      })
+   } catch (error) {
+      console.error("Error in registerUser:", error);
+      res.status(500).json({ message: "Internal Server Error during registration", error: error.message });
+   }
 }
 
 async function loginUser(req, res) {
+   try {
+      const { email, password } = req.body;
+      console.log("Logging in user:", email);
 
-   const { email, password } = req.body;
+      const user = await userModel.findOne({ email })
 
-   const user = await userModel.findOne({
-      email
-   })
-
-   if (!user) {
-      return res.status(400).json({
-         message: "Invalid email and password"
-      })
-   }
-
-   const isPasswordValid = await bcrypt.compare(password, user.password);
-
-   if (!isPasswordValid) {
-      return res.status(400).json({
-         message: "Invalid email and password"
-      })
-   }
-
-   const token = jwt.sign({
-      id: user._id,
-   }, process.env.JWT_SECRET)
-
-
-   res.cookie("token", token)
-
-   res.status(200).json({
-      message: "User Logged In Successfully",
-      user: {
-         _id: user._id,
-         email: user.email,
-         fullName: user.fullName
+      if (!user) {
+         return res.status(400).json({ message: "Invalid email and password" })
       }
-   })
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (!isPasswordValid) {
+         return res.status(400).json({ message: "Invalid email and password" })
+      }
+
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+
+      res.cookie("token", token)
+
+      res.status(200).json({
+         message: "User Logged In Successfully",
+         user: {
+            _id: user._id,
+            email: user.email,
+            fullName: user.fullName
+         }
+      })
+   } catch (error) {
+      console.error("Error in loginUser:", error);
+      res.status(500).json({ message: "Internal Server Error during login", error: error.message });
+   }
 }
 
 function logoutUser(req, res) {
@@ -92,94 +85,83 @@ function logoutUser(req, res) {
 }
 
 async function registerFoodPartner(req, res) {
+   try {
+      const { businessName, contactName, phone, email, password, address } = req.body
+      console.log("Registering food partner:", { businessName, email });
 
-   const { businessName, contactName, phone, email, password, address } = req.body
+      const isAccountAlreadyExists = await foodPartnerModel.findOne({ email })
 
-   const isAccountAlreadyExists = await foodPartnerModel.findOne({
-      email
-   })
-
-   if (isAccountAlreadyExists) {
-      return res.status(400).json({
-         message: "Food partner account already exists"
-      })
-   }
-
-   const hashedPassword = await bcrypt.hash(password, 10)
-
-   const foodPartner = await foodPartnerModel.create({
-      businessName,
-      contactName,
-      phone,
-      email,
-      password: hashedPassword,
-      address
-   })
-
-
-   // const token = jwt.sign({
-   //    id: foodPartner._id,
-   // }, process.env.JWT_SECRET)
-
-   // res.cookie("token", token)
-
-   res.status(201).json({
-      message: "Application Submitted Successfully. Please wait for admin approval.",
-      foodPartner: {
-         _id: foodPartner._id,
-         email: foodPartner.email,
-         businessName: foodPartner.businessName,
-         status: foodPartner.status
+      if (isAccountAlreadyExists) {
+         return res.status(400).json({ message: "Food partner account already exists" })
       }
-   })
 
+      const hashedPassword = await bcrypt.hash(password, 10)
+
+      const foodPartner = await foodPartnerModel.create({
+         businessName,
+         contactName,
+         phone,
+         email,
+         password: hashedPassword,
+         address
+      })
+
+      res.status(201).json({
+         message: "Application Submitted Successfully. Please wait for admin approval.",
+         foodPartner: {
+            _id: foodPartner._id,
+            email: foodPartner.email,
+            businessName: foodPartner.businessName,
+            status: foodPartner.status
+         }
+      })
+   } catch (error) {
+      console.error("Error in registerFoodPartner:", error);
+      res.status(500).json({ message: "Internal Server Error during registration", error: error.message });
+   }
 }
 
 async function loginFoodPartner(req, res) {
+   try {
+      const { email, password } = req.body;
+      console.log("Logging in food partner:", email);
 
-   const { email, password } = req.body;
+      const foodPartner = await foodPartnerModel.findOne({ email })
 
-   const foodPartner = await foodPartnerModel.findOne({
-      email
-   })
-
-   if (!foodPartner) {
-      return res.status(400).json({
-         message: "Invalid email and password"
-      })
-   }
-
-   const isPasswordValid = await bcrypt.compare(password, foodPartner.password);
-
-   if (!isPasswordValid) {
-      return res.status(400).json({
-         message: "Invalid email and password"
-      })
-   }
-
-   if (foodPartner.status !== 'approved') {
-      return res.status(403).json({
-         message: `Your account is currently ${foodPartner.status}. Please wait for admin approval.`
-      })
-   }
-
-   const token = jwt.sign({
-      id: foodPartner._id,
-   }, process.env.JWT_SECRET)
-
-
-   res.cookie("token", token)
-
-   res.status(200).json({
-      message: "Food partner Logged In Successfully",
-      foodPartner: {
-         _id: foodPartner._id,
-         email: foodPartner.email,
-         businessName: foodPartner.businessName,
-         contactName: foodPartner.contactName,
-         status: foodPartner.status
+      if (!foodPartner) {
+         return res.status(400).json({ message: "Invalid email and password" })
       }
-   })
+
+      const isPasswordValid = await bcrypt.compare(password, foodPartner.password);
+
+      if (!isPasswordValid) {
+         return res.status(400).json({ message: "Invalid email and password" })
+      }
+
+      if (foodPartner.status !== 'approved') {
+         return res.status(403).json({
+            message: `Your account is currently ${foodPartner.status}. Please wait for admin approval.`
+         })
+      }
+
+      const token = jwt.sign({ id: foodPartner._id }, process.env.JWT_SECRET)
+
+      res.cookie("token", token)
+
+      res.status(200).json({
+         message: "Food partner Logged In Successfully",
+         foodPartner: {
+            _id: foodPartner._id,
+            email: foodPartner.email,
+            businessName: foodPartner.businessName,
+            contactName: foodPartner.contactName,
+            status: foodPartner.status
+         }
+      })
+   } catch (error) {
+      console.error("Error in loginFoodPartner:", error);
+      res.status(500).json({ message: "Internal Server Error during login", error: error.message });
+   }
 }
 
 function logoutFoodPartner(req, res) {
