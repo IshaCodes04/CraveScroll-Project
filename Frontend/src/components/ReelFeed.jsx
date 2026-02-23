@@ -224,8 +224,8 @@ const ReelFeed = ({
               </button>
             </div>
 
-            {/* Bottom Content Area - Responsive Alignment */}
-            <div className="absolute left-0 right-20 sm:right-32 bottom-28 md:bottom-32 lg:bottom-40 px-5 md:px-10 lg:px-16 z-40 max-w-3xl">
+            {/* Bottom Content Area - Medium Proportions */}
+            <div className="absolute left-0 right-20 sm:right-32 bottom-24 md:bottom-28 lg:bottom-32 px-5 md:px-8 lg:px-12 z-40 max-w-2xl">
               {/* Subtle background shadow for text readability */}
               <div className="absolute inset-x-0 -bottom-10 h-80 bg-gradient-to-t from-black/70 via-black/20 to-transparent -z-10 pointer-events-none" />
               {/* Profile Row */}
@@ -233,10 +233,10 @@ const ReelFeed = ({
                 {/* Circular Avatar - Scaling for all views */}
                 <div className="relative shrink-0">
                   <div className="
-                    w-16 h-16 
-                    md:w-28 md:h-28 
-                    lg:w-36 lg:h-36 
-                    rounded-full border-[3.5px] border-primary/40 p-1 
+                    w-14 h-14 
+                    md:w-20 md:h-20 
+                    lg:w-24 lg:h-24 
+                    rounded-full border-[3px] border-primary/40 p-1 
                     group-hover/profile:border-primary transition-all duration-500 shadow-2xl
                   ">
                     <img
@@ -253,39 +253,39 @@ const ReelFeed = ({
 
                 <div className="flex flex-col gap-2">
                   <div className="flex flex-col gap-0.5">
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-white font-['Playfair_Display'] font-black text-2xl md:text-5xl lg:text-7xl tracking-normal drop-shadow-md lowercase">
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <h2 className="text-white font-['Playfair_Display'] font-black text-xl md:text-3xl lg:text-5xl tracking-normal drop-shadow-md lowercase">
                         {item.user?.name || item.author || "Food Partner"}
                       </h2>
-                      {/* Orange Verified Badge - Responsive Scale */}
-                      <div className="w-5 h-5 md:w-8 md:h-8 lg:w-11 lg:h-11 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/20">
-                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" className="w-3 h-3 md:w-5 md:h-5 lg:w-7 lg:h-7 text-white">
+                      {/* Orange Verified Badge - Medium Scale */}
+                      <div className="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/20">
+                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-4.5 text-white">
                           <path d="M1 4.5L4 7.5L11 1" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </div>
                     </div>
 
-                    {/* Professional Tag Line - Fluid font size */}
+                    {/* Professional Tag Line - Medium font size */}
                     <div className="flex items-center gap-2 text-white/95">
-                      <ChefHat className="w-4 h-4 md:w-7 md:h-7 lg:w-9 lg:h-9 text-primary drop-shadow-sm" />
-                      <span className="text-[12px] md:text-xl lg:text-3xl font-medium tracking-tight drop-shadow-sm font-['Poppins']">
+                      <ChefHat className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-primary drop-shadow-sm" />
+                      <span className="text-[11px] md:text-base lg:text-xl font-medium tracking-tight drop-shadow-sm font-['Poppins']">
                         Professional Chef & Food Partner
                       </span>
                     </div>
                   </div>
 
-                  {/* Solid Follow Button - Matched to Screenshot */}
+                  {/* Solid Follow Button - Medium Proportions */}
                   {authInfo.currentPartnerId !== (item.foodPartner?._id || item.foodPartner) && (
                     <button
                       onClick={() => onFollow?.(item)}
                       className={`
-                        flex items-center gap-3 px-8 py-2.5 md:px-12 md:py-4 lg:px-16 lg:py-5
+                        flex items-center gap-2.5 px-6 py-2 md:px-10 md:py-3 lg:px-12 lg:py-4
                         ${item.isFollowing ? 'bg-white/10 backdrop-blur-md border border-white/20' : 'bg-primary shadow-[0_8px_20px_rgba(249,115,22,0.4)]'} 
                         rounded-full transition-all duration-300 active:scale-95 group/btn w-max
                       `}
                     >
-                      <UserPlus className="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 text-white" />
-                      <span className="text-white text-xs md:text-xl lg:text-3xl font-bold tracking-wide">
+                      <UserPlus className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" />
+                      <span className="text-white text-xs md:text-lg lg:text-xl font-bold tracking-wide">
                         {item.isFollowing ? "Following" : "Follow"}
                       </span>
                     </button>
@@ -293,8 +293,8 @@ const ReelFeed = ({
                 </div>
               </div>
 
-              {/* Description Row - Responsive Scaling */}
-              <p className="text-white/95 text-base md:text-2xl lg:text-3xl font-medium italic leading-snug tracking-wide max-w-xl md:max-w-3xl border-l-2 border-primary/50 pl-4 py-1.5 mb-8 md:mb-12 drop-shadow-md line-clamp-2">
+              {/* Description Row - Medium Fluid Scaling */}
+              <p className="text-white/95 text-xs sm:text-sm md:text-lg lg:text-xl font-medium italic leading-snug tracking-wide max-w-xl md:max-w-2xl border-l-2 border-primary/50 pl-4 py-1.5 mb-6 md:mb-8 drop-shadow-md line-clamp-2">
                 {item.description}
               </p>
 
@@ -308,11 +308,11 @@ const ReelFeed = ({
                         : "/food-partner/" + (item.foodPartner?._id || item.foodPartner)
                     }
                     className="group relative flex items-center justify-center gap-3
-                      px-8 py-3.5 sm:px-10 sm:py-4
-                      rounded-xl sm:rounded-2xl
+                      px-6 py-2.5 sm:px-8 sm:py-3
+                      rounded-lg sm:rounded-xl
                       bg-white/5 backdrop-blur-2xl
                       border border-white/10
-                      text-white text-[11px] sm:text-sm font-black uppercase tracking-[4px]
+                      text-white text-[10px] sm:text-xs font-black uppercase tracking-[3px]
                       shadow-2xl
                       hover:bg-primary hover:border-primary
                       hover:scale-[1.02] active:scale-95
