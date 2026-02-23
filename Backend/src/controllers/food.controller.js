@@ -1,4 +1,6 @@
 const foodModel = require('../models/food.model');
+const userModel = require('../models/user.model');
+const foodPartnerModel = require('../models/foodpartner.model');
 const storageService = require('../services/storage.service');
 const likeModel = require("../models/likes.model")
 const saveModel = require("../models/save.model")
@@ -47,6 +49,7 @@ async function getFoodItems(req, res) {
 
         let likedFoodIds = new Set();
         let savedFoodIds = new Set();
+        let followingPartnerIds = new Set();
 
         if (user) {
             const foodIds = foodItems.map(item => item._id);
@@ -64,16 +67,25 @@ async function getFoodItems(req, res) {
             }).select('food');
 
             savedFoodIds = new Set(savedItems.map(item => item.food.toString()));
+
+            // Get following partners
+            if (user.following) {
+                followingPartnerIds = new Set(user.following.map(id => id.toString()));
+            }
         }
 
         const foodItemsWithStatus = foodItems.map(item => {
             const itemObj = item.toObject();
             itemObj.isLiked = likedFoodIds.has(item._id.toString());
             itemObj.isSaved = savedFoodIds.has(item._id.toString());
+
+            // Following status for the partner
+            const partnerId = itemObj.foodPartner?._id?.toString() || itemObj.foodPartner?.toString();
+            itemObj.isFollowing = followingPartnerIds.has(partnerId);
+
             itemObj.likeCount = Math.max(0, itemObj.likeCount || 0);
             itemObj.savesCount = Math.max(0, itemObj.savesCount || 0);
 
-            // SIMPLE FIX - Check if foodPartner exists
             const partnerName = itemObj.foodPartner?.businessName
                 || itemObj.foodPartner?.contactName
                 || 'Anonymous Chef';
@@ -250,12 +262,20 @@ async function getSaveFood(req, res) {
 
     const likedFoodIds = new Set(likedItems.map(item => item.food.toString()));
 
-    // Add isLiked status to each saved food
+    // Get following partners
+    const followingPartnerIds = new Set(user.following ? user.following.map(id => id.toString()) : []);
+
+    // Add status flags to each saved food
     const savedFoodsWithStatus = savedFoods.map(item => {
         const itemObj = item.toObject();
         if (itemObj.food && itemObj.food._id) {
             itemObj.food.isLiked = likedFoodIds.has(itemObj.food._id.toString());
             itemObj.food.isSaved = true; // All items are saved
+
+            // Following status
+            const partnerId = itemObj.food?.foodPartner?._id?.toString() || itemObj.food?.foodPartner?.toString();
+            itemObj.food.isFollowing = followingPartnerIds.has(partnerId);
+
             // Ensure counts are non-negative
             itemObj.food.likeCount = Math.max(0, itemObj.food.likeCount || 0);
             itemObj.food.savesCount = Math.max(0, itemObj.food.savesCount || 0);
@@ -271,10 +291,106 @@ async function getSaveFood(req, res) {
 }
 
 
+async function getPublishedReels(req, res) {
+    try {
+        if (!req.foodPartner || !req.foodPartner._id) {
+            return res.status(403).json({
+                message: "Only food partners can view their published reels"
+            });
+        }
+
+        const foodItems = await foodModel.find({ foodPartner: req.foodPartner._id })
+            .populate('foodPartner', 'businessName contactName email')
+            .sort({ createdAt: -1 });
+
+        const foodItemsWithStatus = foodItems.map(item => {
+            const itemObj = item.toObject();
+            const partnerName = itemObj.foodPartner?.businessName
+                || itemObj.foodPartner?.contactName
+                || 'Anonymous Chef';
+
+            itemObj.user = {
+                name: partnerName,
+                avatar: null
+            };
+            itemObj.author = partnerName;
+            itemObj.likeCount = Math.max(0, itemObj.likeCount || 0);
+            itemObj.savesCount = Math.max(0, itemObj.savesCount || 0);
+
+            return itemObj;
+        });
+
+        res.status(200).json({
+            message: "Published reels fetched successfully",
+            foodItems: foodItemsWithStatus,
+            currentPartnerId: req.foodPartner?._id
+        });
+
+    } catch (error) {
+        console.error('Error in getPublishedReels:', error);
+        res.status(500).json({
+            message: "Error fetching published reels",
+            error: error.message
+        });
+    }
+}
+
+
+async function followFoodPartner(req, res) {
+    const { partnerId } = req.body;
+    const user = req.user;
+
+    if (!user) {
+        return res.status(401).json({ message: "Only users can follow food partners" });
+    }
+
+    try {
+        const partner = await foodPartnerModel.findById(partnerId);
+        if (!partner) {
+            return res.status(404).json({ message: "Food Partner not found" });
+        }
+
+        const isFollowing = user.following.includes(partnerId);
+
+        if (isFollowing) {
+            // Unfollow
+            user.following = user.following.filter(id => id.toString() !== partnerId);
+            partner.followers = partner.followers.filter(id => id.toString() !== user._id.toString());
+
+            await user.save();
+            await partner.save();
+
+            return res.status(200).json({
+                message: "Unfollowed successfully",
+                isFollowing: false,
+                followersCount: partner.followers.length
+            });
+        } else {
+            // Follow
+            user.following.push(partnerId);
+            partner.followers.push(user._id);
+
+            await user.save();
+            await partner.save();
+
+            return res.status(200).json({
+                message: "Followed successfully",
+                isFollowing: true,
+                followersCount: partner.followers.length
+            });
+        }
+    } catch (error) {
+        console.error('Error in followFoodPartner:', error);
+        res.status(500).json({ message: "Error in follow action", error: error.message });
+    }
+}
+
 module.exports = {
     createFood,
     getFoodItems,
     likeFood,
+    followFoodPartner,
     saveFood,
-    getSaveFood
+    getSaveFood,
+    getPublishedReels
 }

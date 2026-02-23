@@ -28,6 +28,12 @@ router.post('/like',
     foodController.likeFood)
 
 
+router.post('/follow',
+    authMiddleware.authUserMiddleware,
+    foodController.followFoodPartner
+)
+
+
 router.post('/save',
     authMiddleware.authUserMiddleware,
     foodController.saveFood
@@ -39,6 +45,12 @@ router.get('/save',
     foodController.getSaveFood
 )
 
+
+
+router.get('/publishedReels',
+    authMiddleware.authFoodPartnerMiddleware,
+    foodController.getPublishedReels
+)
 
 
 module.exports = router

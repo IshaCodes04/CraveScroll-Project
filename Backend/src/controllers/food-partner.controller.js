@@ -13,13 +13,20 @@ async function getFoodPartnerById(req, res) {
             return res.status(404).json({ message: "Food partner not found" });
         }
 
+        const user = req.user;
+        let isFollowing = false;
+        if (user && user.following) {
+            isFollowing = user.following.includes(foodPartnerId);
+        }
+
         res.status(200).json({
             message: "Food partner retrieved successfully",
             foodPartner: {
                 ...foodPartner.toObject(),
-                foodItems: foodItemsByFoodPartner
+                foodItems: foodItemsByFoodPartner,
+                isFollowing,
+                followersCount: foodPartner.followers?.length || 0
             }
-
         });
     } catch (error) {
         console.error('Error in getFoodPartnerById:', error);
