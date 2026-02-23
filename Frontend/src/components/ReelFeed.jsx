@@ -146,13 +146,13 @@ const ReelFeed = ({
             <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none" />
 
             {/* Header with CraveScroll */}
-            <div data-internal-header="true" className="absolute top-0 left-0 right-0 p-4 sm:p-6 z-10 select-none">
-              <div className="flex items-center gap-2 sm:gap-4">
+            <div data-internal-header="true" className="absolute top-0 left-0 right-0 p-4 sm:p-8 z-30 select-none">
+              <div className="flex items-center gap-2 sm:gap-4 drop-shadow-2xl">
                 <div className="flex items-center justify-center animate-float">
-                  <Logo size={24} className="w-6 h-6 sm:w-10 sm:h-10 drop-shadow-lg" />
+                  <Logo size={24} className="w-7 h-7 sm:w-11 sm:h-11 drop-shadow-xl" />
                 </div>
                 <h1
-                  className="text-xl sm:text-3xl lg:text-4xl font-extrabold drop-shadow-lg bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent"
+                  className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tighter drop-shadow-2xl bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent"
                 >
                   CraveScroll
                 </h1>
@@ -160,24 +160,24 @@ const ReelFeed = ({
             </div>
 
             {/* Right Side Actions */}
-            <div className="absolute right-2 sm:right-4 bottom-32 sm:top-1/2 sm:-translate-y-1/2 flex flex-col items-center gap-3 sm:gap-5 z-10">
+            <div className="absolute right-3 sm:right-6 bottom-40 sm:top-1/2 sm:-translate-y-1/2 flex flex-col items-center gap-5 sm:gap-7 z-30">
               {/* Like */}
               <button
                 onClick={() => handleLike(item)}
-                className="flex flex-col items-center gap-1 sm:gap-1.5 group"
+                className="flex flex-col items-center gap-1 group"
               >
                 <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${isLiked
-                    ? "bg-red-500 scale-110 shadow-lg shadow-red-500/50"
-                    : "bg-white/10 backdrop-blur-md hover:bg-white/20"
+                  className={`w-11 h-11 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all duration-300 ${isLiked
+                    ? "bg-red-500 scale-110 shadow-lg shadow-red-500/40"
+                    : "bg-white/10 backdrop-blur-xl border border-white/10 hover:bg-white/20"
                     }`}
                 >
                   <Heart
-                    className={`w-5 h-5 sm:w-6 sm:h-6 transition-all ${isLiked ? "text-white fill-white" : "text-white"
+                    className={`w-5 h-5 sm:w-7 sm:h-7 transition-all ${isLiked ? "text-white fill-white" : "text-white"
                       }`}
                   />
                 </div>
-                <span className="text-white text-[10px] sm:text-[11px] font-bold drop-shadow-md">
+                <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">
                   {Math.max(0, item.likeCount ?? 0)}
                 </span>
               </button>
@@ -185,124 +185,124 @@ const ReelFeed = ({
               {/* Save */}
               <button
                 onClick={() => handleSave(item)}
-                className="flex flex-col items-center gap-1 sm:gap-1.5 group"
+                className="flex flex-col items-center gap-1 group"
               >
                 <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${isSaved
-                    ? "bg-primary scale-110"
-                    : "bg-white/10 backdrop-blur-md hover:bg-white/20"
+                  className={`w-11 h-11 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all duration-300 ${isSaved
+                    ? "bg-primary scale-110 shadow-lg shadow-primary/40"
+                    : "bg-white/10 backdrop-blur-xl border border-white/10 hover:bg-white/20"
                     }`}
                 >
                   <Bookmark
-                    className={`w-5 h-5 sm:w-6 sm:h-6 transition-all ${isSaved ? "text-white fill-white" : "text-white"
+                    className={`w-5 h-5 sm:w-7 sm:h-7 transition-all ${isSaved ? "text-white fill-white" : "text-white"
                       }`}
                   />
                 </div>
-                <span className="text-white text-[10px] sm:text-[11px] font-bold drop-shadow-md">
+                <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">
                   {Math.max(0, item.savesCount ?? 0)}
                 </span>
               </button>
 
               {/* Comments */}
-              <button className="flex flex-col items-center gap-1 sm:gap-1.5 group">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all">
-                  <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <button className="flex flex-col items-center gap-1 group">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all">
+                  <MessageCircle className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
                 </div>
-                <span className="text-white text-[10px] sm:text-[11px] font-bold drop-shadow-md">
+                <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">
                   {item.commentsCount ?? 0}
                 </span>
               </button>
 
               {/* Share */}
-              <button className="flex flex-col items-center gap-1 sm:gap-1.5 group">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all">
-                  <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <button className="flex flex-col items-center gap-1 group">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all">
+                  <Share2 className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
                 </div>
-                <span className="text-white text-[10px] sm:text-[11px] font-bold drop-shadow-md">Share</span>
+                <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">Share</span>
               </button>
             </div>
 
-            {/* Bottom Content */}
-            <div className="absolute left-0 right-12 sm:right-0 bottom-24 sm:bottom-28 px-4 sm:px-8 z-10 max-w-2xl">
+            {/* Bottom Content Area */}
+            <div className="absolute left-0 right-20 sm:right-32 bottom-32 sm:bottom-40 px-5 sm:px-12 z-30 max-w-2xl">
               {/* Profile Row */}
-              <div className="flex items-center gap-2 sm:gap-4 mb-3 sm:mb-6">
-                <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-2xl p-0.5 bg-gradient-to-br from-primary to-orange-400 shadow-lg">
-                  <img
-                    className="w-full h-full rounded-2xl object-cover border-2 border-black"
-                    src={
-                      item.user?.avatar ||
-                      item.avatar ||
-                      "https://plus.unsplash.com/premium_photo-1681493353999-a3eea8b95e1d?w=100&h=100&fit=crop"
-                    }
-                    alt={item.user?.name || item.author || "Food Partner"}
-                  />
+              <div className="flex items-center gap-3 sm:gap-5 mb-4 sm:mb-8">
+                <div className="relative group/avatar">
+                  <div className="absolute -inset-1 bg-gradient-to-tr from-primary to-orange-400 rounded-2xl blur opacity-30 group-hover/avatar:opacity-60 transition duration-500" />
+                  <div className="relative w-11 h-11 sm:w-16 sm:h-16 rounded-2xl p-0.5 bg-black border border-white/10">
+                    <img
+                      className="w-full h-full rounded-2xl object-cover"
+                      src={
+                        item.user?.avatar ||
+                        item.avatar ||
+                        "https://plus.unsplash.com/premium_photo-1681493353999-a3eea8b95e1d?w=100&h=100&fit=crop"
+                      }
+                      alt={item.user?.name || item.author || "Food Partner"}
+                    />
+                  </div>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-white font-black text-sm sm:text-lg tracking-tight">
+                  <span className="text-white font-black text-base sm:text-2xl tracking-tight drop-shadow-xl">
                     {item.user?.name || item.author || "Food Partner"}
                   </span>
-                  <button
-                    onClick={() => onFollow?.(item)}
-                    className="text-primary text-[10px] sm:text-xs font-black uppercase tracking-wider text-left hover:text-white transition-colors"
-                  >
-                    {item.isFollowing ? "Following" : "Follow +"}
-                  </button>
+                  {authInfo.currentPartnerId !== (item.foodPartner?._id || item.foodPartner) && (
+                    <button
+                      onClick={() => onFollow?.(item)}
+                      className="text-primary text-[10px] sm:text-xs font-black uppercase tracking-[2px] text-left hover:text-white transition-all transform hover:translate-x-1"
+                    >
+                      {item.isFollowing ? "Following" : "Follow +"}
+                    </button>
+                  )}
                 </div>
               </div>
 
+              {/* Description */}
               <p
                 className="
-  text-white
-  text-base sm:text-xl
-  font-medium
-  leading-relaxed
-  tracking-wide
-  mb-4
-  line-clamp-2
-  drop-shadow-sm
-"
+                    text-white/90
+                    text-base sm:text-2xl
+                    font-medium
+                    leading-relaxed
+                    tracking-wide
+                    mb-6
+                    line-clamp-2
+                    drop-shadow-2xl
+                    sm:max-w-xl
+                "
               >
                 {item.description}
               </p>
 
               {/* Visit Store / Create Food */}
               {item.foodPartner && !hideStoreButton && (
-                <div className="w-full flex justify-start sm:justify-center mt-2 sm:mt-4">
+                <div className="w-full sm:w-auto flex justify-start">
                   <Link
                     to={
                       authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
                         ? "/create-food"
                         : "/food-partner/" + (item.foodPartner?._id || item.foodPartner)
                     }
-                    className="group relative flex items-center justify-center gap-2 sm:gap-3
-                      px-5 py-3 sm:px-10 sm:py-4
+                    className="group relative flex items-center justify-center gap-2 sm:gap-4
+                      px-6 py-3.5 sm:px-12 sm:py-5
                       rounded-xl sm:rounded-2xl
-                      bg-white/10 backdrop-blur-2xl
-                      border border-white/20
-                      text-white text-[10px] sm:text-sm font-black uppercase tracking-[2px] sm:tracking-[3px]
+                      bg-white/5 backdrop-blur-3xl
+                      border border-white/10
+                      text-white text-[11px] sm:text-base font-black uppercase tracking-[3px]
                       shadow-2xl
                       hover:bg-primary hover:border-primary
-                      hover:scale-105 active:scale-95
-                      transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
-                      overflow-hidden w-full sm:w-auto"
+                      hover:scale-[1.02] active:scale-95
+                      transition-all duration-500 ease-out
+                      overflow-hidden w-full sm:w-max"
                   >
-                    {/* Glowing background layer */}
                     <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000" />
 
-                    {/* Professional Shine Sweep */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out" />
-
-                    <div className="relative flex items-center gap-2 sm:gap-3">
+                    <div className="relative flex items-center gap-2 sm:gap-4">
                       {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId ? (
-                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                          <Plus className="w-3 h-3 sm:w-4 sm:h-4 group-hover:rotate-180 transition-transform duration-700" />
-                        </div>
+                        <Plus className="w-4 h-4 sm:w-6 sm:h-6 group-hover:rotate-180 transition-transform duration-700" />
                       ) : (
-                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-primary/20 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                          <Utensils className="w-3 h-3 sm:w-4 sm:h-4 group-hover:rotate-12 transition-transform duration-300" />
-                        </div>
+                        <Utensils className="w-4 h-4 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform duration-300" />
                       )}
-                      <span className="drop-shadow-md whitespace-nowrap">
+                      <span className="drop-shadow-lg whitespace-nowrap">
                         {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
                           ? "Create Food"
                           : "Visit Store"}

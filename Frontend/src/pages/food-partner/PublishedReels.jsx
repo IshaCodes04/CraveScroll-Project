@@ -89,25 +89,16 @@ const PublishedReels = () => {
                     </h1>
                 </div>
 
-                {/* Right Side: Professional Buttons */}
-                <div className="flex items-center gap-3 sm:gap-6 pointer-events-auto">
-                    {/* Professional My Reels Badge */}
-                    <div className="hidden md:flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl">
-                        <LayoutGrid className="w-4 h-4 text-primary" />
-                        <span className="text-white font-black text-[10px] uppercase tracking-[3px]">My Published Reels</span>
+                {/* Center: My Published Reels Badge */}
+                <div className="absolute left-1/2 -translate-x-1/2 top-4 sm:top-6 pointer-events-auto">
+                    <div className="flex items-center gap-2 px-6 py-2.5 sm:py-3.5 rounded-2xl bg-white/10 backdrop-blur-3xl border border-white/10 shadow-2xl">
+                        <LayoutGrid className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
+                        <span className="text-white font-black text-[9px] sm:text-[10px] uppercase tracking-[3px] whitespace-nowrap">My Published Reels</span>
                     </div>
+                </div>
 
-                    {/* Premium Create Reel Button */}
-                    <button
-                        onClick={() => navigate("/create-food")}
-                        className="group relative flex items-center gap-2 sm:gap-3 px-6 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl bg-primary hover:bg-orange-600 transition-all duration-500 shadow-2xl shadow-primary/30 overflow-hidden"
-                    >
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out" />
-                        <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:rotate-180 transition-transform duration-700" />
-                        <span className="text-white font-black text-[10px] sm:text-xs uppercase tracking-[3px]">Create Reel</span>
-                    </button>
-
-                    {/* Premium Sign Out Button */}
+                {/* Right Side: Professional Sign Out Button */}
+                <div className="flex items-center gap-3 sm:gap-6 pointer-events-auto">
                     <button
                         onClick={handleLogout}
                         className="group relative flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-2xl border border-white/10 hover:bg-white/10 hover:border-destructive/30 transition-all duration-500 shadow-2xl overflow-hidden"
@@ -124,6 +115,18 @@ const PublishedReels = () => {
                         </div>
                     </button>
                 </div>
+            </div>
+
+            {/* Bottom Create Reel Button */}
+            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto w-full max-w-[240px] px-4">
+                <button
+                    onClick={() => navigate("/create-food")}
+                    className="group relative w-full flex items-center justify-center gap-2 sm:gap-3 px-8 py-4 sm:py-5 rounded-2xl bg-primary hover:bg-orange-600 transition-all duration-500 shadow-[0_20px_50px_rgba(249,115,22,0.4)] overflow-hidden hover:scale-105 active:scale-95"
+                >
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out" />
+                    <Plus className="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-700" />
+                    <span className="text-white font-black text-[11px] uppercase tracking-[3px]">Create Reel</span>
+                </button>
             </div>
 
             <main className="h-screen w-full relative">

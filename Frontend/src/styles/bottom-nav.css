@@ -1,18 +1,27 @@
 @import './theme.css';
 
+@media (max-width: 640px) {
+  .bottom-nav {
+    bottom: 16px;
+    width: calc(100% - 32px);
+    height: 64px;
+    border-radius: 20px;
+  }
+}
+
 .bottom-nav {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
   bottom: 24px;
   width: calc(100% - 48px);
-  max-width: 500px;
+  max-width: 440px;
   height: 72px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   border-radius: 24px;
   z-index: 100;
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
