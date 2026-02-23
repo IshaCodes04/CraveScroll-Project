@@ -11,6 +11,7 @@ const Profile = () => {
     const [videos, setVideos] = useState([])
     const [loading, setLoading] = useState(true)
     const [isFollowing, setIsFollowing] = useState(false)
+    const [followersCount, setFollowersCount] = useState(0)
     const videoRefs = useRef({})
 
     useEffect(() => {
@@ -19,6 +20,8 @@ const Profile = () => {
             .then(response => {
                 setProfile(response.data.foodPartner)
                 setVideos(response.data.foodPartner.foodItems || [])
+                setIsFollowing(response.data.foodPartner.isFollowing || false)
+                setFollowersCount(response.data.foodPartner.followersCount || 0)
                 setLoading(false)
             })
             .catch(error => {
@@ -39,9 +42,18 @@ const Profile = () => {
         }
     }
 
-    const handleFollowClick = () => {
-        setIsFollowing(!isFollowing)
-        // TODO: Add API call to follow/unfollow
+    const handleFollowClick = async () => {
+        try {
+            const response = await axios.post(
+                "http://localhost:3000/api/food/follow",
+                { partnerId: id },
+                { withCredentials: true }
+            );
+            setIsFollowing(response.data.isFollowing);
+            setFollowersCount(response.data.followersCount);
+        } catch (error) {
+            console.error('Error in follow follow:', error);
+        }
     }
 
     const handleContactClick = () => {
@@ -175,11 +187,9 @@ const Profile = () => {
                             </div>
                             <div className="stat-info">
                                 <span className="profile-stat-number">
-                                    {profile?.customersServed
-                                        ? profile.customersServed >= 1000
-                                            ? `${(profile.customersServed / 1000).toFixed(1)}K`
-                                            : profile.customersServed
-                                        : '50K'
+                                    {followersCount >= 1000
+                                        ? `${(followersCount / 1000).toFixed(1)}K`
+                                        : followersCount
                                     }
                                 </span>
                                 <span className="profile-stat-text">Followers</span>
@@ -190,7 +200,7 @@ const Profile = () => {
                                 <UserPlus size={18} />
                             </div>
                             <div className="stat-info">
-                                <span className="profile-stat-number">100</span>
+                                <span className="profile-stat-number">{profile?.following?.length || 0}</span>
                                 <span className="profile-stat-text">Following</span>
                             </div>
                         </div>

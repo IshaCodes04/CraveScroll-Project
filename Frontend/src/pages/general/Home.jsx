@@ -93,6 +93,33 @@ const Home = () => {
     }
   };
 
+  const followPartner = async (item) => {
+    try {
+      const partnerId = item.foodPartner?._id || item.foodPartner;
+      const response = await axios.post(
+        "http://localhost:3000/api/food/follow",
+        { partnerId },
+        { withCredentials: true }
+      );
+
+      setVideos((prev) =>
+        prev.map((v) => {
+          const currentPartnerId = v.foodPartner?._id || v.foodPartner;
+          if (currentPartnerId === partnerId) {
+            return {
+              ...v,
+              isFollowing: response.data.isFollowing,
+              // Optional: You could update a followers count here if you display it
+            };
+          }
+          return v;
+        })
+      );
+    } catch (error) {
+      if (error.response?.status === 401) navigate("/user/login");
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await axios.get("http://localhost:3000/api/auth/user/logout", { withCredentials: true });
@@ -166,6 +193,7 @@ const Home = () => {
           items={videos}
           onLike={likeVideo}
           onSave={saveVideo}
+          onFollow={followPartner}
           emptyMessage="No food reels yet. Check back soon!"
           authInfo={authInfo}
         />

@@ -8,12 +8,17 @@ const Saved = () => {
     const [videos, setVideos] = useState([])
     const navigate = useNavigate()
 
+    const [authInfo, setAuthInfo] = useState({
+        isUser: false,
+        isFoodPartner: false,
+        currentPartnerId: null
+    })
+
     useEffect(() => {
         axios.get("http://localhost:3000/api/food/save", { withCredentials: true })
             .then(response => {
-                // 💡 Fix applied: .filter() function added to remove items where 'food' is null
                 const savedFoods = response.data.savedFoods
-                    .filter(item => item.food !== null) // <-- Only process items with a valid food object
+                    .filter(item => item.food !== null)
                     .map((item) => ({
                         _id: item.food._id,
                         video: item.food.video,
@@ -26,12 +31,12 @@ const Saved = () => {
                             name: item.food.foodPartner?.businessName || item.food.foodPartner?.contactName || "Food Partner",
                             avatar: item.food.foodPartner?.avatar
                         },
-                        isSaved: true, // All items in saved page are saved
-                        isLiked: item.food.isLiked || false, // Use backend-provided status
+                        isSaved: true,
+                        isLiked: item.food.isLiked || false,
+                        isFollowing: item.food.isFollowing || false,
                     }))
                 setVideos(savedFoods)
             })
-            // Better practice to handle errors
             .catch(error => {
                 console.error("Error fetching saved videos:", error);
                 if (error.response?.status === 401) {
@@ -44,9 +49,7 @@ const Saved = () => {
 
     const removeSaved = async (item) => {
         try {
-            const response = await axios.post("http://localhost:3000/api/food/save", { foodId: item._id }, { withCredentials: true })
-
-            // Optimistically update the UI by filtering out the removed item
+            await axios.post("http://localhost:3000/api/food/save", { foodId: item._id }, { withCredentials: true })
             setVideos((prev) => prev.filter(v => v._id !== item._id));
         } catch (error) {
             console.error("Error removing saved status:", error);
@@ -84,12 +87,41 @@ const Saved = () => {
         }
     };
 
+    const followPartner = async (item) => {
+        try {
+            const partnerId = item.foodPartner?._id || item.foodPartner;
+            const response = await axios.post(
+                "http://localhost:3000/api/food/follow",
+                { partnerId },
+                { withCredentials: true }
+            );
+
+            setVideos((prev) =>
+                prev.map((v) => {
+                    const currentPartnerId = v.foodPartner?._id || v.foodPartner;
+                    if (currentPartnerId === partnerId) {
+                        return {
+                            ...v,
+                            isFollowing: response.data.isFollowing,
+                        };
+                    }
+                    return v;
+                })
+            );
+        } catch (error) {
+            console.error("Error following partner:", error);
+            if (error.response?.status === 401) navigate("/user/login");
+        }
+    };
+
     return (
         <ReelFeed
             items={videos}
             onLike={likeVideo}
             onSave={removeSaved}
+            onFollow={followPartner}
             emptyMessage="No saved videos yet."
+            authInfo={authInfo}
         />
     )
 }
