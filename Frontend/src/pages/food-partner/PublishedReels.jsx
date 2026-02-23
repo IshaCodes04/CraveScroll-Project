@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LogOut, Loader2, UtensilsCrossed, Plus, LayoutGrid } from "lucide-react";
+import {
+    LogOut, UtensilsCrossed, Plus, LayoutGrid, List,
+    Trash2, Play, Heart, Film, AlertTriangle, X,
+    TrendingUp, Eye, Star
+} from "lucide-react";
 import "../../styles/reels.css";
 import ReelFeed from "../../components/ReelFeed";
 import Logo from "../../components/Logo";
@@ -9,6 +13,10 @@ import Logo from "../../components/Logo";
 const PublishedReels = () => {
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [viewMode, setViewMode] = useState("feed");
+    const [deleteModal, setDeleteModal] = useState({ open: false, item: null });
+    const [deleting, setDeleting] = useState(false);
+    const [hoveredId, setHoveredId] = useState(null);
     const [authInfo, setAuthInfo] = useState({
         isUser: false,
         isFoodPartner: false,
@@ -21,13 +29,11 @@ const PublishedReels = () => {
         setLoading(true);
         try {
             const response = await axios.get("http://localhost:3000/api/food/publishedReels", { withCredentials: true });
-
             setAuthInfo({
                 isUser: false,
                 isFoodPartner: true,
                 currentPartnerId: response.data.currentPartnerId
             });
-
             setVideos(response.data.foodItems || []);
         } catch (error) {
             console.error("Error fetching published reels:", error);
@@ -39,114 +45,311 @@ const PublishedReels = () => {
         }
     };
 
+    const confirmDelete = (item) => {
+        setDeleteModal({ open: true, item });
+    };
+
+    const handleDeleteReel = async () => {
+        if (!deleteModal.item) return;
+        setDeleting(true);
+        try {
+            await axios.delete(`http://localhost:3000/api/food/${deleteModal.item._id}`, { withCredentials: true });
+            setVideos(prev => prev.filter(v => v._id !== deleteModal.item._id));
+            setDeleteModal({ open: false, item: null });
+        } catch (error) {
+            console.error("Error deleting reel:", error);
+        } finally {
+            setDeleting(false);
+        }
+    };
+
     useEffect(() => {
         fetchPublishedReels();
     }, [location.pathname, location.state?.refresh]);
 
     const handleLogout = async () => {
         try {
-            await axios.get("http://localhost:3000/api/auth/user/logout", { withCredentials: true });
-            navigate("/food-partner/login");
-        } catch (error) {
+            await axios.get("http://localhost:3000/api/auth/food-partner/logout", { withCredentials: true });
+        } finally {
             navigate("/food-partner/login");
         }
     };
 
+    const totalLikes = videos.reduce((acc, v) => acc + (v.likeCount || 0), 0);
+
+    /* ── LOADING ─────────────────────────────────── */
     if (loading) {
         return (
-            <div className="h-screen w-full flex flex-col items-center justify-center bg-black overflow-hidden relative">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-600/20 rounded-full blur-[120px] animate-pulse" />
-                <div className="relative z-10 flex flex-col items-center gap-12 animate-fade-up">
-                    <div className="relative group">
-                        <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl group-hover:blur-3xl transition-all duration-500" />
-                        <div className="w-32 h-32 rounded-full border-4 border-white/5 border-t-primary animate-spin flex items-center justify-center relative bg-black/40 backdrop-blur-sm">
-                            <UtensilsCrossed className="w-10 h-10 text-primary animate-bounce" />
+            <div className="h-screen w-full flex flex-col items-center justify-center bg-[#090909] overflow-hidden relative">
+                <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-orange-500/10 rounded-full blur-[140px]" />
+                <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-orange-700/10 rounded-full blur-[140px]" />
+                <div className="relative z-10 flex flex-col items-center gap-8">
+                    <div className="relative w-24 h-24">
+                        <div className="absolute inset-0 rounded-full border-[3px] border-white/5 border-t-orange-500 animate-spin" />
+                        <div className="absolute inset-3 rounded-full border-[3px] border-white/5 border-b-orange-400 animate-spin [animation-direction:reverse] [animation-duration:0.8s]" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <Film className="w-8 h-8 text-orange-500" />
                         </div>
                     </div>
-                    <div className="text-center space-y-4">
-                        <h1 className="text-4xl font-black tracking-tighter text-white">
-                            My<span className="text-primary italic">Reels</span>
+                    <div className="text-center">
+                        <h1 className="text-3xl font-black tracking-tight text-white">
+                            My <span className="text-orange-500">Studio</span>
                         </h1>
-                        <p className="text-white/40 font-bold uppercase tracking-[4px] text-xs">Loading Your Creations</p>
+                        <p className="text-white/30 text-xs font-semibold uppercase tracking-[5px] mt-2">Loading Creations</p>
                     </div>
                 </div>
             </div>
         );
     }
 
+    /* ── MAIN ─────────────────────────────────────── */
     return (
-        <div className="relative bg-black min-h-screen">
-            {/* Global Header - Home Style */}
-            <div className="fixed top-0 left-0 right-0 p-4 sm:p-6 z-[100] flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
-                {/* Left Side: Logo + Heading (Home Style) */}
-                <div className="flex items-center gap-2 sm:gap-4 pointer-events-auto">
-                    <div className="flex items-center justify-center animate-float">
-                        <Logo size={24} className="w-6 h-6 sm:w-10 sm:h-10 drop-shadow-lg" />
-                    </div>
-                    <h1 className="text-xl sm:text-3xl lg:text-4xl font-extrabold drop-shadow-lg bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent">
-                        CraveScroll
-                    </h1>
-                </div>
+        <div className="relative bg-[#090909] min-h-screen">
 
-                {/* Center: My Published Reels Badge */}
-                <div className="absolute left-1/2 -translate-x-1/2 top-4 sm:top-6 pointer-events-auto">
-                    <div className="flex items-center gap-2 px-6 py-2.5 sm:py-3.5 rounded-2xl bg-white/10 backdrop-blur-3xl border border-white/10 shadow-2xl">
-                        <LayoutGrid className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
-                        <span className="text-white font-black text-[9px] sm:text-[10px] uppercase tracking-[3px] whitespace-nowrap">My Published Reels</span>
-                    </div>
-                </div>
+            {/* ── AMBIENT GLOW ── */}
+            <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-orange-500/5 rounded-full blur-[100px] pointer-events-none z-0" />
 
-                {/* Right Side: Professional Sign Out Button */}
-                <div className="flex items-center gap-3 sm:gap-6 pointer-events-auto">
-                    <button
-                        onClick={handleLogout}
-                        className="group relative flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-2xl border border-white/10 hover:bg-white/10 hover:border-destructive/30 transition-all duration-500 shadow-2xl overflow-hidden"
-                    >
-                        <div className="absolute inset-0 bg-destructive/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                        <div className="relative flex items-center gap-2 sm:gap-3">
-                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-destructive/10 flex items-center justify-center group-hover:bg-destructive group-hover:rotate-12 transition-all duration-500">
-                                <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-destructive group-hover:text-white" />
-                            </div>
-                            <div className="flex flex-col items-start leading-tight">
-                                <span className="text-white/90 font-black text-[8px] sm:text-[10px] uppercase tracking-widest hidden xs:block">Account</span>
-                                <span className="text-white/40 font-bold text-[8px] sm:text-[10px] uppercase tracking-widest group-hover:text-destructive transition-colors">Sign Out</span>
+            {/* ── DELETE CONFIRMATION MODAL ── */}
+            {deleteModal.open && (
+                <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setDeleteModal({ open: false, item: null })} />
+                    <div className="relative z-10 w-full max-w-sm bg-[#161616] border border-white/10 rounded-3xl p-8 shadow-2xl animate-fade-up">
+                        <div className="flex justify-center mb-6">
+                            <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                                <AlertTriangle className="w-8 h-8 text-red-500" />
                             </div>
                         </div>
+                        <h2 className="text-white font-black text-xl text-center mb-2">Delete Reel?</h2>
+                        <p className="text-white/40 text-sm text-center mb-8 leading-relaxed">
+                            This action cannot be undone. Your reel will be permanently removed.
+                        </p>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setDeleteModal({ open: false, item: null })}
+                                className="flex-1 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white/60 font-bold text-sm hover:bg-white/10 transition-all"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleDeleteReel}
+                                disabled={deleting}
+                                className="flex-1 py-3.5 rounded-2xl bg-red-500 hover:bg-red-600 text-white font-black text-sm transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-red-500/20"
+                            >
+                                {deleting ? (
+                                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                ) : (
+                                    <><Trash2 className="w-4 h-4" /> Delete</>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ── HEADER ── */}
+            <header className="fixed top-0 left-0 right-0 z-[100] px-4 sm:px-8 py-4 flex items-center justify-between"
+                style={{ background: "linear-gradient(to bottom, rgba(9,9,9,0.98) 0%, rgba(9,9,9,0) 100%)" }}>
+
+                {/* Logo */}
+                <div className="flex items-center gap-3">
+                    <Logo size={22} className="drop-shadow-lg flex-shrink-0" />
+                    <span className="text-white font-black text-lg sm:text-xl tracking-tight hidden sm:block">
+                        Crave<span className="text-orange-500">Scroll</span>
+                    </span>
+                </div>
+
+                {/* Center Toggle */}
+                <div className="absolute left-1/2 -translate-x-1/2 flex items-center p-1 rounded-2xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl shadow-xl">
+                    <button
+                        onClick={() => setViewMode("feed")}
+                        className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${viewMode === "feed"
+                                ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30"
+                                : "text-white/30 hover:text-white/70"
+                            }`}
+                    >
+                        <List className="w-3.5 h-3.5" />
+                        <span className="hidden sm:block">Feed</span>
+                    </button>
+                    <button
+                        onClick={() => setViewMode("grid")}
+                        className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${viewMode === "grid"
+                                ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30"
+                                : "text-white/30 hover:text-white/70"
+                            }`}
+                    >
+                        <LayoutGrid className="w-3.5 h-3.5" />
+                        <span className="hidden sm:block">Grid</span>
                     </button>
                 </div>
-            </div>
 
-            {/* Bottom Create Reel Button */}
-            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto w-full max-w-[240px] px-4">
+                {/* Sign Out */}
                 <button
-                    onClick={() => navigate("/create-food")}
-                    className="group relative w-full flex items-center justify-center gap-2 sm:gap-3 px-8 py-4 sm:py-5 rounded-2xl bg-primary hover:bg-orange-600 transition-all duration-500 shadow-[0_20px_50px_rgba(249,115,22,0.4)] overflow-hidden hover:scale-105 active:scale-95"
+                    onClick={handleLogout}
+                    className="group flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-red-500/30 hover:bg-red-500/10 transition-all duration-300"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out" />
-                    <Plus className="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-700" />
-                    <span className="text-white font-black text-[11px] uppercase tracking-[3px]">Create Reel</span>
+                    <LogOut className="w-4 h-4 text-white/40 group-hover:text-red-400 transition-colors" />
+                    <span className="text-white/40 group-hover:text-red-400 text-xs font-black uppercase tracking-widest hidden sm:block transition-colors">
+                        Sign Out
+                    </span>
                 </button>
-            </div>
+            </header>
 
-            <main className="h-screen w-full relative">
-                {/* Hide Internal Reel Header */}
-                <style>{`
-                    .creator-feed [data-internal-header="true"] {
-                        display: none;
-                    }
-                `}</style>
-                <div className="creator-feed h-full w-full">
-                    <ReelFeed
-                        items={videos}
-                        emptyMessage="You haven't published any reels yet!"
-                        authInfo={authInfo}
-                        hideStoreButton={true}
-                        hideProfile={true}
-                        hideDescription={true}
-                    />
-                </div>
+            {/* ── MAIN CONTENT ── */}
+            <main className="relative z-10">
+
+                {/* ─── FEED VIEW ─── */}
+                {viewMode === "feed" && (
+                    <div className="h-screen w-full">
+                        <style>{`.creator-feed [data-internal-header="true"] { display: none; }`}</style>
+                        <div className="creator-feed h-full w-full">
+                            <ReelFeed
+                                items={videos}
+                                emptyMessage="You haven't published any reels yet!"
+                                authInfo={authInfo}
+                                hideStoreButton={true}
+                                hideProfile={true}
+                                hideDescription={true}
+                                hideActions={true}
+                                onDelete={confirmDelete}
+                            />
+                        </div>
+                    </div>
+                )}
+
+                {/* ─── GRID VIEW ─── */}
+                {viewMode === "grid" && (
+                    <div className="pt-24 pb-32 px-4 sm:px-8 max-w-7xl mx-auto">
+
+                        {/* Stats Bar */}
+                        <div className="flex items-center gap-4 mb-8 mt-2">
+                            <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/[0.04] border border-white/[0.07]">
+                                <Film className="w-4 h-4 text-orange-400" />
+                                <span className="text-white font-black text-sm">{videos.length}</span>
+                                <span className="text-white/30 text-xs font-semibold uppercase tracking-wider">Reels</span>
+                            </div>
+                            <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/[0.04] border border-white/[0.07]">
+                                <Heart className="w-4 h-4 text-red-400" />
+                                <span className="text-white font-black text-sm">{totalLikes}</span>
+                                <span className="text-white/30 text-xs font-semibold uppercase tracking-wider">Likes</span>
+                            </div>
+                            <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/[0.04] border border-white/[0.07]">
+                                <TrendingUp className="w-4 h-4 text-green-400" />
+                                <span className="text-white/30 text-xs font-semibold uppercase tracking-wider">Creator Studio</span>
+                            </div>
+                        </div>
+
+                        {videos.length === 0 ? (
+                            /* Empty State */
+                            <div className="flex flex-col items-center justify-center py-32 text-center">
+                                <div className="w-24 h-24 rounded-3xl bg-white/[0.04] border border-white/[0.07] flex items-center justify-center mb-6">
+                                    <Film className="w-10 h-10 text-white/20" />
+                                </div>
+                                <h2 className="text-white font-black text-2xl mb-2">No Reels Yet</h2>
+                                <p className="text-white/30 text-sm mb-8">Start creating your first food reel</p>
+                                <button
+                                    onClick={() => navigate("/create-food")}
+                                    className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-black text-sm transition-all shadow-lg shadow-orange-500/30 hover:scale-105 active:scale-95"
+                                >
+                                    <Plus className="w-5 h-5" /> Create First Reel
+                                </button>
+                            </div>
+                        ) : (
+                            /* Grid */
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+                                {videos.map((item, index) => (
+                                    <div
+                                        key={item._id}
+                                        className="group relative aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer"
+                                        onMouseEnter={() => setHoveredId(item._id)}
+                                        onMouseLeave={() => setHoveredId(null)}
+                                        style={{
+                                            animationDelay: `${index * 50}ms`,
+                                            background: "rgba(255,255,255,0.03)",
+                                            border: hoveredId === item._id ? "1px solid rgba(249,115,22,0.4)" : "1px solid rgba(255,255,255,0.07)",
+                                            transition: "border-color 0.3s, box-shadow 0.3s",
+                                            boxShadow: hoveredId === item._id ? "0 0 30px rgba(249,115,22,0.15)" : "none"
+                                        }}
+                                    >
+                                        {/* Thumbnail */}
+                                        <video
+                                            src={item.video}
+                                            className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                                            style={{ opacity: hoveredId === item._id ? 1 : 0.5 }}
+                                            muted
+                                            playsInline
+                                            preload="metadata"
+                                        />
+
+                                        {/* Always-visible bottom gradient */}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-70" />
+
+                                        {/* Like count badge - always visible */}
+                                        <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-black/60 backdrop-blur-md">
+                                            <Heart className="w-3 h-3 text-red-400 fill-red-400" />
+                                            <span className="text-white text-[11px] font-black">{item.likeCount || 0}</span>
+                                        </div>
+
+                                        {/* Hover overlay actions */}
+                                        <div
+                                            className="absolute inset-0 flex flex-col justify-between p-3 transition-all duration-300"
+                                            style={{ opacity: hoveredId === item._id ? 1 : 0, transform: hoveredId === item._id ? "translateY(0)" : "translateY(8px)" }}
+                                        >
+                                            {/* Top row: delete */}
+                                            <div className="flex justify-end">
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); confirmDelete(item); }}
+                                                    className="w-9 h-9 rounded-xl bg-red-500/20 backdrop-blur-md border border-red-500/30 flex items-center justify-center text-red-400 hover:bg-red-500 hover:text-white transition-all duration-200 hover:scale-110"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
+
+                                            {/* Center: Play */}
+                                            <div className="flex items-center justify-center">
+                                                <button
+                                                    onClick={() => setViewMode("feed")}
+                                                    className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-orange-500 hover:border-orange-500 hover:scale-110 transition-all duration-300 shadow-xl"
+                                                >
+                                                    <Play className="w-6 h-6 fill-white ml-1" />
+                                                </button>
+                                            </div>
+
+                                            {/* Bottom: description */}
+                                            <div className="space-y-1">
+                                                {item.description && (
+                                                    <p className="text-white text-xs font-semibold line-clamp-2 leading-snug drop-shadow-lg">
+                                                        {item.description}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Bottom gradient overlay with reel number */}
+                                        <div className="absolute bottom-0 left-0 right-0 p-3 pointer-events-none">
+                                            <div className="text-white/20 text-[10px] font-black uppercase tracking-widest">
+                                                Reel #{index + 1}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
             </main>
+
+            {/* ── FLOATING CREATE BUTTON ── */}
+            <button
+                onClick={() => navigate("/create-food")}
+                className="group fixed bottom-8 right-6 sm:right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl"
+                style={{ background: "linear-gradient(135deg, #f97316, #ea580c)", boxShadow: "0 20px 60px rgba(249,115,22,0.4)" }}
+            >
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/0 via-white/15 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                <Plus className="w-5 h-5 text-white relative z-10 group-hover:rotate-90 transition-transform duration-500" />
+                <span className="text-white font-black text-xs uppercase tracking-[3px] relative z-10 hidden sm:block">
+                    Create Reel
+                </span>
+            </button>
         </div>
     );
 };

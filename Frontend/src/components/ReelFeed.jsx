@@ -10,7 +10,8 @@ import {
   Utensils,
   Plus,
   UserPlus,
-  ChefHat
+  ChefHat,
+  Trash2
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
@@ -25,6 +26,8 @@ const ReelFeed = ({
   hideStoreButton = false,
   hideProfile = false,
   hideDescription = false,
+  hideActions = false,
+  onDelete,
 }) => {
   const [playingStates, setPlayingStates] = useState({});
   const containerRef = useRef(null);
@@ -165,65 +168,82 @@ const ReelFeed = ({
 
             {/* Right Side Actions */}
             <div className="absolute right-3 sm:right-6 bottom-40 sm:top-1/2 sm:-translate-y-1/2 flex flex-col items-center gap-5 sm:gap-7 z-30">
-              {/* Like */}
-              <button
-                onClick={() => handleLike(item)}
-                className="flex flex-col items-center gap-1 group"
-              >
-                <div
-                  className={`w-11 h-11 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all duration-300 ${isLiked
-                    ? "bg-red-500 scale-110 shadow-lg shadow-red-500/40"
-                    : "bg-white/10 backdrop-blur-xl border border-white/10 hover:bg-white/20"
-                    }`}
+              {!hideActions && (
+                <>
+                  {/* Like */}
+                  <button
+                    onClick={() => handleLike(item)}
+                    className="flex flex-col items-center gap-1 group"
+                  >
+                    <div
+                      className={`w-11 h-11 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all duration-300 ${isLiked
+                        ? "bg-red-500 scale-110 shadow-lg shadow-red-500/40"
+                        : "bg-white/10 backdrop-blur-xl border border-white/10 hover:bg-white/20"
+                        }`}
+                    >
+                      <Heart
+                        className={`w-5 h-5 sm:w-7 sm:h-7 transition-all ${isLiked ? "text-white fill-white" : "text-white"
+                          }`}
+                      />
+                    </div>
+                    <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">
+                      {Math.max(0, item.likeCount ?? 0)}
+                    </span>
+                  </button>
+
+                  {/* Save */}
+                  <button
+                    onClick={() => handleSave(item)}
+                    className="flex flex-col items-center gap-1 group"
+                  >
+                    <div
+                      className={`w-11 h-11 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all duration-300 ${isSaved
+                        ? "bg-primary scale-110 shadow-lg shadow-primary/40"
+                        : "bg-white/10 backdrop-blur-xl border border-white/10 hover:bg-white/20"
+                        }`}
+                    >
+                      <Bookmark
+                        className={`w-5 h-5 sm:w-7 sm:h-7 transition-all ${isSaved ? "text-white fill-white" : "text-white"
+                          }`}
+                      />
+                    </div>
+                    <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">
+                      {Math.max(0, item.savesCount ?? 0)}
+                    </span>
+                  </button>
+
+                  {/* Comments */}
+                  <button className="flex flex-col items-center gap-1 group">
+                    <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all">
+                      <MessageCircle className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
+                    </div>
+                    <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">
+                      {item.commentsCount ?? 0}
+                    </span>
+                  </button>
+
+                  {/* Share */}
+                  <button className="flex flex-col items-center gap-1 group">
+                    <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all">
+                      <Share2 className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
+                    </div>
+                    <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">Share</span>
+                  </button>
+                </>
+              )}
+
+              {/* Delete Button - shown in Published Reels feed view */}
+              {onDelete && (
+                <button
+                  onClick={() => onDelete(item)}
+                  className="flex flex-col items-center gap-1.5 group"
                 >
-                  <Heart
-                    className={`w-5 h-5 sm:w-7 sm:h-7 transition-all ${isLiked ? "text-white fill-white" : "text-white"
-                      }`}
-                  />
-                </div>
-                <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">
-                  {Math.max(0, item.likeCount ?? 0)}
-                </span>
-              </button>
-
-              {/* Save */}
-              <button
-                onClick={() => handleSave(item)}
-                className="flex flex-col items-center gap-1 group"
-              >
-                <div
-                  className={`w-11 h-11 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all duration-300 ${isSaved
-                    ? "bg-primary scale-110 shadow-lg shadow-primary/40"
-                    : "bg-white/10 backdrop-blur-xl border border-white/10 hover:bg-white/20"
-                    }`}
-                >
-                  <Bookmark
-                    className={`w-5 h-5 sm:w-7 sm:h-7 transition-all ${isSaved ? "text-white fill-white" : "text-white"
-                      }`}
-                  />
-                </div>
-                <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">
-                  {Math.max(0, item.savesCount ?? 0)}
-                </span>
-              </button>
-
-              {/* Comments */}
-              <button className="flex flex-col items-center gap-1 group">
-                <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all">
-                  <MessageCircle className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
-                </div>
-                <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">
-                  {item.commentsCount ?? 0}
-                </span>
-              </button>
-
-              {/* Share */}
-              <button className="flex flex-col items-center gap-1 group">
-                <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all">
-                  <Share2 className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
-                </div>
-                <span className="text-white text-[10px] sm:text-xs font-bold drop-shadow-lg">Share</span>
-              </button>
+                  <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-red-500/15 backdrop-blur-xl border border-red-500/30 flex items-center justify-center group-hover:bg-red-500 group-hover:scale-110 group-hover:border-transparent transition-all duration-300 shadow-lg group-hover:shadow-red-500/40">
+                    <Trash2 className="w-5 h-5 sm:w-6 sm:h-6 text-red-400 group-hover:text-white transition-colors" />
+                  </div>
+                  <span className="text-red-400 text-[10px] sm:text-xs font-black uppercase tracking-wider drop-shadow-lg group-hover:text-red-300 transition-colors">Delete</span>
+                </button>
+              )}
             </div>
 
             {/* Bottom Content Area - Medium Proportions */}
