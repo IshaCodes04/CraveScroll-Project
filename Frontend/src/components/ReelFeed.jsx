@@ -9,6 +9,8 @@ import {
   VolumeX,
   Utensils,
   Plus,
+  UserPlus,
+  ChefHat
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
@@ -222,15 +224,23 @@ const ReelFeed = ({
               </button>
             </div>
 
-            {/* Bottom Content Area */}
-            <div className="absolute left-0 right-20 sm:right-32 bottom-32 sm:bottom-40 px-5 sm:px-12 z-30 max-w-2xl">
+            {/* Bottom Content Area - Responsive Alignment */}
+            <div className="absolute left-0 right-20 sm:right-32 bottom-28 md:bottom-32 lg:bottom-40 px-5 md:px-10 lg:px-16 z-40 max-w-3xl">
+              {/* Subtle background shadow for text readability */}
+              <div className="absolute inset-x-0 -bottom-10 h-80 bg-gradient-to-t from-black/70 via-black/20 to-transparent -z-10 pointer-events-none" />
               {/* Profile Row */}
-              <div className="flex items-center gap-3 sm:gap-5 mb-4 sm:mb-8">
-                <div className="relative group/avatar">
-                  <div className="absolute -inset-1 bg-gradient-to-tr from-primary to-orange-400 rounded-2xl blur opacity-30 group-hover/avatar:opacity-60 transition duration-500" />
-                  <div className="relative w-11 h-11 sm:w-16 sm:h-16 rounded-2xl p-0.5 bg-black border border-white/10">
+              <div className="flex items-center gap-4 sm:gap-7 mb-7 sm:mb-10 group/profile">
+                {/* Circular Avatar - Scaling for all views */}
+                <div className="relative shrink-0">
+                  <div className="
+                    w-16 h-16 
+                    md:w-28 md:h-28 
+                    lg:w-36 lg:h-36 
+                    rounded-full border-[3.5px] border-primary/40 p-1 
+                    group-hover/profile:border-primary transition-all duration-500 shadow-2xl
+                  ">
                     <img
-                      className="w-full h-full rounded-2xl object-cover"
+                      className="w-full h-full rounded-full object-cover border-2 border-white"
                       src={
                         item.user?.avatar ||
                         item.avatar ||
@@ -240,73 +250,90 @@ const ReelFeed = ({
                     />
                   </div>
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-white font-black text-base sm:text-2xl tracking-tight drop-shadow-xl">
-                    {item.user?.name || item.author || "Food Partner"}
-                  </span>
+
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-0.5">
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-white font-['Playfair_Display'] font-black text-2xl md:text-5xl lg:text-7xl tracking-normal drop-shadow-md lowercase">
+                        {item.user?.name || item.author || "Food Partner"}
+                      </h2>
+                      {/* Orange Verified Badge - Responsive Scale */}
+                      <div className="w-5 h-5 md:w-8 md:h-8 lg:w-11 lg:h-11 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/20">
+                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" className="w-3 h-3 md:w-5 md:h-5 lg:w-7 lg:h-7 text-white">
+                          <path d="M1 4.5L4 7.5L11 1" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Professional Tag Line - Fluid font size */}
+                    <div className="flex items-center gap-2 text-white/95">
+                      <ChefHat className="w-4 h-4 md:w-7 md:h-7 lg:w-9 lg:h-9 text-primary drop-shadow-sm" />
+                      <span className="text-[12px] md:text-xl lg:text-3xl font-medium tracking-tight drop-shadow-sm font-['Poppins']">
+                        Professional Chef & Food Partner
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Solid Follow Button - Matched to Screenshot */}
                   {authInfo.currentPartnerId !== (item.foodPartner?._id || item.foodPartner) && (
                     <button
                       onClick={() => onFollow?.(item)}
-                      className="text-primary text-[10px] sm:text-xs font-black uppercase tracking-[2px] text-left hover:text-white transition-all transform hover:translate-x-1"
+                      className={`
+                        flex items-center gap-3 px-8 py-2.5 md:px-12 md:py-4 lg:px-16 lg:py-5
+                        ${item.isFollowing ? 'bg-white/10 backdrop-blur-md border border-white/20' : 'bg-primary shadow-[0_8px_20px_rgba(249,115,22,0.4)]'} 
+                        rounded-full transition-all duration-300 active:scale-95 group/btn w-max
+                      `}
                     >
-                      {item.isFollowing ? "Following" : "Follow +"}
+                      <UserPlus className="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 text-white" />
+                      <span className="text-white text-xs md:text-xl lg:text-3xl font-bold tracking-wide">
+                        {item.isFollowing ? "Following" : "Follow"}
+                      </span>
                     </button>
                   )}
                 </div>
               </div>
 
-              {/* Description */}
-              <p
-                className="
-                    text-white/90
-                    text-base sm:text-2xl
-                    font-medium
-                    leading-relaxed
-                    tracking-wide
-                    mb-6
-                    line-clamp-2
-                    drop-shadow-2xl
-                    sm:max-w-xl
-                "
-              >
+              {/* Description Row - Responsive Scaling */}
+              <p className="text-white/95 text-base md:text-2xl lg:text-3xl font-medium italic leading-snug tracking-wide max-w-xl md:max-w-3xl border-l-2 border-primary/50 pl-4 py-1.5 mb-8 md:mb-12 drop-shadow-md line-clamp-2">
                 {item.description}
               </p>
 
-              {/* Visit Store / Create Food */}
+              {/* Visit Store Action - Elegant Scale */}
               {item.foodPartner && !hideStoreButton && (
-                <div className="w-full sm:w-auto flex justify-start">
+                <div className="w-max">
                   <Link
                     to={
                       authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
                         ? "/create-food"
                         : "/food-partner/" + (item.foodPartner?._id || item.foodPartner)
                     }
-                    className="group relative flex items-center justify-center gap-2 sm:gap-4
-                      px-6 py-3.5 sm:px-12 sm:py-5
+                    className="group relative flex items-center justify-center gap-3
+                      px-8 py-3.5 sm:px-10 sm:py-4
                       rounded-xl sm:rounded-2xl
-                      bg-white/5 backdrop-blur-3xl
+                      bg-white/5 backdrop-blur-2xl
                       border border-white/10
-                      text-white text-[11px] sm:text-base font-black uppercase tracking-[3px]
+                      text-white text-[11px] sm:text-sm font-black uppercase tracking-[4px]
                       shadow-2xl
                       hover:bg-primary hover:border-primary
                       hover:scale-[1.02] active:scale-95
                       transition-all duration-500 ease-out
-                      overflow-hidden w-full sm:w-max"
+                      overflow-hidden"
                   >
                     <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000" />
 
-                    <div className="relative flex items-center gap-2 sm:gap-4">
+                    <div className="relative flex items-center gap-3">
                       {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId ? (
-                        <Plus className="w-4 h-4 sm:w-6 sm:h-6 group-hover:rotate-180 transition-transform duration-700" />
+                        <>
+                          <Plus className="w-4 h-4 group-hover:rotate-180 transition-transform duration-700" />
+                          <span className="drop-shadow-lg whitespace-nowrap">Create Dish</span>
+                        </>
                       ) : (
-                        <Utensils className="w-4 h-4 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform duration-300" />
+                        <>
+                          <Utensils className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform duration-300" />
+                          <span className="drop-shadow-lg whitespace-nowrap">Visit Store</span>
+                        </>
                       )}
-                      <span className="drop-shadow-lg whitespace-nowrap">
-                        {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
-                          ? "Create Food"
-                          : "Visit Store"}
-                      </span>
                     </div>
                   </Link>
                 </div>
