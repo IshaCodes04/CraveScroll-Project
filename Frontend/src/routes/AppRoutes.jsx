@@ -12,6 +12,7 @@ import AdminDashboard from '../pages/admin/AdminDashboard';
 import Home from '../pages/general/Home';
 import CreateFood from '../pages/food-partner/CreateFood';
 import Profile from '../pages/food-partner/Profile';
+import PublishedReels from '../pages/food-partner/PublishedReels';
 import Saved from '../pages/general/Saved';
 import BottomNav from '../components/BottomNav';
 
@@ -30,6 +31,7 @@ const AppRoutes = () => {
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 <Route path="/create-food" element={<CreateFood />} />
+                <Route path="/publishedReels" element={<PublishedReels />} />
                 <Route path="/food-partner/:id" element={<Profile />} />
                 <Route path="/home" element={<><Home /><BottomNav /></>} />
                 <Route path="/saved" element={<><Saved /><BottomNav /></>} />
