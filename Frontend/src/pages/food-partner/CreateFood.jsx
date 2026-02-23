@@ -87,7 +87,7 @@ const CreateFood = () => {
       });
 
       console.log(response.data);
-      navigate("/home", { state: { refresh: Date.now() } });
+      navigate("/publishedReels", { state: { refresh: Date.now() } });
     } catch (error) {
       console.error('Upload error:', error);
       setFileError(error.response?.data?.message || 'Failed to upload video. Please try again.');

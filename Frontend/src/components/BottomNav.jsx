@@ -17,6 +17,18 @@ const BottomNav = () => {
           <span className="bottom-nav__label">Home</span>
         </NavLink>
 
+        <NavLink to="/publishedReels" className={({ isActive }) => `bottom-nav__item ${isActive ? 'is-active' : ''}`}>
+          <span className="bottom-nav__icon" aria-hidden="true">
+            {/* layout/reels icon */}
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2" />
+              <path d="M3 9h18" />
+              <path d="M9 21V9" />
+            </svg>
+          </span>
+          <span className="bottom-nav__label">My Reels</span>
+        </NavLink>
+
         <NavLink to="/saved" className={({ isActive }) => `bottom-nav__item ${isActive ? 'is-active' : ''}`}>
           <span className="bottom-nav__icon" aria-hidden="true">
             {/* bookmark icon */}

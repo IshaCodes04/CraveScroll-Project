@@ -19,9 +19,11 @@ const ReelFeed = ({
   onSave,
   onFollow,
   emptyMessage,
-  authInfo,
+  authInfo = {},
+  hideStoreButton = false,
 }) => {
   const [playingStates, setPlayingStates] = useState({});
+  const containerRef = useRef(null);
   const [likedItems, setLikedItems] = useState({});
   const [savedItems, setSavedItems] = useState({});
   const videoRefs = useRef({});
@@ -84,62 +86,67 @@ const ReelFeed = ({
 
   if (!items || items.length === 0) {
     return (
-      <div className="h-screen w-full flex items-center justify-center bg-black">
-        <div className="text-center px-8">
-          <div className="flex justify-center mb-6">
-            <Logo size={80} className="drop-shadow-lg" />
+      <div className="fixed inset-0 flex items-center justify-center bg-black z-[10]">
+        <div className="text-center px-8 flex flex-col items-center">
+          <div className="flex justify-center mb-6 animate-float">
+            <Logo size={80} className="w-20 h-20 sm:w-28 sm:h-28 drop-shadow-2xl" />
           </div>
-          <p className="text-white/60 text-lg">{emptyMessage}</p>
+          <h2 className="text-white font-black text-xl sm:text-2xl mb-2 opacity-80">
+            {emptyMessage || "No reels yet"}
+          </h2>
+          <p className="text-white/40 text-sm sm:text-base max-w-xs">
+            Start your culinary journey by creating or exploring mouth-watering content.
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide bg-black">
+    <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide bg-black relative">
       {items.map((item) => {
-        const isPlaying = playingStates[item._id];
+        const videoId = item._id || item.id;
+        const isPlaying = playingStates[videoId];
         // Use prop value if available, otherwise use local state
-        const isLiked = item.isLiked !== undefined ? item.isLiked : likedItems[item._id] || false;
-        const isSaved = item.isSaved !== undefined ? item.isSaved : savedItems[item._id] || false;
+        const isLiked = item.isLiked !== undefined ? item.isLiked : likedItems[videoId] || false;
+        const isSaved = item.isSaved !== undefined ? item.isSaved : savedItems[videoId] || false;
 
         return (
           <section
-            key={item._id}
-            className="h-screen w-full snap-start snap-always relative"
+            key={videoId}
+            className="h-screen w-full snap-start snap-always relative overflow-hidden flex flex-col justify-center bg-black"
           >
-            {/* Video */}
-            <video
-              ref={setVideoRef(item._id)}
-              data-id={item._id}
-              className="absolute inset-0 w-full h-full object-cover"
-              src={item.video}
-              muted
-              playsInline
-              loop
-              preload="metadata"
-              onClick={() => togglePlay(item._id)}
-            />
+            {/* Video Background */}
+            <div className="absolute inset-0 w-full h-full bg-black">
+              <video
+                ref={setVideoRef(videoId)}
+                data-id={videoId}
+                className="w-full h-full object-cover"
+                src={item.video}
+                muted
+                playsInline
+                loop
+                preload="auto"
+                onClick={() => togglePlay(videoId)}
+              />
+            </div>
 
-            {/* Play Overlay */}
+            {/* Play/Pause Overlay Indicator */}
             <div
-              className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${!isPlaying ? "opacity-100" : "opacity-0"
+              className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-all duration-500 ${!isPlaying ? "opacity-100 scale-100" : "opacity-0 scale-150"
                 }`}
-              onClick={() => togglePlay(item._id)}
             >
-              <div className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                <Play className="w-10 h-10 text-white ml-1" fill="white" />
+              <div className="w-24 h-24 rounded-full bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-2xl">
+                <Play className="w-10 h-10 text-white fill-white ml-1 animate-pulse" />
               </div>
             </div>
 
-            {/* Top Gradient */}
-            <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/70 to-transparent pointer-events-none" />
-
-            {/* Bottom Gradient */}
-            <div className="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none" />
+            {/* Premium Overlay Gradients */}
+            <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black/80 via-black/40 to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none" />
 
             {/* Header with CraveScroll */}
-            <div className="absolute top-0 left-0 right-0 p-4 sm:p-6 z-10 select-none">
+            <div data-internal-header="true" className="absolute top-0 left-0 right-0 p-4 sm:p-6 z-10 select-none">
               <div className="flex items-center gap-2 sm:gap-4">
                 <div className="flex items-center justify-center animate-float">
                   <Logo size={24} className="w-6 h-6 sm:w-10 sm:h-10 drop-shadow-lg" />
@@ -259,7 +266,7 @@ const ReelFeed = ({
               </p>
 
               {/* Visit Store / Create Food */}
-              {item.foodPartner && (
+              {item.foodPartner && !hideStoreButton && (
                 <div className="w-full flex justify-start sm:justify-center mt-2 sm:mt-4">
                   <Link
                     to={

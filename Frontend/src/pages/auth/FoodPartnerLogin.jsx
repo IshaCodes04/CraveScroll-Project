@@ -48,7 +48,7 @@ const FoodPartnerLogin = () => {
         return;
       }
 
-      navigate("/create-food");
+      navigate("/publishedReels");
     } catch (error) {
       console.error("Login error:", error);
       setError(error.response?.data?.message || "Login failed. Check your credentials.");
