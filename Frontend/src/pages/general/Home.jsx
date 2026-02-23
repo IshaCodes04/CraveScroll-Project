@@ -142,20 +142,20 @@ const Home = () => {
 
   return (
     <div className="relative bg-black min-h-screen">
-      {/* Premium Floating Logout */}
+      {/* Premium Floating Logout - Responsive */}
       {isUser && (
         <button
           onClick={handleLogout}
-          className="fixed top-6 right-6 z-[100] group flex items-center gap-4 px-6 py-3 rounded-2xl bg-white/5 backdrop-blur-2xl border border-white/10 hover:bg-white/10 hover:border-destructive/30 transition-all duration-500 shadow-2xl overflow-hidden"
+          className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[100] group flex items-center gap-2 sm:gap-4 px-4 py-2 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-2xl border border-white/10 hover:bg-white/10 hover:border-destructive/30 transition-all duration-500 shadow-2xl overflow-hidden"
         >
           <div className="absolute inset-0 bg-destructive/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-          <div className="relative flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-destructive/10 flex items-center justify-center group-hover:bg-destructive group-hover:rotate-12 transition-all duration-500">
-              <LogOut className="w-4 h-4 text-destructive group-hover:text-white" />
+          <div className="relative flex items-center gap-2 sm:gap-3">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-destructive/10 flex items-center justify-center group-hover:bg-destructive group-hover:rotate-12 transition-all duration-500">
+              <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-destructive group-hover:text-white" />
             </div>
             <div className="flex flex-col items-start leading-tight">
-              <span className="text-white/90 font-black text-[10px] uppercase tracking-widest">Account</span>
-              <span className="text-white/40 font-bold text-[10px] uppercase tracking-widest group-hover:text-destructive transition-colors">Sign Out</span>
+              <span className="text-white/90 font-black text-[8px] sm:text-[10px] uppercase tracking-widest hidden xs:block">Account</span>
+              <span className="text-white/40 font-bold text-[8px] sm:text-[10px] uppercase tracking-widest group-hover:text-destructive transition-colors">Sign Out</span>
             </div>
           </div>
         </button>
