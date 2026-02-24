@@ -133,12 +133,15 @@ const PublishedReels = () => {
                             <button
                                 onClick={handleDeleteReel}
                                 disabled={deleting}
-                                className="flex-1 py-3.5 rounded-2xl bg-red-500 hover:bg-red-600 text-white font-black text-sm transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-red-500/20"
+                                className="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white font-black text-sm transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-xl shadow-red-500/25 active:scale-[0.98] group/delbtn"
                             >
                                 {deleting ? (
                                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                                 ) : (
-                                    <><Trash2 className="w-4 h-4" /> Delete</>
+                                    <>
+                                        <Trash2 className="w-4 h-4 group-hover:-rotate-12 transition-transform" />
+                                        <span>Delete Reel</span>
+                                    </>
                                 )}
                             </button>
                         </div>
@@ -163,8 +166,8 @@ const PublishedReels = () => {
                     <button
                         onClick={() => setViewMode("feed")}
                         className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${viewMode === "feed"
-                                ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30"
-                                : "text-white/30 hover:text-white/70"
+                            ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30"
+                            : "text-white/30 hover:text-white/70"
                             }`}
                     >
                         <List className="w-3.5 h-3.5" />
@@ -173,8 +176,8 @@ const PublishedReels = () => {
                     <button
                         onClick={() => setViewMode("grid")}
                         className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${viewMode === "grid"
-                                ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30"
-                                : "text-white/30 hover:text-white/70"
+                            ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30"
+                            : "text-white/30 hover:text-white/70"
                             }`}
                     >
                         <LayoutGrid className="w-3.5 h-3.5" />
@@ -298,9 +301,9 @@ const PublishedReels = () => {
                                             <div className="flex justify-end">
                                                 <button
                                                     onClick={(e) => { e.stopPropagation(); confirmDelete(item); }}
-                                                    className="w-9 h-9 rounded-xl bg-red-500/20 backdrop-blur-md border border-red-500/30 flex items-center justify-center text-red-400 hover:bg-red-500 hover:text-white transition-all duration-200 hover:scale-110"
+                                                    className="w-10 h-10 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-red-500 hover:border-red-500 hover:scale-110 transition-all duration-300 shadow-xl group/del"
                                                 >
-                                                    <Trash2 className="w-4 h-4" />
+                                                    <Trash2 className="w-4 h-4 group-hover/del:animate-pulse" />
                                                 </button>
                                             </div>
 

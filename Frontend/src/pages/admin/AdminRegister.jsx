@@ -58,7 +58,8 @@ const AdminRegister = () => {
                             <Logo className="w-16 h-16 drop-shadow-xl" />
                         </div>
                         <div>
-                            <h1 className="text-4xl font-black tracking-tighter leading-none text-[#4A3728]">CraveScroll</h1>
+                            <h1
+                             className="text-4xl font-black tracking-tighter leading-none text-[#4A3728]">CraveScroll</h1>
                             <span className="text-[10px] text-[#D97706] font-bold uppercase tracking-[4px]">Management</span>
                         </div>
                     </div>

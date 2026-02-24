@@ -236,12 +236,28 @@ const ReelFeed = ({
               {onDelete && (
                 <button
                   onClick={() => onDelete(item)}
-                  className="flex flex-col items-center gap-1.5 group"
+                  className="flex flex-col items-center gap-2 group"
                 >
-                  <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-red-500/15 backdrop-blur-xl border border-red-500/30 flex items-center justify-center group-hover:bg-red-500 group-hover:scale-110 group-hover:border-transparent transition-all duration-300 shadow-lg group-hover:shadow-red-500/40">
-                    <Trash2 className="w-5 h-5 sm:w-6 sm:h-6 text-red-400 group-hover:text-white transition-colors" />
+                  <div className="relative">
+                    {/* Ring Glow Effect */}
+                    <div className="absolute inset-0 rounded-full bg-red-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150" />
+
+                    {/* Main Button Body - Glassmorphism */}
+                    <div className="relative w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 flex items-center justify-center overflow-hidden transition-all duration-500 group-hover:border-red-500/50 group-hover:bg-red-500/10 group-active:scale-95 shadow-2xl">
+                      {/* Hover background slide */}
+                      <div className="absolute inset-0 bg-gradient-to-tr from-red-600 to-red-400 opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+
+                      {/* Icon */}
+                      <Trash2 className="relative z-10 w-5 h-5 sm:w-7 sm:h-7 text-red-500 group-hover:text-white transition-all duration-300 group-hover:rotate-12" />
+
+                      {/* Glint effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
+                    </div>
                   </div>
-                  <span className="text-red-400 text-[10px] sm:text-xs font-black uppercase tracking-wider drop-shadow-lg group-hover:text-red-300 transition-colors">Delete</span>
+
+                  <span className="text-red-500 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] group-hover:text-red-400 transition-colors duration-300">
+                    Delete
+                  </span>
                 </button>
               )}
             </div>
