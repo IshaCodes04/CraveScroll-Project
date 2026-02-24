@@ -154,11 +154,13 @@ const PublishedReels = () => {
                 style={{ background: "linear-gradient(to bottom, rgba(9,9,9,0.98) 0%, rgba(9,9,9,0) 100%)" }}>
 
                 {/* Logo */}
-                <div className="flex items-center gap-3">
-                    <Logo size={22} className="drop-shadow-lg flex-shrink-0" />
-                    <span className="text-white font-black text-lg sm:text-xl tracking-tight hidden sm:block">
-                        Crave<span className="text-orange-500">Scroll</span>
-                    </span>
+                <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="animate-float">
+                        <Logo size={22} className="drop-shadow-lg flex-shrink-0" />
+                    </div>
+                    <h1 className="text-xl sm:text-2xl font-extrabold tracking-tighter bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent hidden sm:block animate-fadeIn">
+                        CraveScroll
+                    </h1>
                 </div>
 
                 {/* Center Toggle */}

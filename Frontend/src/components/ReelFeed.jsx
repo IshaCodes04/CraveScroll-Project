@@ -159,7 +159,7 @@ const ReelFeed = ({
                   <Logo size={24} className="w-7 h-7 sm:w-11 sm:h-11 drop-shadow-xl" />
                 </div>
                 <h1
-                  className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tighter drop-shadow-2xl bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent"
+                  className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tighter drop-shadow-2xl bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent animate-fadeIn"
                 >
                   CraveScroll
                 </h1>
