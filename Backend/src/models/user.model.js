@@ -14,6 +14,11 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
   },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true, // Allows null for users who don't use Google login
+  },
   following: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'foodpartner'
