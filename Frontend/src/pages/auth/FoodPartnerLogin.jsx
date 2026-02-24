@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AlertCircle, Eye, EyeOff, LogIn, Clock } from "lucide-react";
 import axios from "axios";
 import Logo from "../../components/Logo";
@@ -8,10 +8,39 @@ import foodVideo from "../../assets/food-partnerlogin.mp4";
 
 const FoodPartnerLogin = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [statusAlert, setStatusAlert] = useState(null);
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const status = params.get("status");
+    const authError = params.get("error");
+
+    if (authError) {
+      setError("Google authentication failed. Please try again.");
+      return;
+    }
+
+    if (!status) return;
+
+    if (status === "pending_created" || status === "pending") {
+      setStatusAlert({
+        type: "pending",
+        message: "Aapki application submit ho gayi hai. Admin approval ke baad aap login kar paayenge."
+      });
+      return;
+    }
+
+    if (status === "rejected") {
+      setStatusAlert({
+        type: "rejected",
+        message: "Sorry! Aapki application reject kar di gayi hai. Kirpaya support se contact karein."
+      });
+    }
+  }, [location.search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,28 +59,29 @@ const FoodPartnerLogin = () => {
       );
 
       const foodPartner = response.data.foodPartner;
-      if (foodPartner.status === 'pending') {
-        setStatusAlert({
-          type: 'pending',
-          message: "Aapki application abhi pending hai. Admin approval ke baad he aap login kar payenge."
-        });
-        setLoading(false);
-        return;
-      }
-
-      if (foodPartner.status === 'rejected') {
-        setStatusAlert({
-          type: 'rejected',
-          message: "Sorry! Aapki application reject kar di gayi hai. Kirpaya support se contact karein."
-        });
-        setLoading(false);
-        return;
-      }
-
       navigate("/publishedReels");
     } catch (error) {
       console.error("Login error:", error);
-      setError(error.response?.data?.message || "Login failed. Check your credentials.");
+      const message = error.response?.data?.message;
+      if (error.response?.status === 403 && typeof message === "string") {
+        if (message.toLowerCase().includes("pending")) {
+          setStatusAlert({
+            type: "pending",
+            message: "Aapki application abhi pending hai. Admin approval ke baad he aap login kar payenge."
+          });
+          setLoading(false);
+          return;
+        }
+        if (message.toLowerCase().includes("rejected")) {
+          setStatusAlert({
+            type: "rejected",
+            message: "Sorry! Aapki application reject kar di gayi hai. Kirpaya support se contact karein."
+          });
+          setLoading(false);
+          return;
+        }
+      }
+      setError(message || "Login failed. Check your credentials.");
     } finally {
       setLoading(false);
     }
@@ -245,13 +275,14 @@ const FoodPartnerLogin = () => {
             <div className="flex-1 border-t border-white/20"></div>
           </div>
 
-          <button
-            type="button"
-            className="w-full py-3 rounded-xl text-white font-medium flex items-center justify-center gap-3 hover:bg-white/20 transition-all"
+          <a
+            href="http://localhost:3000/api/auth/google?role=food-partner"
+            className="w-full py-3 rounded-xl text-white font-medium flex items-center justify-center gap-3 hover:bg-white/20 transition-all text-center no-underline"
             style={{
               fontFamily: "'Poppins', sans-serif",
               background: "rgba(255, 255, 255, 0.1)",
               border: "1px solid rgba(255, 255, 255, 0.15)",
+              display: "flex"
             }}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -261,7 +292,7 @@ const FoodPartnerLogin = () => {
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
             </svg>
             Continue with Google
-          </button>
+          </a>
 
           <p className="text-center mt-6 text-white/60">
             New creator?{" "}

@@ -285,13 +285,14 @@ const UserRegister = () => {
 
           {/* Social Login Buttons */}
           <div className="space-y-3">
-            <button
-              type="button"
-              className="w-full py-3 rounded-xl text-white font-medium flex items-center justify-center gap-3 hover:bg-white/20 transition-all"
+            <a
+              href="http://localhost:3000/api/auth/google"
+              className="w-full py-3 rounded-xl text-white font-medium flex items-center justify-center gap-3 hover:bg-white/20 transition-all text-center no-underline"
               style={{
                 fontFamily: "'Poppins', sans-serif",
                 background: "rgba(255, 255, 255, 0.1)",
                 border: "1px solid rgba(255, 255, 255, 0.15)",
+                display: "flex"
               }}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -313,7 +314,7 @@ const UserRegister = () => {
                 />
               </svg>
               Continue with Google
-            </button>
+            </a>
           </div>
 
           {/* Footer Link */}
