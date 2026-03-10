@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import Welcome from '../pages/auth/Welcome';
 import UserRegister from '../pages/auth/UserRegister';
 import ChooseRegister from '../pages/auth/ChooseRegister';
@@ -15,10 +15,24 @@ import Profile from '../pages/food-partner/Profile';
 import PublishedReels from '../pages/food-partner/PublishedReels';
 import Saved from '../pages/general/Saved';
 import BottomNav from '../components/BottomNav';
+import BackButton from '../components/BackButton';
 
-const AppRoutes = () => {
+const AppContent = () => {
+    const location = useLocation();
+    
+    // Pages where we DON'T want the floating back button
+    const hideBackButton = [
+        '/',
+        '/welcome',
+        '/home',
+        '/saved',
+        '/admin/dashboard',
+        '/publishedReels'
+    ].includes(location.pathname);
+
     return (
-        <Router>
+        <>
+            {!hideBackButton && <BackButton />}
             <Routes>
                 <Route path="/" element={<Welcome />} />
                 <Route path="/welcome" element={<Welcome />} />
@@ -35,10 +49,17 @@ const AppRoutes = () => {
                 <Route path="/food-partner/:id" element={<Profile />} />
                 <Route path="/home" element={<><Home /><BottomNav /></>} />
                 <Route path="/saved" element={<><Saved /><BottomNav /></>} />
-
             </Routes>
+        </>
+    );
+};
+
+const AppRoutes = () => {
+    return (
+        <Router>
+            <AppContent />
         </Router>
     )
 }
 
-export default AppRoutes
+export default AppRoutes

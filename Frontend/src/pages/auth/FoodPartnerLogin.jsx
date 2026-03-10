@@ -29,7 +29,7 @@ const FoodPartnerLogin = () => {
     if (status === "pending_created" || status === "pending") {
       setStatusAlert({
         type: "pending",
-        message: "Aapki application submit ho gayi hai. Admin approval ke baad aap login kar paayenge."
+        message: "Your application has been submitted and is currently pending. You will be able to log in once it's approved by the admin."
       });
       return;
     }
@@ -37,7 +37,7 @@ const FoodPartnerLogin = () => {
     if (status === "rejected") {
       setStatusAlert({
         type: "rejected",
-        message: "Sorry! Aapki application reject kar di gayi hai. Kirpaya support se contact karein."
+        message: "We're sorry, but your application has been rejected. Please contact our support team for more information."
       });
     }
   }, [location.search]);
@@ -67,7 +67,7 @@ const FoodPartnerLogin = () => {
         if (message.toLowerCase().includes("pending")) {
           setStatusAlert({
             type: "pending",
-            message: "Aapki application abhi pending hai. Admin approval ke baad he aap login kar payenge."
+            message: "Your application is still pending review. You will be able to log in after admin approval."
           });
           setLoading(false);
           return;
@@ -75,7 +75,7 @@ const FoodPartnerLogin = () => {
         if (message.toLowerCase().includes("rejected")) {
           setStatusAlert({
             type: "rejected",
-            message: "Sorry! Aapki application reject kar di gayi hai. Kirpaya support se contact karein."
+            message: "Your application has been rejected. Please reach out to our support team for assistance."
           });
           setLoading(false);
           return;

@@ -20,17 +20,9 @@ const ChooseRegister = () => {
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/60" />
 
-      {/* CoBack Button */}
-      <button
-        onClick={() => navigate("/welcome")}
-        className="absolute top-6 left-6 text-white/60 hover:text-white transition-colors"
-        aria-label="Go back"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
-
-      {/* ntent */}
+      {/* Content */}
       <div className="relative z-10 w-full max-w-md mx-auto px-6 py-12">
+
         {/* Logo */}
         <div
           className="flex flex-col items-center mb-8 animate-fadeIn"
