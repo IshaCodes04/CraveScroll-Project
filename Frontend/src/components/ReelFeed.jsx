@@ -294,8 +294,8 @@ const ReelFeed = ({
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-col gap-0.5">
                       <div className="flex items-center gap-2 md:gap-3">
-                        <h2 className="text-white font-['Playfair_Display'] font-black text-xl md:text-3xl lg:text-5xl tracking-normal drop-shadow-md lowercase">
-                          {item.user?.name || item.author || "Food Partner"}
+                        <h2 className="text-white font-['Playfair_Display'] font-black text-xl md:text-2xl lg:text-3xl tracking-normal drop-shadow-md">
+                          {(item.user?.name || item.author || "Food Partner").replace(/^GP-/i, '')}
                         </h2>
                         {/* Orange Verified Badge - Medium Scale */}
                         <div className="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/20">

@@ -73,7 +73,8 @@ const Profile = () => {
     }
 
     const profileImage = profile?.avatar || profile?.profileImage || "https://plus.unsplash.com/premium_photo-1681493353999-a3eea8b95e1d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    const displayName = profile?.contactName || profile?.businessName || "Food Partner"
+    const rawName = profile?.businessName || profile?.contactName || "Food Partner"
+    const displayName = rawName.replace(/^GP-/i, '')
     const bio = profile?.bio || profile?.description || "Hi, I like to think of my cooking as expressions of love for my family and friends, especially when it's healthy food!"
 
     return (

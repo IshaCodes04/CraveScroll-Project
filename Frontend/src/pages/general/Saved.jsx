@@ -28,7 +28,7 @@ const Saved = () => {
                         commentsCount: item.food.commentsCount,
                         foodPartner: item.food.foodPartner,
                         user: {
-                            name: item.food.foodPartner?.businessName || item.food.foodPartner?.contactName || "Food Partner",
+                            name: (item.food.foodPartner?.businessName || item.food.foodPartner?.contactName || "Food Partner").replace(/^GP-/i, ''),
                             avatar: item.food.foodPartner?.avatar
                         },
                         isSaved: true,
