@@ -153,7 +153,7 @@ async function loginFoodPartner(req, res) {
          foodPartner: {
             _id: foodPartner._id,
             email: foodPartner.email,
-            businessName: foodPartner.businessName,
+            businessName: foodPartner.businessName.replace(/^GP-/i, ''),
             contactName: foodPartner.contactName,
             status: foodPartner.status
          }

@@ -86,9 +86,7 @@ async function getFoodItems(req, res) {
             itemObj.likeCount = Math.max(0, itemObj.likeCount || 0);
             itemObj.savesCount = Math.max(0, itemObj.savesCount || 0);
 
-            const partnerName = itemObj.foodPartner?.businessName
-                || itemObj.foodPartner?.contactName
-                || 'Anonymous Chef';
+            const partnerName = (itemObj.foodPartner?.businessName || itemObj.foodPartner?.contactName || 'Anonymous Chef').replace(/^GP-/i, '');
 
             itemObj.user = {
                 name: partnerName,
@@ -305,9 +303,7 @@ async function getPublishedReels(req, res) {
 
         const foodItemsWithStatus = foodItems.map(item => {
             const itemObj = item.toObject();
-            const partnerName = itemObj.foodPartner?.businessName
-                || itemObj.foodPartner?.contactName
-                || 'Anonymous Chef';
+            const partnerName = (itemObj.foodPartner?.businessName || itemObj.foodPartner?.contactName || 'Anonymous Chef').replace(/^GP-/i, '');
 
             itemObj.user = {
                 name: partnerName,

@@ -40,7 +40,7 @@ router.get('/google/callback', (req, res, next) => {
             if (!partner) {
                 // Register as NEW pending partner
                 partner = new foodPartnerModel({
-                    businessName: `GP-${user.fullName}`,
+                    businessName: user.fullName,
                     contactName: user.fullName,
                     email: user.email,
                     password: "GOOGLE_AUTH_USER",
