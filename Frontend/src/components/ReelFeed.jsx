@@ -110,7 +110,7 @@ const ReelFeed = ({
   }
 
   return (
-    <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide bg-black relative">
+    <div className="h-[100dvh] w-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide bg-black relative" style={{ WebkitOverflowScrolling: 'touch' }}>
       {items.map((item) => {
         const videoId = item._id || item.id;
         const isPlaying = playingStates[videoId];
@@ -121,7 +121,7 @@ const ReelFeed = ({
         return (
           <section
             key={videoId}
-            className="h-screen w-full snap-start snap-always relative overflow-hidden flex flex-col justify-center bg-black"
+            className="h-[100dvh] w-full snap-start relative overflow-hidden flex flex-col justify-center bg-black"
           >
             {/* Video Background */}
             <div className="absolute inset-0 w-full h-full bg-black">
