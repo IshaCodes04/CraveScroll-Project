@@ -22,12 +22,18 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+const MongoStore = require('connect-mongo');
+
 app.use(session({
     secret: process.env.SESSION_SECRET || 'secret_key',
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        collectionName: 'sessions' // Optional, this stores sessions in 'sessions' collection
+    }),
     cookie: {
-        secure: false, // Set to true if using https
+        secure: process.env.NODE_ENV === "production", // Render par https use hota hai, set to true on production
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000 // 1 day
     }
