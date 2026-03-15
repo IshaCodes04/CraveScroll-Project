@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
@@ -42,13 +43,16 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/", (req, res) => {
-    res.send("Hello World");
-})
-
 app.use('/api/auth', authRoutes);
 app.use('/api/food', foodRoutes);
 app.use('/api/food-partner', foodPartnerRoutes);
 app.use('/api/admin', adminRoutes);
+
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Catch-all route to serve the React app
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
 module.exports = app;
