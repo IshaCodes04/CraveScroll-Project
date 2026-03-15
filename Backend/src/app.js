@@ -22,7 +22,7 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-const MongoStore = require('connect-mongo');
+const { MongoStore } = require('connect-mongo');
 
 app.use(session({
     secret: process.env.SESSION_SECRET || 'secret_key',
