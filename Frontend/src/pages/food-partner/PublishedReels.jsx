@@ -9,6 +9,7 @@ import {
 import "../../styles/reels.css";
 import ReelFeed from "../../components/ReelFeed";
 import Logo from "../../components/Logo";
+import API_BASE_URL from "../../config/api";
 
 const PublishedReels = () => {
     const [videos, setVideos] = useState([]);
@@ -28,7 +29,7 @@ const PublishedReels = () => {
     const fetchPublishedReels = async () => {
         setLoading(true);
         try {
-            const response = await axios.get("http://localhost:3000/api/food/publishedReels", { withCredentials: true });
+            const response = await axios.get(`${API_BASE_URL}/api/food/publishedReels`, { withCredentials: true });
             setAuthInfo({
                 isUser: false,
                 isFoodPartner: true,
@@ -53,7 +54,7 @@ const PublishedReels = () => {
         if (!deleteModal.item) return;
         setDeleting(true);
         try {
-            await axios.delete(`http://localhost:3000/api/food/${deleteModal.item._id}`, { withCredentials: true });
+            await axios.delete(`${API_BASE_URL}/api/food/${deleteModal.item._id}`, { withCredentials: true });
             setVideos(prev => prev.filter(v => v._id !== deleteModal.item._id));
             setDeleteModal({ open: false, item: null });
         } catch (error) {
@@ -69,7 +70,7 @@ const PublishedReels = () => {
 
     const handleLogout = async () => {
         try {
-            await axios.get("http://localhost:3000/api/auth/food-partner/logout", { withCredentials: true });
+            await axios.get(`${API_BASE_URL}/api/auth/food-partner/logout`, { withCredentials: true });
         } finally {
             navigate("/food-partner/login");
         }

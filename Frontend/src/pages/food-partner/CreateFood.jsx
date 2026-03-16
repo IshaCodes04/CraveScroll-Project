@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Upload, Film, Sparkles, Eye, Heart, Play } from 'lucide-react';
 import foodVideo from "../../assets/createFood.mp4";
 import Logo from '../../components/Logo';
+import API_BASE_URL from '../../config/api';
 
 const CreateFood = () => {
   const [name, setName] = useState('');
@@ -79,7 +80,7 @@ const CreateFood = () => {
     formData.append("foodreels", videoFile);
 
     try {
-      const response = await axios.post("http://localhost:3000/api/food", formData, {
+      const response = await axios.post(`${API_BASE_URL}/api/food`, formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data'

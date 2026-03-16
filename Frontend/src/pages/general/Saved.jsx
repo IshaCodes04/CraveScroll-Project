@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import '../../styles/reels.css'
 import axios from 'axios'
 import ReelFeed from '../../components/ReelFeed'
+import API_BASE_URL from '../../config/api'
 
 const Saved = () => {
     const [videos, setVideos] = useState([])
@@ -15,7 +16,7 @@ const Saved = () => {
     })
 
     useEffect(() => {
-        axios.get("http://localhost:3000/api/food/save", { withCredentials: true })
+        axios.get(`${API_BASE_URL}/api/food/save`, { withCredentials: true })
             .then(response => {
                 const savedFoods = response.data.savedFoods
                     .filter(item => item.food !== null)
@@ -49,7 +50,7 @@ const Saved = () => {
 
     const removeSaved = async (item) => {
         try {
-            await axios.post("http://localhost:3000/api/food/save", { foodId: item._id }, { withCredentials: true })
+            await axios.post(`${API_BASE_URL}/api/food/save`, { foodId: item._id }, { withCredentials: true })
             setVideos((prev) => prev.filter(v => v._id !== item._id));
         } catch (error) {
             console.error("Error removing saved status:", error);
@@ -62,7 +63,7 @@ const Saved = () => {
     const likeVideo = async (item) => {
         try {
             const response = await axios.post(
-                "http://localhost:3000/api/food/like",
+                `${API_BASE_URL}/api/food/like`,
                 { foodId: item._id },
                 { withCredentials: true }
             );
@@ -91,7 +92,7 @@ const Saved = () => {
         try {
             const partnerId = item.foodPartner?._id || item.foodPartner;
             const response = await axios.post(
-                "http://localhost:3000/api/food/follow",
+                `${API_BASE_URL}/api/food/follow`,
                 { partnerId },
                 { withCredentials: true }
             );

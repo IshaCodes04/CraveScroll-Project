@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { UserPlus, Mail, ChefHat, Users, BookOpen, CheckCircle } from 'lucide-react'
 import Logo from '../../components/Logo'
+import API_BASE_URL from '../../config/api'
 
 const Profile = () => {
     const { id } = useParams()
@@ -16,7 +17,7 @@ const Profile = () => {
 
     useEffect(() => {
         setLoading(true)
-        axios.get(`http://localhost:3000/api/food-partner/${id}`, { withCredentials: true })
+        axios.get(`${API_BASE_URL}/api/food-partner/${id}`, { withCredentials: true })
             .then(response => {
                 setProfile(response.data.foodPartner)
                 setVideos(response.data.foodPartner.foodItems || [])
@@ -45,7 +46,7 @@ const Profile = () => {
     const handleFollowClick = async () => {
         try {
             const response = await axios.post(
-                "http://localhost:3000/api/food/follow",
+                `${API_BASE_URL}/api/food/follow`,
                 { partnerId: id },
                 { withCredentials: true }
             );

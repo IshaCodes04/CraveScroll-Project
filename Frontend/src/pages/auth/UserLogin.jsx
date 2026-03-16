@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, AlertCircle, Loader2 } from "lucide-react";
 import axios from "axios";
 import Logo from "../../components/Logo";
+import API_BASE_URL from "../../config/api";
 
 const UserLogin = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const UserLogin = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/user/login",
+        `${API_BASE_URL}/api/auth/user/login`,
         {
           email,
           password,
@@ -288,7 +289,7 @@ const UserLogin = () => {
           {/* Social Login Buttons */}
           <div className="space-y-3">
             <a
-              href="http://localhost:3000/api/auth/google"
+              href={`${API_BASE_URL}/api/auth/google`}
               className="w-full py-3 rounded-xl text-white font-medium flex items-center justify-center gap-3 hover:bg-white/20 transition-all text-center no-underline"
               style={{
                 fontFamily: "'Poppins', sans-serif",

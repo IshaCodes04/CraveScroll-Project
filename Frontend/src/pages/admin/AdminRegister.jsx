@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Shield, Lock, Users, BarChart3, AlertCircle, UserPlus, Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import Logo from '../../components/Logo';
+import API_BASE_URL from '../../config/api';
 
 const AdminRegister = () => {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ const AdminRegister = () => {
                 return;
             }
 
-            const response = await axios.post("http://localhost:3000/api/auth/admin/register", {
+            const response = await axios.post(`${API_BASE_URL}/api/auth/admin/register`, {
                 adminName,
                 email,
                 secretKey

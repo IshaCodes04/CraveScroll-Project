@@ -5,6 +5,7 @@ import axios from "axios";
 import Logo from "../../components/Logo";
 import './food-partner-auth.css';
 import foodVideo from "../../assets/food-partnerregister.mp4";
+import API_BASE_URL from "../../config/api";
 
 const FoodPartnerRegister = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const FoodPartnerRegister = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/food-partner/register",
+        `${API_BASE_URL}/api/auth/food-partner/register`,
         {
           businessName,
           contactName,
@@ -358,7 +359,7 @@ const FoodPartnerRegister = () => {
           {/* Social Login Buttons */}
           <div className="space-y-3">
             <a
-              href="http://localhost:3000/api/auth/google?role=food-partner"
+              href={`${API_BASE_URL}/api/auth/google?role=food-partner`}
               className="w-full py-3 rounded-xl text-white font-medium flex items-center justify-center gap-3 hover:bg-white/20 transition-all text-center no-underline"
               style={{
                 fontFamily: "'Poppins', sans-serif",

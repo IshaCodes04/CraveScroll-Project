@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 import Logo from '../../components/Logo';
+import API_BASE_URL from '../../config/api';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -39,8 +40,8 @@ const AdminDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const [pendingRes, statsRes] = await Promise.all([
-        axios.get("http://localhost:3000/api/food-partner/admin/pending", { withCredentials: true }),
-        axios.get("http://localhost:3000/api/admin/stats", { withCredentials: true })
+        axios.get(`${API_BASE_URL}/api/food-partner/admin/pending`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/api/admin/stats`, { withCredentials: true })
       ]);
 
       setPendingPartners(pendingRes.data.pendingPartners || []);
@@ -69,7 +70,7 @@ const AdminDashboard = () => {
     if (!window.confirm(`Are you sure you want to ${actionText} this partner?`)) return;
 
     try {
-      await axios.put(`http://localhost:3000/api/food-partner/admin/approve/${id}`, { status }, { withCredentials: true });
+      await axios.put(`${API_BASE_URL}/api/food-partner/admin/approve/${id}`, { status }, { withCredentials: true });
       fetchDashboardData();
     } catch (error) {
       console.error("Status update error:", error);
@@ -79,7 +80,7 @@ const AdminDashboard = () => {
   const handleLogout = async () => {
     try {
       setLoading(true);
-      await axios.get("http://localhost:3000/api/auth/admin/logout", { withCredentials: true });
+      await axios.get(`${API_BASE_URL}/api/auth/admin/logout`, { withCredentials: true });
       navigate("/admin/login");
     } catch (error) {
       console.error("Logout error:", error);

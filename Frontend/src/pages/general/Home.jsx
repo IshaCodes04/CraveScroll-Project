@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { LogOut, Loader2, UtensilsCrossed } from "lucide-react";
 import "../../styles/reels.css";
 import ReelFeed from "../../components/ReelFeed";
+import API_BASE_URL from "../../config/api";
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
@@ -20,7 +21,7 @@ const Home = () => {
   const fetchVideos = () => {
     setLoading(true);
     axios
-      .get("http://localhost:3000/api/food", { withCredentials: true })
+      .get(`${API_BASE_URL}/api/food`, { withCredentials: true })
       .then((response) => {
         setVideos(response.data.foodItems || []);
         setIsUser(response.data.isUser || response.data.isFoodPartner || false);
@@ -46,7 +47,7 @@ const Home = () => {
   const likeVideo = async (item) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/food/like",
+        `${API_BASE_URL}/api/food/like`,
         { foodId: item._id },
         { withCredentials: true }
       );
@@ -71,7 +72,7 @@ const Home = () => {
   const saveVideo = async (item) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/food/save",
+        `${API_BASE_URL}/api/food/save`,
         { foodId: item._id },
         { withCredentials: true }
       );
@@ -97,7 +98,7 @@ const Home = () => {
     try {
       const partnerId = item.foodPartner?._id || item.foodPartner;
       const response = await axios.post(
-        "http://localhost:3000/api/food/follow",
+        `${API_BASE_URL}/api/food/follow`,
         { partnerId },
         { withCredentials: true }
       );
@@ -122,7 +123,7 @@ const Home = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get("http://localhost:3000/api/auth/user/logout", { withCredentials: true });
+      await axios.get(`${API_BASE_URL}/api/auth/user/logout`, { withCredentials: true });
       navigate("/user/login");
     } catch (error) {
       navigate("/user/login");
