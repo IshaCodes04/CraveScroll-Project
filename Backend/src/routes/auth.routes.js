@@ -30,7 +30,8 @@ router.get('/google/callback', (req, res, next) => {
     passport.authenticate('google', async (err, user, info) => {
         if (err || !user) {
             const redirectPath = role === 'food-partner' ? '/food-partner/login' : '/user/login';
-            return res.redirect(`http://localhost:5173${redirectPath}?error=auth_failed`);
+            const FRONTEND = process.env.FRONTEND_URL || "https://cravescroll-76hd.onrender.com";
+            return res.redirect(`${FRONTEND}${redirectPath}?error=auth_failed`);
         }
 
         if (role === 'food-partner') {
@@ -49,11 +50,13 @@ router.get('/google/callback', (req, res, next) => {
                     status: 'pending'
                 });
                 await partner.save();
-                return res.redirect('http://localhost:5173/food-partner/login?status=pending_created');
+                const FRONTEND = process.env.FRONTEND_URL || "https://cravescroll-76hd.onrender.com";
+                return res.redirect(`${FRONTEND}/food-partner/login?status=pending_created`);
             }
 
             if (partner.status !== 'approved') {
-                return res.redirect(`http://localhost:5173/food-partner/login?status=${partner.status}`);
+                const FRONTEND = process.env.FRONTEND_URL || "https://cravescroll-76hd.onrender.com";
+                return res.redirect(`${FRONTEND}/food-partner/login?status=${partner.status}`);
             }
 
             // Approved Partner Login
@@ -64,7 +67,8 @@ router.get('/google/callback', (req, res, next) => {
                 sameSite: "lax",
                 maxAge: 24 * 60 * 60 * 1000
             });
-            return res.redirect('http://localhost:5173/publishedReels');
+            const FRONTEND_FP = process.env.FRONTEND_URL || "https://cravescroll-76hd.onrender.com";
+            return res.redirect(`${FRONTEND_FP}/publishedReels`);
         } else {
             // General User Login/Register (already handled by passport config, just need token)
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
@@ -74,7 +78,8 @@ router.get('/google/callback', (req, res, next) => {
                 sameSite: "lax",
                 maxAge: 24 * 60 * 60 * 1000
             });
-            return res.redirect('http://localhost:5173/home');
+            const FRONTEND_USER = process.env.FRONTEND_URL || "https://cravescroll-76hd.onrender.com";
+            return res.redirect(`${FRONTEND_USER}/home`);
         }
     })(req, res, next);
 });
