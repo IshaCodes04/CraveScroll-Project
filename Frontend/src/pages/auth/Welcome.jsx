@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Globe, Heart, Share2 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import Logo from "../../components/Logo";
-
+import videoBg from "../../assets/6174380-hd_1920_1080_30fps.mp4";
 const Welcome = () => {
   const navigate = useNavigate();
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
@@ -80,7 +80,7 @@ const Welcome = () => {
         playsInline
       >
         <source
-          src="/src/assets/6174380-hd_1920_1080_30fps.mp4"
+          src={videoBg}
           type="video/mp4"
         />
       </video>
