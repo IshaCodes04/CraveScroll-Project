@@ -263,7 +263,7 @@ const ReelFeed = ({
             </div>
 
             {/* Bottom Content Area - Compact Proportions for Mobile */}
-            <div className="absolute left-0 right-16 sm:right-32 bottom-20 sm:bottom-24 md:bottom-28 lg:bottom-32 px-4 sm:px-5 md:px-8 lg:px-12 z-40 max-w-2xl flex flex-col gap-2 sm:gap-4 pointer-events-none">
+            <div className="absolute left-0 right-16 sm:right-32 bottom-28 sm:bottom-32 md:bottom-36 lg:bottom-40 px-4 sm:px-5 md:px-8 lg:px-12 z-40 max-w-2xl flex flex-col gap-2 sm:gap-4 pointer-events-none">
               
               {/* Subtle background shadow for text readability */}
               {(!hideProfile || !hideDescription) && (
