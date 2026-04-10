@@ -262,25 +262,21 @@ const ReelFeed = ({
               )}
             </div>
 
-            {/* Bottom Content Area - Medium Proportions */}
-            <div className="absolute left-0 right-20 sm:right-32 bottom-24 md:bottom-28 lg:bottom-32 px-5 md:px-8 lg:px-12 z-40 max-w-2xl">
+            {/* Bottom Content Area - Compact Proportions for Mobile */}
+            <div className="absolute left-0 right-16 sm:right-32 bottom-20 sm:bottom-24 md:bottom-28 lg:bottom-32 px-4 sm:px-5 md:px-8 lg:px-12 z-40 max-w-2xl flex flex-col gap-2 sm:gap-4 pointer-events-none">
+              
               {/* Subtle background shadow for text readability */}
               {(!hideProfile || !hideDescription) && (
-                <div className="absolute inset-x-0 -bottom-10 h-80 bg-gradient-to-t from-black/70 via-black/20 to-transparent -z-10 pointer-events-none" />
+                <div className="absolute inset-x-0 -bottom-20 h-[400px] bg-gradient-to-t from-black/80 via-black/40 to-transparent -z-10 pointer-events-none" />
               )}
+              
               {!hideProfile && (
-                <div className="flex items-center gap-4 sm:gap-7 mb-7 sm:mb-10 group/profile">
-                  {/* Circular Avatar - Scaling for all views */}
-                  <div className="relative shrink-0">
-                    <div className="
-                    w-14 h-14 
-                    md:w-20 md:h-20 
-                    lg:w-24 lg:h-24 
-                    rounded-full border-[3px] border-primary/40 p-1 
-                    group-hover/profile:border-primary transition-all duration-500 shadow-2xl
-                  ">
+                <div className="flex items-stretch gap-3 sm:gap-4 pointer-events-auto">
+                  {/* Circular Avatar */}
+                  <div className="relative shrink-0 flex items-center">
+                    <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border-2 border-primary/40 p-0.5 group-hover/profile:border-primary transition-all duration-500 shadow-xl bg-black/20">
                       <img
-                        className="w-full h-full rounded-full object-cover border-2 border-white"
+                        className="w-full h-full rounded-full object-cover border border-white"
                         src={
                           item.user?.avatar ||
                           item.avatar ||
@@ -291,95 +287,92 @@ const ReelFeed = ({
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2">
-                    <div className="flex flex-col gap-0.5">
-                      <div className="flex items-center gap-2 md:gap-3">
-                        <h2 className="text-white font-['Playfair_Display'] font-black text-xl md:text-2xl lg:text-3xl tracking-normal drop-shadow-md">
-                          {(item.user?.name || item.author || "Food Partner").replace(/^GP-/i, '')}
-                        </h2>
-                        {/* Orange Verified Badge - Medium Scale */}
-                        <div className="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/20">
-                          <svg width="12" height="9" viewBox="0 0 12 9" fill="none" className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-4.5 text-white">
-                            <path d="M1 4.5L4 7.5L11 1" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </div>
+                  <div className="flex flex-col justify-center">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h2 className="text-white font-['Playfair_Display'] font-bold text-base sm:text-xl md:text-2xl tracking-normal drop-shadow-md">
+                        {(item.user?.name || item.author || "Food Partner").replace(/^GP-/i, '')}
+                      </h2>
+                      {/* Orange Verified Badge */}
+                      <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
+                        <svg width="8" height="6" viewBox="0 0 12 9" fill="none" className="w-2h-2 sm:w-2.5 sm:h-2.5 text-white">
+                          <path d="M1 4.5L4 7.5L11 1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
                       </div>
-
-                      {/* Professional Tag Line - Medium font size */}
-                      <div className="flex items-center gap-2 text-white/95">
-                        <ChefHat className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-primary drop-shadow-sm" />
-                        <span className="text-[11px] md:text-base lg:text-xl font-medium tracking-tight drop-shadow-sm font-['Poppins']">
-                          Professional Chef & Food Partner
-                        </span>
-                      </div>
+                      
+                      {/* Inline Follow Button */}
+                      {authInfo.currentPartnerId !== (item.foodPartner?._id || item.foodPartner) && (
+                        <button
+                          onClick={() => onFollow?.(item)}
+                          className={`
+                          flex items-center px-3 py-1 ml-1
+                          ${item.isFollowing ? 'bg-white/10 backdrop-blur-md border border-white/20' : 'bg-primary'} 
+                          rounded-full transition-all duration-300 active:scale-95 group/btn
+                        `}
+                        >
+                          <span className="text-white text-[10px] sm:text-xs font-bold tracking-wide">
+                            {item.isFollowing ? "Following" : "Follow"}
+                          </span>
+                        </button>
+                      )}
                     </div>
 
-                    {/* Solid Follow Button - Medium Proportions */}
-                    {authInfo.currentPartnerId !== (item.foodPartner?._id || item.foodPartner) && (
-                      <button
-                        onClick={() => onFollow?.(item)}
-                        className={`
-                        flex items-center gap-2.5 px-6 py-2 md:px-10 md:py-3 lg:px-12 lg:py-4
-                        ${item.isFollowing ? 'bg-white/10 backdrop-blur-md border border-white/20' : 'bg-primary shadow-[0_8px_20px_rgba(249,115,22,0.4)]'} 
-                        rounded-full transition-all duration-300 active:scale-95 group/btn w-max
-                      `}
-                      >
-                        <UserPlus className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" />
-                        <span className="text-white text-xs md:text-lg lg:text-xl font-bold tracking-wide">
-                          {item.isFollowing ? "Following" : "Follow"}
-                        </span>
-                      </button>
-                    )}
+                    {/* Professional Tag Line */}
+                    <div className="flex items-center gap-1 text-white/90 mt-0.5">
+                      <ChefHat className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
+                      <span className="text-[9px] sm:text-[11px] md:text-sm font-medium tracking-tight font-['Poppins']">
+                        Professional Chef & Food Partner
+                      </span>
+                    </div>
                   </div>
                 </div>
               )}
 
-              {!hideDescription && (
-                <p className="text-white/95 text-xs sm:text-sm md:text-lg lg:text-xl font-medium italic leading-snug tracking-wide max-w-xl md:max-w-2xl border-l-2 border-primary/50 pl-4 py-1.5 mb-6 md:mb-8 drop-shadow-md line-clamp-2">
-                  {item.description}
-                </p>
-              )}
+              {/* Description and Visit Store Row */}
+              <div className="flex flex-col gap-3 pointer-events-auto pl-1">
+                {!hideDescription && (
+                  <p className="text-white/95 text-sm sm:text-base md:text-lg font-medium italic leading-snug tracking-wide max-w-[85%] border-l-2 border-primary/50 pl-3 py-0.5 drop-shadow-md line-clamp-2">
+                    {item.description}
+                  </p>
+                )}
 
-              {/* Visit Store Action - Elegant Scale */}
-              {item.foodPartner && !hideStoreButton && (
-                <div className="w-max">
-                  <Link
-                    to={
-                      authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
-                        ? "/create-food"
-                        : "/food-partner/" + (item.foodPartner?._id || item.foodPartner)
-                    }
-                    className="group relative flex items-center justify-center gap-3
-                      px-6 py-2.5 sm:px-8 sm:py-3
-                      rounded-lg sm:rounded-xl
-                      bg-white/5 backdrop-blur-2xl
-                      border border-white/10
-                      text-white text-[10px] sm:text-xs font-black uppercase tracking-[3px]
-                      shadow-2xl
-                      hover:bg-primary hover:border-primary
-                      hover:scale-[1.02] active:scale-95
-                      transition-all duration-500 ease-out
-                      overflow-hidden"
-                  >
-                    <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000" />
-
-                    <div className="relative flex items-center gap-3">
-                      {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId ? (
-                        <>
-                          <Plus className="w-4 h-4 group-hover:rotate-180 transition-transform duration-700" />
-                          <span className="drop-shadow-lg whitespace-nowrap">Create Dish</span>
-                        </>
-                      ) : (
-                        <>
-                          <Utensils className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform duration-300" />
-                          <span className="drop-shadow-lg whitespace-nowrap">Visit Store</span>
-                        </>
-                      )}
-                    </div>
-                  </Link>
-                </div>
-              )}
+                {/* Visit Store Action - Compact Scale */}
+                {item.foodPartner && !hideStoreButton && (
+                  <div className="w-max mt-1">
+                    <Link
+                      to={
+                        authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId
+                          ? "/create-food"
+                          : "/food-partner/" + (item.foodPartner?._id || item.foodPartner)
+                      }
+                      className="group relative flex items-center justify-center gap-2
+                        px-4 py-2 sm:px-6 sm:py-2.5
+                        rounded-lg
+                        bg-white/10 backdrop-blur-md
+                        border border-white/20
+                        text-white text-[10px] sm:text-xs font-black uppercase tracking-[2px]
+                        shadow-xl
+                        hover:bg-primary hover:border-primary
+                        active:scale-95 transition-all duration-300
+                        overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="relative flex items-center gap-2">
+                        {authInfo.isFoodPartner && (item.foodPartner?._id || item.foodPartner) === authInfo.currentPartnerId ? (
+                          <>
+                            <Plus className="w-3 h-3 group-hover:rotate-180 transition-transform duration-500" />
+                            <span className="drop-shadow-md whitespace-nowrap">Create Dish</span>
+                          </>
+                        ) : (
+                          <>
+                            <Utensils className="w-3 h-3 sm:w-4 sm:h-4 group-hover:rotate-12 transition-transform duration-300" />
+                            <span className="drop-shadow-md whitespace-nowrap">Visit Store</span>
+                          </>
+                        )}
+                      </div>
+                    </Link>
+                  </div>
+                )}
+              </div>
             </div>
           </section>
         );

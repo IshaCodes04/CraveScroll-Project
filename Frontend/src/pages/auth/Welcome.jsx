@@ -87,8 +87,8 @@ const Welcome = () => {
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/60 to-black/85" />
 
-      {/* Partner Prompt - Top Right */}
-      <div className="absolute top-6 right-6 z-20 animate-fadeIn" style={{ animationDelay: "1s" }}>
+      {/* Partner Prompt - Top Right (Desktop Only) */}
+      <div className="hidden sm:block absolute top-6 right-6 z-20 animate-fadeIn" style={{ animationDelay: "1s" }}>
         <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-4 text-center shadow-xl hover:bg-white/15 transition-all duration-300">
           <p className="text-white/90 text-sm mb-2 font-medium" style={{ fontFamily: "Poppins, sans-serif" }}>
             Become a food creator🍔?
@@ -181,6 +181,17 @@ const Welcome = () => {
         >
           Join thousands of food lovers worldwide
         </p>
+
+        {/* Mobile Partner Prompt */}
+        <div className="sm:hidden mt-6 animate-fadeIn" style={{ animationDelay: "1s" }}>
+          <p className="text-white/70 text-xs mb-1">Are you a food creator?</p>
+          <Link
+            to="/food-partner/register"
+            className="text-orange-400 text-xs font-bold hover:text-orange-300 border-b border-orange-400/30 pb-0.5 transition-colors"
+          >
+            Apply to join here 🍔
+          </Link>
+        </div>
       </div>
 
       <style>{`
